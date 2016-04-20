@@ -4,7 +4,7 @@
 // TODO change to pull in ending simulation data for all runs
 // expects format
 // PE, GVT interval, batch, num KPs, runtime, % efficiency, net events, roll backs, ...
-d3.csv('testdata.csv', function(data) {
+d3.csv('data/testdata.csv', function(data) {
     var colorgen = d3.scale.ordinal()
         .range(["#a6cee3","#1f78b4","#b2df8a","#33a02c",
             "#fb9a99","#e31a1c","#fdbf6f","#ff7f00",

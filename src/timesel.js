@@ -1,5 +1,5 @@
 // expects 2D GVT x LP matrix for each metric
-d3.tsv("data.tsv", function(error, data) {
+d3.csv("data/matrix.csv", function(error, data) {
     if (error) throw error;
 
     color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
