@@ -1,3 +1,4 @@
+// expects 2D GVT x LP matrix for each metric
 d3.tsv("data.tsv", function(error, data) {
     if (error) throw error;
 

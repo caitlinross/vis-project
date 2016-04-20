@@ -1,0 +1,18 @@
+Some documentation on the data needed for components:
+
+View for all simulation data:
+This is the top parallel coordinates that contains data on all of the simulation runs loaded.  
+Each line in the csv should be a different run that contains info on the parameters used, as well as
+some info given at the end of the simulation (see below). The lines should be like the following:
+PE, GVT interval, batch, num KPs, runtime, % efficiency, net events, roll backs, ...
+
+Radial View for PEs:
+A 3D PExPExGVT array for each metric
+
+LP Selector, LP View (grid), and Time Selector:
+These components can use the same file.  For each metric, there is a 2D GVTxLP array
+
+Metrics to use:
+-# forward events
+-# reverse events
+

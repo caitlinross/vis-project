@@ -1,9 +1,7 @@
 // Adapted from https://syntagmatic.github.io/parallel-coordinates/ by Kai Chang
 // this uses Chang's d3.parcoords javascript library that is built on top of d3 
 // load csv file and create the chart
-// TODO change to pull in data for PE, KP, LP and metric
-// expects format
-// PE ID, KP ID, LP ID, metric 0, metric 1, ..., metric n
+// expects 2D GVT x LP matrix for each metric
 d3.csv('data/alldata-batch.csv', function(data) {
     var colorgen = d3.scale.ordinal()
         .range(["#a6cee3","#1f78b4","#b2df8a","#33a02c",

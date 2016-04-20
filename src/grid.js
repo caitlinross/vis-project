@@ -1,7 +1,5 @@
-// TODO change to pull in data for PE, KP, LP and metric
-// expects format (same as lpsel.js
-// PE ID, KP ID, LP ID, metric 0, metric 1, ..., metric n
 // Adapted from http://bl.ocks.org/mbostock/4063318#index.html by Mike Bostock 
+// expects 2D GVT x LP matrix for each metric
 
 // change size of cells and of area the cells are shown in
 var width = 1200,
