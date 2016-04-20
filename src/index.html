@@ -6,6 +6,7 @@
     font: 10px sans-serif;
     }
 
+    /*  set up main divs to hold each vis */
     .allpc { 
     background: #fff;
     position: fixed;
@@ -83,10 +84,68 @@
     right: 50px;
     top: 10px;
     }
+
+
+
+    /* For grid heat map */
+    .hour {
+        fill: #fff;
+        stroke: #ccc;
+    }
+
+    .day {
+        fill: #fff;
+        stroke: #ccc;
+    }
+
+    .month {
+        fill: none;
+        stroke: #000;
+        stroke-width: 2px;
+    }
+
+    .sched {
+        font: 11px sans-serif;
+    }
+
+    .graphTitle {
+        font: 22px sans-serif;
+        text-align: center;
+    }
+
+    .legend {
+        fill: #fff;
+    }
+
+    .RdYlGn .q0-11{fill:rgb(5,48,97)}
+    .RdYlGn .q1-11{fill:rgb(33,102,172)}
+    .RdYlGn .q2-11{fill:rgb(67,147,195)}
+    .RdYlGn .q3-11{fill:rgb(146,197,222)}
+    .RdYlGn .q4-11{fill:rgb(209,229,240)}
+    .RdYlGn .q5-11{fill:rgb(247,247,247)}
+    .RdYlGn .q6-11{fill:rgb(253,219,199)}
+    .RdYlGn .q7-11{fill:rgb(244,165,130)}
+    .RdYlGn .q8-11{fill:rgb(214,96,77)}
+    .RdYlGn .q9-11{fill:rgb(178,24,43)}
+    .RdYlGn .q10-11{fill:rgb(103,0,31)}
+
+    /* For time selection */
+    .x.axis path {
+        display: none;
+    }
+
+    .line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 1.5px;
+    }
+
 </style>
 
 <body>
     <script src="http://d3js.org/d3.v2.js"></script>
+    <script type="text/javascript" src="d3.parcoords.js"></script>
+    <link rel="stylesheet" type="text/css" href="d3.parcoords.css">
 
     <div class="allpc">
         <h2>All simulation data</h2>
@@ -108,182 +167,54 @@
     </div>
 
     <script>
-        // code adapted from http://bl.ocks.org/WillTurman/4631136
-        chart("slimfly.csv", "blue", ".chart", "remove");
-        chart("dragonfly.csv", "blue", ".chart2", "remove2");
+        // global vars to be used in external js files
 
-        var datearray = [];
-        var colorrange = [];
+        /**** allpc.js ****/
 
+        /**** radial.js ****/
 
-        function chart(csvpath, color, divname, rmname) {
+        /**** grid.js ****/
 
-            if (color == "blue") {
-                colorrange = ['#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b'];
-            }
-            else if (color == "pink") {
-                colorrange = ['#f7f4f9','#e7e1ef','#d4b9da','#c994c7','#df65b0','#e7298a','#ce1256','#91003f'];
-            }
-            else if (color == "orange") {
-                colorrange = ['#fff5eb','#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#8c2d04'];
-            }
-            else if (color == "red") {
-                colorrange = ['#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d'];
-            }
-            strokecolor = colorrange[0];
+        /**** timesel.js ****/
+        var margin = {top: 20, right: 80, bottom: 30, left: 50},
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
 
-            var format = d3.time.format("%m/%d/%y");
+        var parseDate = d3.time.format("%Y%m%d").parse;
 
-            var margin = {top: 20, right: 40, bottom: 30, left: 30};
-            var width = document.body.clientWidth - margin.left - margin.right;
-            var height = 400 - margin.top - margin.bottom;
+        var x = d3.time.scale()
+            .range([0, width]);
 
+        var y = d3.scale.linear()
+            .range([height, 0]);
 
-            var tooltip = d3.select(divname)
-                .append("div")
-                .attr("class", rmname)
-                .style("position", "absolute")
-                .style("z-index", "20")
-                .style("visibility", "hidden")
-                .style("top", "10px")
-                .style("left", "55px");
+        var color = d3.scale.category10();
 
-            var x = d3.scale.linear()
-                .range([0, width]);
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
 
-            var y = d3.scale.linear()
-                .range([height-10, 0]);
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left");
 
-            var z = d3.scale.ordinal()
-                .range(colorrange);
+        var line = d3.svg.line()
+            .interpolate("basis")
+            .x(function(d) { return x(d.date); })
+            .y(function(d) { return y(d.temperature); });
 
-            var xAxis = d3.svg.axis()
-                .scale(x)
-                .orient("bottom")
-                .ticks(d3.time.weeks);
+        var svg = d3.select("body").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            var yAxis = d3.svg.axis()
-                .scale(y);
+        /**** lpsel.js ****/
 
-            var yAxisr = d3.svg.axis()
-                .scale(y);
-
-            var stack = d3.layout.stack()
-                .offset("silhouette")
-                .values(function(d) { return d.values; })
-                .x(function(d) { return d.date; })
-                .y(function(d) { return d.value; });
-
-            var nest = d3.nest()
-                .key(function(d) { return d.key; });
-
-            var area = d3.svg.area()
-                .interpolate("cardinal")
-                .x(function(d) { return x(d.date); })
-                .y0(function(d) { return y(d.y0); })
-                .y1(function(d) { return y(d.y0 + d.y); });
-
-            var svg = d3.select(divname).append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            var graph = d3.csv(csvpath, function(data) {
-                data.forEach(function(d) {
-                    //d.date = format.parse(d.date);
-                    d.date = parseInt(d.date);
-                    d.value = +d.value;
-                });
-
-                var layers = stack(nest.entries(data));
-
-                x.domain(d3.extent(data, function(d) { return d.date; }));
-                y.domain([0, d3.max(data, function(d) { return d.y0 + d.y; })]);
-
-                svg.selectAll(".layer")
-                    .data(layers)
-                    .enter().append("path")
-                    .attr("class", "layer")
-                    .attr("d", function(d) { return area(d.values); })
-                    .style("fill", function(d, i) { return z(i); });
-
-                svg.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(xAxis);
-
-                svg.append("g")
-                    .attr("class", "y axis")
-                    .attr("transform", "translate(" + width + ", 0)")
-                    .call(yAxis.orient("right"));
-
-                svg.append("g")
-                    .attr("class", "y axis")
-                    .call(yAxis.orient("left"));
-
-                svg.selectAll(".layer")
-                    .attr("opacity", 1)
-                    .on("mouseover", function(d, i) {
-                        svg.selectAll(".layer").transition()
-                        .duration(250)
-                        .attr("opacity", function(d, j) {
-                            return j != i ? 0.6 : 1;
-                    })})
-                    .on("mousemove", function(d, i) {
-                        mousex = d3.mouse(this);
-                        mousex = mousex[0];
-                        var invertedx = x.invert(mousex);
-                        //invertedx = invertedx.getMonth() + invertedx.getDate();
-                        invertedx = Math.floor(invertedx);
-                        var selected = (d.values);
-                        for (var k = 0; k < selected.length; k++) {
-                            datearray[k] = selected[k].date
-                            //datearray[k] = datearray[k].getMonth() + datearray[k].getDate();
-                        }
-
-                        mousedate = datearray.indexOf(invertedx);
-                        pro = d.values[mousedate].value;
-
-                        console.log(this);
-                        d3.select(this)
-                            .classed("hover", true)
-                            .attr("stroke", strokecolor)
-                            .attr("stroke-width", "0.5px"), 
-                            tooltip.html( "<p>" + d.key + "<br>" + pro + "</p>" ).style("visibility", "visible");
-
-                    })
-                    .on("mouseout", function(d, i) {
-                        svg.selectAll(".layer")
-                            .transition()
-                            .duration(250)
-                            .attr("opacity", "1");
-                        d3.select(this)
-                            .classed("hover", false)
-                            .attr("stroke-width", "0px"), tooltip.html( "<p>" + d.key + "<br>" + pro + "</p>" ).style("visibility", "hidden");
-                    })
-
-                var vertical = d3.select(divname)
-                    .append("div")
-                    .attr("class", rmname)
-                    .style("position", "absolute")
-                    .style("z-index", "19")
-                    .style("width", "1px")
-                    .style("height", "380px")
-                    .style("top", "10px")
-                    .style("bottom", "30px")
-                    .style("left", "0px")
-                    .style("background", "#000");
-
-                d3.select(divname)
-                    .on("mousemove", function(){  
-                        mousex = d3.mouse(this);
-                        mousex = mousex[0] + 5;
-                        vertical.style("left", mousex + "px" )})
-                    .on("mouseover", function(){  
-                        mousex = d3.mouse(this);
-                        mousex = mousex[0] + 5;
-                        vertical.style("left", mousex + "px")});
-        });
-        }
     </script>
+    <script src="allpc.js"></script>
+    <script src="radial.js"></script>
+    <script src="grid.js"></script>
+    <script src="timesel.js"></script>
+    <script src="lpsel.js"></script>
+
