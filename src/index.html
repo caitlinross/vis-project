@@ -7,7 +7,7 @@
     }
 
     /*  set up main divs to hold each vis */
-    .allpc { 
+    #allpc { 
     background: #fff;
     position: fixed;
     border: 3px solid #000;
@@ -130,7 +130,7 @@
     .RdYlGn .q10-11{fill:rgb(103,0,31)}
 
     /* For time selection */
-    .x.axis path {
+    /*.x.axis path {
         display: none;
     }
 
@@ -138,7 +138,7 @@
         fill: none;
         stroke: steelblue;
         stroke-width: 1.5px;
-    }
+    }*/
 
 </style>
 
@@ -146,26 +146,6 @@
     <script src="http://d3js.org/d3.v2.js"></script>
     <script type="text/javascript" src="d3.parcoords.js"></script>
     <link rel="stylesheet" type="text/css" href="d3.parcoords.css">
-
-    <div class="allpc">
-        <h2>All simulation data</h2>
-    </div>
-    <div class="radial">
-        <h2>Radial View (PEs)</h2>
-    </div>
-    <div class="grid">
-        <h2>LP View (Terminals and Routers)</h2>
-    </div>
-    <div class="timesel">
-        <h2>Time Selector</h2>
-    </div>
-    <div class="lpsel">
-        <h2>LP Selector</h2>
-    </div>
-    <div class="settings">
-        <h2>Settings</h2>
-    </div>
-
     <script>
         // global vars to be used in external js files
 
@@ -176,7 +156,7 @@
         /**** grid.js ****/
 
         /**** timesel.js ****/
-        var margin = {top: 20, right: 80, bottom: 30, left: 50},
+        /*var margin = {top: 20, right: 80, bottom: 30, left: 50},
             width = 960 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom;
 
@@ -208,13 +188,31 @@
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+*/
         /**** lpsel.js ****/
 
     </script>
     <script src="allpc.js"></script>
-    <script src="radial.js"></script>
-    <script src="grid.js"></script>
-    <script src="timesel.js"></script>
-    <script src="lpsel.js"></script>
 
+    <div id="allpc">
+        <h2>All simulation data</h2>
+        <div id="pc" class="parcoords" style="height:200px; width=:1200px;"></div>
+    </div>
+    <div class="radial">
+        <h2>Radial View (PEs)</h2>
+    </div>
+    <div class="grid">
+        <h2>LP View (Terminals and Routers)</h2>
+    </div>
+    <div class="timesel">
+        <h2>Time Selector</h2>
+    </div>
+    <div class="lpsel">
+        <h2>LP Selector</h2>
+    </div>
+    <div class="settings">
+        <h2>Settings</h2>
+    </div>
+
+
+</body>
