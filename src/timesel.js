@@ -42,15 +42,15 @@ function createTimeGraph(data) {
         return {
             name: name,
             values: data.map(function(d) {
-                //console.log(d);
-                return {gvt: d.gvt, metric: +d[name]};
+                return {gvt: +d.gvt, metric: +d[name]};
                 //return {metric: +d[name]};
             })
         };
     });
 
+    //console.log(lps);
 
-    x.domain(d3.extent(data, function(d) { return d.gvt; }));
+    x.domain(d3.extent(data, function(d) { return +d.gvt; }));
 
     y.domain([
         d3.min(lps, function(c) { return d3.min(c.values, function(v) { return v.metric; }); }),
@@ -67,7 +67,7 @@ function createTimeGraph(data) {
         .call(yAxis)
         .append("text")
         .attr("transform", "rotate(-90)")
-        .attr("y", 6)
+        .attr("y", -45)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
         .text("Forward Events");
@@ -79,7 +79,7 @@ function createTimeGraph(data) {
 
     city.append("path")
         .attr("class", "line")
-        .attr("d", function(d) { return line(d.values[0].metric); })
+        .attr("d", function(d) { console.log(d.values[0].metric);return line(d.values[0].metric); })
         .style("stroke", function(d) { return color(d.name); });
 
     city.append("text")
