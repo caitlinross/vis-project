@@ -48,7 +48,7 @@ function createTimeGraph(data) {
         };
     });
 
-    //console.log(lps);
+    console.log(lps);
 
     x.domain(d3.extent(data, function(d) { return +d.gvt; }));
 
@@ -79,7 +79,7 @@ function createTimeGraph(data) {
 
     city.append("path")
         .attr("class", "line")
-        .attr("d", function(d) { console.log(d.values[0].metric);return line(d.values[0].metric); })
+        .attr("d", function(d) { console.log(d.values); return line(d.values); })
         .style("stroke", function(d) { return color(d.name); });
 
     city.append("text")
