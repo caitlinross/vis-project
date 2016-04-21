@@ -57,6 +57,11 @@ function createTimeGraph(data) {
         d3.max(lps, function(c) { return d3.max(c.values, function(v) { return v.metric; }); })
     ]);
 
+    var lineFunction = d3.svg.line()
+        .x(function(d) { return d.gvt; })
+        .y(function(d) { return d.metric; })
+        .interpolate("linear");
+
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
@@ -79,7 +84,8 @@ function createTimeGraph(data) {
 
     city.append("path")
         .attr("class", "line")
-        .attr("d", function(d) { console.log(d.values); return line(d.values); })
+        //.attr("d", function(d) { console.log(d.values); return line(d.values); })
+        .attr("d", lineFunction(lps[0].values))
         .style("stroke", function(d) { return color(d.name); });
 
     city.append("text")
