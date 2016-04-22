@@ -160,6 +160,7 @@
     </div>
     <div class="lpsel">
         <h2>LP Selector</h2>
+        <div id="lppc" class="parcoords" style="height:250px; width:600px;"></div>
     </div>
     <div class="settings">
         <h2>Settings</h2>
@@ -181,18 +182,21 @@
 
         /**** lpsel.js ****/
 
+        var num_kp = 16;
+        var num_pe = 16;
 
         /* read in 2d GVT x LP metric data */
         var lp_data;
         d3.csv("data/slimfly-processed/forward-send-event-log-pe.txt", function(data){
             // all calls to use this data should go in here
-            lp_data = data;
-            createTimeGraph(lp_data); 
+            pe_data = data;
+            createTimeGraph(pe_data); 
         });
 
     </script>
     <script src="allpc.js"></script>
     <script src="timesel.js"></script>
+    <script src="lpsel.js"></script>
 
     
 </body>

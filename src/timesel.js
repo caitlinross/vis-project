@@ -35,7 +35,7 @@ var svg = d3.select(".timegraph").append("svg")
 function createTimeGraph(data) {
     color.domain(d3.keys(data[0]).filter(function(key) { return key !== "gvt"; }));
 
-    var lps = color.domain().map(function(name) {
+    var pe = color.domain().map(function(name) {
         return {
             name: name,
             values: data.map(function(d) {
@@ -47,8 +47,8 @@ function createTimeGraph(data) {
     x.domain(d3.extent(data, function(d) { return +d.gvt; }));
 
     y.domain([
-        d3.min(lps, function(c) { return d3.min(c.values, function(v) { return v.metric; }); }),
-        d3.max(lps, function(c) { return d3.max(c.values, function(v) { return v.metric; }); })
+        d3.min(pe, function(c) { return d3.min(c.values, function(v) { return v.metric; }); }),
+        d3.max(pe, function(c) { return d3.max(c.values, function(v) { return v.metric; }); })
     ]);
 
     svg.append("g")
@@ -67,7 +67,7 @@ function createTimeGraph(data) {
         .text("Forward Events");
 
     var city = svg.selectAll(".city")
-        .data(lps)
+        .data(pe)
         .enter().append("g")
         .attr("class", "city");
 
