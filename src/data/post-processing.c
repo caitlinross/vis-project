@@ -10,7 +10,8 @@
 
 int main(int argc, char **argv)
 {
-	FILE * output_file=NULL;
+	FILE * output_file_lp=NULL;
+	FILE * output_file_pe=NULL;
     FILE * input_file=NULL;
     FILE * gvt_file=NULL;
 
@@ -62,6 +63,7 @@ int main(int argc, char **argv)
     int num_lps = 200;
     int num_metrics = 10;
     int data[num_lps][gvt_count][num_metrics];
+	int data2[num_pes][gvt_count][num_metrics];
     printf("here\n");
 //Loop over all data files
 for(f=0; f<num_pes; f++)
@@ -116,7 +118,8 @@ for(f=0; f<num_pes; f++)
         y = j;
         
         data[x][y][z]++;            //increment associated metric
-//        printf("file:%d i:%d j:%d oldx:%d x:%d y:%d z:%d data:%d\n",f,i,j,tempx,x,y,z,data[x][y][z]);
+		data2[(int)floor(x/(int)ceil(num_lps/num_pes))][y][z]++;
+//        printf("file:%d i:%d j:%d oldx:%d x2:%d x:%d y:%d z:%d data:%d\n",f,i,j,tempx,(int)floor(x/(int)ceil(num_lps/num_pes)),x,y,z,data[x][y][z]);
     }
     fclose(input_file);
 }
@@ -124,33 +127,54 @@ for(f=0; f<num_pes; f++)
 //Loop over all output metric data files
 //for(f=0; f<num_metrics; f++)
 //{
-	printf("Opening output file\n");
-	sprintf( log, "slimfly-processed/forward-send-event-log.txt");
-	output_file = fopen ( log, "w");
-	if (output_file==NULL)
+	printf("Opening lp output file\n");
+	sprintf( log, "slimfly-processed/forward-send-event-log-lp.txt");
+	output_file_lp = fopen ( log, "w");
+	if (output_file_lp==NULL)
 	{
-		printf("Failed to Open Slim_fly output file %s \n",log);
+		printf("Failed to Open Slim_fly lp output file %s \n",log);
 	}
 
-	printf("Printfing output data\n");
-	fprintf(output_file,"GVT-Bin, ");
+	printf("Opening pe output file\n");
+	sprintf( log, "slimfly-processed/forward-send-event-log-pe.txt");
+	output_file_pe = fopen ( log, "w");
+	if (output_file_pe==NULL)
+	{
+		printf("Failed to Open Slim_fly pe output file %s \n",log);
+	}
+
+	printf("Printing output LP and PE data\n");
+	fprintf(output_file_lp,"GVT-Bin, ");
+	fprintf(output_file_pe,"GVT-Bin, ");
 	for(i=0;i<num_lps-1;i++)
 	{
-		fprintf(output_file,"LP%d, ",i); 
+		fprintf(output_file_lp,"LP%d, ",i); 
 	}
-	fprintf(output_file,"LP%d\n",num_lps-1);
+	for(i=0;i<num_pes-1;i++)
+	{
+		fprintf(output_file_pe,"PE%d, ",i);
+	} 
+	fprintf(output_file_lp,"LP%d\n",num_lps-1);
+	fprintf(output_file_pe,"PE%d\n",num_pes-1);
 	for(i=0;i<gvt_count;i++)
 	{
 //		printf("gvt:%d\n",i);
-		fprintf(output_file,"%6.6f, ",gvt[i]);
+		fprintf(output_file_lp,"%6.6f, ",gvt[i]);
+		fprintf(output_file_pe,"%6.6f, ",gvt[i]);
 		for(j=0;j<num_lps-1;j++)
 		{
-			fprintf(output_file,"%2d, ",data[j][i][0]);
+			fprintf(output_file_lp,"%2d, ",data[j][i][0]);
 		}
-		fprintf(output_file,"%2d\n",data[num_lps-1][i][0]);
+		fprintf(output_file_lp,"%2d\n",data[num_lps-1][i][0]);
+		for(j=0;j<num_pes-1;j++)
+		{
+			fprintf(output_file_pe,"%2d, ",data2[j][i][0]);
+		}
+		fprintf(output_file_pe,"%2d\n",data2[num_pes-1][i][0]);
 	}
 
-	fclose(output_file);
+	fclose(output_file_lp);
+	fclose(output_file_pe);
 
    	return 0;
 }
