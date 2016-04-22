@@ -9,7 +9,7 @@ for i in range(num_gvt+1):
     for j in range(num_lps):
         if i == 0:
             if j == 0:
-                f.write("date,")
+                f.write("gvt,")
             f.write("lp_" + str(j))
         else:
             if j == 0:
