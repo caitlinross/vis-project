@@ -2,7 +2,7 @@
 // this uses Chang's d3.parcoords javascript library that is built on top of d3 
 // load csv file and create the chart
 // expects 2D GVT x LP matrix for each metric
-d3.csv('data/matrix.csv', function(data) {
+d3.csv('data/slimfly-processed/forward-send-event-log-lp.txt', function(data) {
     var lp_names = d3.scale.category10();
     lp_names.domain(d3.keys(data[0]).filter(function(key) { return key !== "gvt"; }));
 

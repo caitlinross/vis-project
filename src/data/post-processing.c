@@ -148,14 +148,14 @@ for(f=0; f<num_pes; f++)
 	fprintf(output_file_pe,"gvt,");
 	for(i=0;i<num_lps-1;i++)
 	{
-		fprintf(output_file_lp,"LP%d, ",i); 
+		fprintf(output_file_lp,"LP_%d, ",i); 
 	}
 	for(i=0;i<num_pes-1;i++)
 	{
-		fprintf(output_file_pe,"PE%d, ",i);
+		fprintf(output_file_pe,"PE_%d, ",i);
 	} 
-	fprintf(output_file_lp,"LP%d\n",num_lps-1);
-	fprintf(output_file_pe,"PE%d\n",num_pes-1);
+	fprintf(output_file_lp,"LP_%d\n",num_lps-1);
+	fprintf(output_file_pe,"PE_%d\n",num_pes-1);
 	for(i=0;i<gvt_count;i++)
 	{
 //		printf("gvt:%d\n",i);
