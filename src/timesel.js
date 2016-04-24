@@ -26,12 +26,6 @@ var line = d3.svg.line()
     .x(function(d) { return x(d.gvt); })
     .y(function(d) { return y(d.metric); });
 
-var zoom = d3.behavior.zoom()
-    .x(x)
-    .y(y)
-    .scaleExtent([0,100000])
-    .on("zoom", zoomed);    
-
 function zoomed() {
     svg.select(".x.axis").call(xAxis);
     svg.select(".y.axis").call(yAxis);   
@@ -39,13 +33,7 @@ function zoomed() {
         .attr('d', function(d) { return line(d.values); });  
 }    
 
-var svg = d3.select(".timegraph").append("svg")
-    .call(zoom)
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+var svg;
     
 function createTimeGraph(data) {
     color.domain(d3.keys(data[0]).filter(function(key) { return key !== "gvt"; }));
@@ -65,6 +53,19 @@ function createTimeGraph(data) {
         d3.min(pe, function(c) { return d3.min(c.values, function(v) { return v.metric; }); }),
         d3.max(pe, function(c) { return d3.max(c.values, function(v) { return v.metric; }); })
     ]);
+
+    var zoom = d3.behavior.zoom()
+        .x(x)
+        .y(y)
+        .scaleExtent([0,100000])
+        .on("zoom", zoomed);    
+
+    svg = d3.select(".timegraph").append("svg")
+        //.call(zoom)
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     svg.append("g")
         .attr("class", "x axis")
@@ -110,6 +111,7 @@ function createTimeGraph(data) {
         .attr("d", function(d) { return line(d.values); })
         .style("stroke", function(d) { return color(d.name); });
 
+
     /*var legend = svg.selectAll(".legend")
         .data(color.domain().slice().reverse())
         .enter().append("g")
@@ -138,7 +140,4 @@ function createTimeGraph(data) {
         .attr("dy", ".35em")
         .text(function(d) { return d.name; });
         */
-    var tmp = d3.extent(data, function(d) { return +d.gvt; });
-    var minDate = tmp[0], maxDate = tmp[1];
-
 }
