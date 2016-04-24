@@ -2,7 +2,7 @@ import random
 
 f = open("matrix.csv", "w")
 num_gvt = 50
-num_lps = 12*16
+num_lps = 16
 gvt = 0;
 
 for i in range(num_gvt+1):

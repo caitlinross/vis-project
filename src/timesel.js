@@ -26,12 +26,27 @@ var line = d3.svg.line()
     .x(function(d) { return x(d.gvt); })
     .y(function(d) { return y(d.metric); });
 
+var zoom = d3.behavior.zoom()
+    .x(x)
+    .y(y)
+    .scaleExtent([0,100000])
+    .on("zoom", zoomed);    
+
+function zoomed() {
+    svg.select(".x.axis").call(xAxis);
+    svg.select(".y.axis").call(yAxis);   
+    svg.selectAll('path.line')
+        .attr('d', function(d) { return line(d.values); });  
+}    
+
 var svg = d3.select(".timegraph").append("svg")
+    .call(zoom)
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    
 function createTimeGraph(data) {
     color.domain(d3.keys(data[0]).filter(function(key) { return key !== "gvt"; }));
 
@@ -58,23 +73,63 @@ function createTimeGraph(data) {
 
     svg.append("g")
         .attr("class", "y axis")
-        .call(yAxis)
+        .call(yAxis);
+
+    svg.append("g")
+        .attr("class", "y axis")
         .append("text")
+        .attr("class", "axis-label")
         .attr("transform", "rotate(-90)")
-        .attr("y", -45)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
+        .attr("y", (-margin.left) + 10)
+        .attr("x", -height/2)
         .text("Forward Events");
 
-    var city = svg.selectAll(".city")
+    svg.append("clipPath")
+        .attr("id", "clip")
+        .append("rect")
+        .attr("width", width)
+        .attr("height", height);
+
+    /*var city = svg.selectAll(".city")
         .data(pe)
         .enter().append("g")
         .attr("class", "city");
 
     city.append("path")
         .attr("class", "line")
+        .attr("clip-path", "url(#clip)")
         .attr("d", function(d) { return line(d.values); })
         .style("stroke", function(d) { return color(d.name); });
+        */
+
+    var city = svg.selectAll(".line")
+        .data(pe)
+        .enter().append("path")
+        .attr("class", "line")
+        .attr("clip-path", "url(#clip)")
+        .attr("d", function(d) { return line(d.values); })
+        .style("stroke", function(d) { return color(d.name); });
+
+    /*var legend = svg.selectAll(".legend")
+        .data(color.domain().slice().reverse())
+        .enter().append("g")
+        .attr("class", "legend")
+        .attr("transform", function(d, i) { console.log(d);
+            console.log(i); return "translate(0," + i * 20 + ")"; });
+
+    legend.append("rect")
+        .attr("x", width + 18)
+        .attr("width", 18)
+        .attr("height", 18)
+        .style("fill", color);
+
+    legend.append("text")
+        .attr("x", width + 24)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .style("text-anchor", "end")
+        .text(function(d) { return d; });
+        */
 
     /*city.append("text")
         .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
@@ -83,4 +138,7 @@ function createTimeGraph(data) {
         .attr("dy", ".35em")
         .text(function(d) { return d.name; });
         */
+    var tmp = d3.extent(data, function(d) { return +d.gvt; });
+    var minDate = tmp[0], maxDate = tmp[1];
+
 }
