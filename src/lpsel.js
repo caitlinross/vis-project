@@ -44,7 +44,7 @@ d3.csv('data/slimfly-processed/forward-send-event-log-lp.txt', function(data) {
 
     var color = function(d) {  return colorgen(d.type); };
 
-    var parcoords = d3.parcoords()("#lppc")
+    lp_pc = d3.parcoords()("#lppc")
         .data(lp_lines)
         .hideAxis(["type"])
         .color(color)
@@ -56,7 +56,7 @@ d3.csv('data/slimfly-processed/forward-send-event-log-lp.txt', function(data) {
         .reorderable()
         .brushMode("1D-axes");  // enable brushing
 
-    parcoords.svg.selectAll("text")
+    lp_pc.svg.selectAll("text")
         .style("font", "10px sans-serif");
 });
 

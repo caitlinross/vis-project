@@ -5,7 +5,7 @@ var margin = {top: 20, right: 80, bottom: 30, left: 50},
 
 var parseDate = d3.time.format("%Y%m%d").parse;
 
-var x = d3.scale.linear()
+x = d3.scale.linear()
     .range([0, width]);
 
 var y = d3.scale.linear()
@@ -31,9 +31,33 @@ function zoomed() {
     svg.select(".y.axis").call(yAxis);   
     svg.selectAll('path.line')
         .attr('d', function(d) { return line(d.values); });  
-}    
+}
+
+//var bisectGVT = d3.bisector(function(d) { return d.gvt; }).left;
 
 var svg;
+
+    /*var vertical = d3.select(".timegraph")
+        .append("div")
+        .attr("class", "remove")
+        .style("position", "absolute")
+        .style("z-index", "19")
+        .style("width", "1px")
+        .style("height", "380px")
+        .style("top", "10px")
+        .style("bottom", "30px")
+        .style("left", "0px")
+        .style("background", "#000");
+
+    d3.select(".timegraph")
+        .on("mousemove", function(){  
+            mousex = d3.mouse(this);
+            mousex = mousex[0] + 5;
+            vertical.style("left", mousex + "px" )})
+        .on("mouseover", function(){  
+            mousex = d3.mouse(this);
+            mousex = mousex[0] + 5;
+            vertical.style("left", mousex + "px")});*/
     
 function createTimeGraph(data) {
     color.domain(d3.keys(data[0]).filter(function(key) { return key !== "gvt"; }));
@@ -69,8 +93,10 @@ function createTimeGraph(data) {
         binned_pes.push({name: pe[i].name,
             values: tmp_vals});
     }
-
-    x.domain(d3.extent(data, function(d) { return +d.gvt; }));
+    x.domain([
+        d3.min(binned_pes, function(c) { return d3.min(c.values, function(v) { return v.gvt; }); }),
+        d3.max(binned_pes, function(c) { return d3.max(c.values, function(v) { return v.gvt; }); })
+    ]);
 
     y.domain([
         d3.min(binned_pes, function(c) { return d3.min(c.values, function(v) { return v.metric; }); }),
@@ -134,6 +160,15 @@ function createTimeGraph(data) {
         .attr("d", function(d) { return line(d.values); })
         .style("stroke", function(d) { return color(d.name); });
 
+    /*function mousemove() {
+        var x0 = x.invert(d3.mouse(this)[0]),
+            i = bisectGVT(binned_pes[0], x0, 1),
+            d0 = binned_pes.[i - 1],
+            d1 = data[i],
+            d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+        //focus.attr("transform", "translate(" + x(d.date) + "," + y(d.close) + ")");
+        //focus.select("text").text(formatCurrency(d.close));
+    }*/
 
     /*var legend = svg.selectAll(".legend")
         .data(color.domain().slice().reverse())
