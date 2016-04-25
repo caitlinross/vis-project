@@ -46,12 +46,40 @@ function createTimeGraph(data) {
             })
         };
     });
+    console.log(pe);
+    var num_bins = 500;
+    var max_gvt = d3.max(data, function(d) { return +d.gvt; });
+    var bin_size = max_gvt / num_bins;
+    var binned_pes = [];
+
+    for (var i = 0; i < pe.length; i++){
+        var current_bin = bin_size;
+        var tmp_metric = 0;
+        var tmp_vals = [];
+        for (var j = 0; j < pe[i].values.length; j++){
+            if (pe[i].values[j].gvt <= current_bin){
+                tmp_metric += pe[i].values[j].metric;
+                //console.log(pe[i].values[j].gvt);
+                //console.log(current_bin);
+            } 
+            else {
+                tmp_vals.push({gvt: current_bin, metric: tmp_metric});
+                tmp_metric = 0;
+                current_bin += bin_size;
+                //console.log("new bin!");
+            }
+        }
+        tmp_vals.push({gvt: current_bin, metric: tmp_metric});
+        binned_pes.push({name: pe[i].name,
+            values: tmp_vals});
+    }
+    console.log(binned_pes);
 
     x.domain(d3.extent(data, function(d) { return +d.gvt; }));
 
     y.domain([
-        d3.min(pe, function(c) { return d3.min(c.values, function(v) { return v.metric; }); }),
-        d3.max(pe, function(c) { return d3.max(c.values, function(v) { return v.metric; }); })
+        d3.min(binned_pes, function(c) { return d3.min(c.values, function(v) { return v.metric; }); }),
+        d3.max(binned_pes, function(c) { return d3.max(c.values, function(v) { return v.metric; }); })
     ]);
 
     var zoom = d3.behavior.zoom()
@@ -61,7 +89,7 @@ function createTimeGraph(data) {
         .on("zoom", zoomed);    
 
     svg = d3.select(".timegraph").append("svg")
-        //.call(zoom)
+        .call(zoom)
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -104,7 +132,7 @@ function createTimeGraph(data) {
         */
 
     var city = svg.selectAll(".line")
-        .data(pe)
+        .data(binned_pes)
         .enter().append("path")
         .attr("class", "line")
         .attr("clip-path", "url(#clip)")
