@@ -21,7 +21,14 @@ d3.csv('data/slimfly-processed/forward-send-event-log-lp.txt', function(data) {
     .rollup(function(d) {
         var myid = d[0].name.split("_");
         var pe_id = Math.floor(+myid[1]/Math.ceil(num_lp/num_pe));
+        var type;
+        if ((+myid[1]+1) % 4 == 0){
+            type = "router";
+        }else{
+            type = "terminal";
+        }
         return {
+            type: type, 
             PE: pe_id,
             LP: +myid[1],
             total_metric: d3.sum(d[0].values, function(g) { return g.metric;})
@@ -33,15 +40,13 @@ d3.csv('data/slimfly-processed/forward-send-event-log-lp.txt', function(data) {
     lp_temp.forEach(function(d) { lp_lines.push(d.values); });
 
     var colorgen = d3.scale.ordinal()
-        .range(["#a6cee3","#1f78b4","#b2df8a","#33a02c",
-            "#fb9a99","#e31a1c","#fdbf6f","#ff7f00",
-            "#cab2d6","#6a3d9a","#ffff99","#b15928"]);
+        .range(["#2166ac","#b2182b"]);
 
-    var color = function(d) {  return colorgen(d.batch); };
+    var color = function(d) {  return colorgen(d.type); };
 
     var parcoords = d3.parcoords()("#lppc")
         .data(lp_lines)
-     //   .hideAxis(["name"])
+        .hideAxis(["type"])
         .color(color)
         .alpha(0.25)
         .composite("darker")

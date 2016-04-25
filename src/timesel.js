@@ -46,7 +46,6 @@ function createTimeGraph(data) {
             })
         };
     });
-    console.log(pe);
     var num_bins = 500;
     var max_gvt = d3.max(data, function(d) { return +d.gvt; });
     var bin_size = max_gvt / num_bins;
@@ -59,21 +58,17 @@ function createTimeGraph(data) {
         for (var j = 0; j < pe[i].values.length; j++){
             if (pe[i].values[j].gvt <= current_bin){
                 tmp_metric += pe[i].values[j].metric;
-                //console.log(pe[i].values[j].gvt);
-                //console.log(current_bin);
             } 
             else {
                 tmp_vals.push({gvt: current_bin, metric: tmp_metric});
                 tmp_metric = 0;
                 current_bin += bin_size;
-                //console.log("new bin!");
             }
         }
         tmp_vals.push({gvt: current_bin, metric: tmp_metric});
         binned_pes.push({name: pe[i].name,
             values: tmp_vals});
     }
-    console.log(binned_pes);
 
     x.domain(d3.extent(data, function(d) { return +d.gvt; }));
 
