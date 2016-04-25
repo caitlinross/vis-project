@@ -10,6 +10,7 @@
 
 int main(int argc, char **argv)
 {
+	FILE * output_file=NULL;
 	FILE * output_file_lp=NULL;
 	FILE * output_file_pe=NULL;
     FILE * input_file=NULL;
@@ -43,7 +44,7 @@ int main(int argc, char **argv)
 	char * pch;
 	size_t len = 0;
 	ssize_t read;
-	int i,j,f;
+	int i,j,k,f;
 	printf("extracting gvt times\n");
 		read = getline(&line, &len, gvt_file);
 	for(i=0; i<gvt_count; i++)
@@ -62,8 +63,9 @@ int main(int argc, char **argv)
     int num_pes = 16;
     int num_lps = 200;
     int num_metrics = 10;
-    int data[num_lps][gvt_count][num_metrics];
-	int data2[num_pes][gvt_count][num_metrics];
+    int data[num_lps][gvt_count][num_metrics];	//LP data
+	int data2[num_pes][gvt_count][num_metrics];	//PE data
+	int data3[num_pes][num_pes][gvt_count];		//PE connection data for one metric
     printf("here\n");
 //Loop over all data files
 for(f=0; f<num_pes; f++)
@@ -86,9 +88,20 @@ for(f=0; f<num_pes; f++)
     printf("num_events:%d\n",num_events);
     rewind(input_file);
 
-	int x,y,z;
+	int x,x2,y,z,dst,dst2,temp_dst;
     float temp;
 	int tempx;
+
+	for(i=0;i<num_lps;i++)
+	{
+		for(j=0;j<gvt_count;j++)
+		{
+			for(k=0;k<num_metrics;k++)
+			{
+				data[i][j][k] = 0;
+			}
+		}
+	}
 
     printf("parsing raw event data\n");
 	for(i=0;i<num_events;i++)
@@ -96,7 +109,7 @@ for(f=0; f<num_pes; f++)
 		read = getline(&line, &len, input_file);
 		pch = strtok (line,",");
 		tempx = atoi(pch);				//src LP ID
-		if(x<num_stride_old)
+		if(tempx<num_stride_old)
 		{
 			x = (int)ceil(tempx/num_stride_old)*num_stride_new + tempx%num_stride_old - num_stride_new+1;
 		}
@@ -105,11 +118,19 @@ for(f=0; f<num_pes; f++)
 			x = (int)floor(tempx/num_stride_old)*num_stride_new + tempx%num_stride_old - num_stride_new+1;
 		}
 		pch = strtok (NULL,",");
+		temp_dst = atoi(pch);			//destination LP ID
+		if(temp_dst<num_stride_old)
+		{
+			dst = (int)ceil(temp_dst/num_stride_old)*num_stride_new + temp_dst%num_stride_old - num_stride_new+1;
+		}
+		else
+		{
+			dst = (int)floor(temp_dst/num_stride_old)*num_stride_new + temp_dst%num_stride_old - num_stride_new+1;
+		}
 		pch = strtok (NULL,",");
 		z = atoi(pch);				//event type
 		pch = strtok (NULL,",");
 		temp = atof(pch);
-//        printf("x:%d z:%d temp:%f\n",x,z,temp);
 		j=0;
 		while(temp>gvt[j] && j<gvt_count)
 		{
@@ -117,13 +138,37 @@ for(f=0; f<num_pes; f++)
 		}
         y = j;
         
+//		printf("tempx:%d temp_dst:%d\n",tempx,temp_dst);
+//		printf("x:%d y:%d z:%d x2:%d dst:%d\n",x,y,z,(int)floor(x/(int)ceil(num_lps/num_pes)),dst);
+
+		x2 = (int)floor(x/(int)ceil(num_lps/num_pes));		//Get PE ID for given x LP ID
+		dst2 = (int)floor(dst/(int)ceil(num_lps/num_pes));	//Get PE ID for given dst LP ID
+
         data[x][y][z]++;            //increment associated metric
-		data2[(int)floor(x/(int)ceil(num_lps/num_pes))][y][z]++;
+		data2[x2][y][z]++;
+		
+		if(data[x][y][z] > 100)
+			printf("data[%d][%d][%d]:%d\n",x,y,z,data[x][y][z]);
+		if(z==0)
+		{
+/*			if(x == 199)
+			{	
+				if(y >3374)
+				{
+					printf("data[%d][%d][%d]:%d\n",x,y,z,data[x][y][z]);
+				}
+			}
+*/			data3[x2][dst2][y]++;			//increment number of messages transfered on the connection for given gvt bin
+		}
 //        printf("file:%d i:%d j:%d oldx:%d x2:%d x:%d y:%d z:%d data:%d\n",f,i,j,tempx,(int)floor(x/(int)ceil(num_lps/num_pes)),x,y,z,data[x][y][z]);
     }
     fclose(input_file);
 }
 
+
+//-------------------------------------
+//Event data per metric per PE and LP
+//-------------------------------------
 //Loop over all output metric data files
 //for(f=0; f<num_metrics; f++)
 //{
@@ -144,8 +189,8 @@ for(f=0; f<num_pes; f++)
 	}
 
 	printf("Printing output LP and PE data\n");
-	fprintf(output_file_lp,"gvt,");
-	fprintf(output_file_pe,"gvt,");
+	fprintf(output_file_lp,"GVT-Bin, ");
+	fprintf(output_file_pe,"GVT-Bin, ");
 	for(i=0;i<num_lps-1;i++)
 	{
 		fprintf(output_file_lp,"LP_%d, ",i); 
@@ -175,6 +220,29 @@ for(f=0; f<num_pes; f++)
 
 	fclose(output_file_lp);
 	fclose(output_file_pe);
+
+//-------------------------------------
+//PE connection event data
+//-------------------------------------
+	printf("Opening lp output file\n");
+	sprintf( log, "slimfly-processed/forward-send-event-log-connections.txt");
+	output_file = fopen ( log, "w");
+	if (output_file==NULL)
+	{
+		printf("Failed to Open Slim_fly connection output file %s \n",log);
+	}
+
+	for(k=0;k<gvt_count;k++)
+	{
+		for(j=0;j<num_pes;j++)
+		{
+			for(i=0;i<num_pes-1;i++)
+			{
+				fprintf(output_file,"%d, ",data3[i][j][k]);
+			}
+				fprintf(output_file,"%d\n",data3[i][j][k]);
+		}
+	}
 
    	return 0;
 }
