@@ -1,0 +1,19 @@
+Questions Asked:
+1. Is the interface intuitive?
+2. Is it effective?
+
+Answers:
+1. Seems intuitive if had a background in the specific simulation approach.
+2. Same as 1.
+
+Comments/Questions from Participants:
+- Add Radial bundle tension selection to the "Settings" panel
+- How will the visualization perform with large amounts of data?
+- Will there be a legend with the information?
+- Add a description to each plot to describe the available interactions (pop up bubbles) and how to use the figures.
+- Make the lines thicker in the top parallel coordinates graph.
+- Make font larger on axis labels.
+- Is there any desire to perform the visualization in-situ?
+- What questions is such a visualization going to answer?
+- What will happen if conflicting selections are made?
+- Is there a way to unselect?

@@ -15,7 +15,7 @@ var bundle = d3.layout.bundle();
 
 var line_radial = d3.svg.line.radial()			//Constructs new radial line generator with default radius and angle functions
 		.interpolate("bundle")
-		.tension(.15)
+		.tension(.35)
 		.radius(function(d) { return d.y; })
 		.angle(function(d) { return d.x / 180 * Math.PI; });
 
@@ -29,7 +29,7 @@ var link = svg_radial.append("g").selectAll(".link");
 var node = svg_radial.append("g").selectAll(".node");
 
 var colorgen_radial = d3.scale.ordinal()
-.range(["#b2df8a","#33a02c","#1f78b4","#a6cee3",
+.range(["#000099","#33a02c","#1f78b4","#a6cee3",
         "#fb9a99","#e31a1c","#fdbf6f","#ff7f00",
         "#cab2d6","#6a3d9a","#ffff99","#b15928"]);
         
