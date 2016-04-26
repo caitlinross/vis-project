@@ -1,15 +1,15 @@
 // expects 2D GVT x LP matrix for each metric
 var margin = {top: 20, right: 80, bottom: 30, left: 50},
-    width = 600 - margin.left - margin.right,
-    height = 250 - margin.top - margin.bottom;
+    w1 = 600 - margin.left - margin.right,
+    h1 = 250 - margin.top - margin.bottom;
 
 var parseDate = d3.time.format("%Y%m%d").parse;
 
 x = d3.scale.linear()
-    .range([0, width]);
+    .range([0, w1]);
 
 var y = d3.scale.linear()
-    .range([height, 0]);
+    .range([h1, 0]);
 
 var color = d3.scale.category10();
 
@@ -37,28 +37,6 @@ function zoomed() {
 
 var svg;
 
-    /*var vertical = d3.select(".timegraph")
-        .append("div")
-        .attr("class", "remove")
-        .style("position", "absolute")
-        .style("z-index", "19")
-        .style("width", "1px")
-        .style("height", "380px")
-        .style("top", "10px")
-        .style("bottom", "30px")
-        .style("left", "0px")
-        .style("background", "#000");
-
-    d3.select(".timegraph")
-        .on("mousemove", function(){  
-            mousex = d3.mouse(this);
-            mousex = mousex[0] + 5;
-            vertical.style("left", mousex + "px" )})
-        .on("mouseover", function(){  
-            mousex = d3.mouse(this);
-            mousex = mousex[0] + 5;
-            vertical.style("left", mousex + "px")});*/
-    
 function createTimeGraph(data) {
     color.domain(d3.keys(data[0]).filter(function(key) { return key !== "gvt"; }));
 
@@ -111,14 +89,14 @@ function createTimeGraph(data) {
 
     svg = d3.select(".timegraph").append("svg")
         .call(zoom)
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("width", w1 + margin.left + margin.right)
+        .attr("height", h1 + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + height*0.45 + ")")
+        .attr("transform", "translate(0," + h1 + ")")
         .call(xAxis);
 
     svg.append("g")
@@ -131,14 +109,21 @@ function createTimeGraph(data) {
         .attr("class", "axis-label")
         .attr("transform", "rotate(-90)")
         .attr("y", (-margin.left) + 10)
-        .attr("x", -height/2)
+        .attr("x", -h1/2)
         .text("Forward Events");
 
     svg.append("clipPath")
         .attr("id", "clip")
         .append("rect")
-        .attr("width", width)
-        .attr("height", height);
+        .attr("width", w1)
+        .attr("height", h1);
+
+    svg.append("rect")
+        .attr("class", "overlay")
+        .attr("width", w1)
+        .attr("height", h1)
+        .attr("opacity", 0)
+        .on("click", mousemove);
 
     /*var city = svg.selectAll(".city")
         .data(pe)
@@ -160,16 +145,6 @@ function createTimeGraph(data) {
         .attr("d", function(d) { return line(d.values); })
         .style("stroke", function(d) { return color(d.name); });
 
-    /*function mousemove() {
-        var x0 = x.invert(d3.mouse(this)[0]),
-            i = bisectGVT(binned_pes[0], x0, 1),
-            d0 = binned_pes.[i - 1],
-            d1 = data[i],
-            d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-        //focus.attr("transform", "translate(" + x(d.date) + "," + y(d.close) + ")");
-        //focus.select("text").text(formatCurrency(d.close));
-    }*/
-
     /*var legend = svg.selectAll(".legend")
         .data(color.domain().slice().reverse())
         .enter().append("g")
@@ -178,13 +153,13 @@ function createTimeGraph(data) {
             console.log(i); return "translate(0," + i * 20 + ")"; });
 
     legend.append("rect")
-        .attr("x", width + 18)
+        .attr("x", w1 + 18)
         .attr("width", 18)
         .attr("height", 18)
         .style("fill", color);
 
     legend.append("text")
-        .attr("x", width + 24)
+        .attr("x", w1 + 24)
         .attr("y", 9)
         .attr("dy", ".35em")
         .style("text-anchor", "end")
@@ -198,4 +173,15 @@ function createTimeGraph(data) {
         .attr("dy", ".35em")
         .text(function(d) { return d.name; });
         */
+        //TODO the value is off by some amount dependent on the zoom
+        /*bin_end_time = d3.select(".x axis").on('click', function(){
+            console.log(x.invert(d3.event.pageX));
+            return x.invert(d3.event.pageX);
+        });
+        console.log(bin_end_time);*/
+
+        function mousemove() {
+            bin_end_time = x.invert(d3.mouse(this)[0]);
+            console.log(bin_end_time);
+        }
 }
