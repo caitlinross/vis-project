@@ -140,7 +140,46 @@
         stroke: steelblue;
         stroke-width: 1.5px;
     }
-
+	/* For radial graph*/
+	.node {
+	  font: 300 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+	  fill: #bbb;
+	}
+	.node:hover {
+	  fill: #000;
+	}
+	.link {
+	  stroke: steelblue;
+	  stroke-opacity: .4;
+	  fill: none;
+	  pointer-events: none;
+	}
+	.node:hover,
+	.node--source,
+	.node--target {
+	  font-weight: 700;
+	}
+	.node--source {
+	  fill: #2ca02c;
+	}
+	.node--target {
+	  fill: #d62728;
+	}
+	.link--source,
+	.link--target {
+	  stroke-opacity: 1;
+	  stroke-width: 4px;
+	}
+	.link--source {
+	  stroke: #d62728;
+	}
+	.link--target {
+	  stroke: #2ca02c;
+	}
+/*	.div.radialgraph {
+		position: absolute;
+		top: 200;
+*/
 </style>
 
 <body>
@@ -150,13 +189,14 @@
     </div>
     <div class="radial">
         <h2>Radial View (PEs)</h2>
+        <div class="radialgraph" style="height:450px; width:600px;"></div>
     </div>
     <div class="grid">
         <h2>LP View (Terminals and Routers)</h2>
     </div>
     <div class="timesel">
         <h2>Time Selector</h2>
-        <div class="timegraph" style="height:250px; widght:600px;"></div>
+        <div class="timegraph" style="height:250px; width:600px;"></div>
     </div>
     <div class="lpsel">
         <h2>LP Selector</h2>
@@ -166,7 +206,7 @@
         <h2>Settings</h2>
     </div>
 
-    <script src="http://d3js.org/d3.v2.js"></script>
+    <script src="http://d3js.org/d3.v3.js"></script>
     <script type="text/javascript" src="d3.parcoords.js"></script>
     <link rel="stylesheet" type="text/css" href="d3.parcoords.css">
     <script>
@@ -203,6 +243,7 @@
     <script src="allpc.js"></script>
     <script src="timesel.js"></script>
     <script src="lpsel.js"></script>
+	<script src="radial.js"></script>
     
     
     <script>
