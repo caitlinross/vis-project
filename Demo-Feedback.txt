@@ -15,5 +15,5 @@ Comments/Questions from Participants:
 - Make font larger on axis labels.
 - Is there any desire to perform the visualization in-situ?
 - What questions is such a visualization going to answer?
-- What will happen if conflivting selections are made?
+- What will happen if conflicting selections are made?
 - Is there a way to unselect?
