@@ -9,13 +9,24 @@
 * Create functionality to display all connections within a given gvt window for a given selection of PEs.
 * Return the PE ID upon mouse click to update data in other views.
 * Change hovering to increase intensity/opacity of selected node's connections and decrease intensity/opacity of all other connections.
+* Add a label showing the GVT being shown
 
 ## LP View
 * Decide on EventDrops or Hierarchical Edge Bundeling.
 
 ## Time Selector View
+* get the correct start GVT and end GVT for the selected bin
+* add a dot or some other shape to x-axis to show what GVT has been selected
+* change opacity of lines based on the chosen PEs
 
 ## LP Selector View
+* get list of PEs from selection for use by other components
+* also do the same for LPs (since we're now doing a radial view of LPs)?
+* need to change name of metric axis
+
+## All simulation View
+* maybe do some offsetting of lines, so it's obvious there are multiple lines
+* play around with coloring of lines
 
 ## Settings Panel
 * Add radial bundle tension selection.

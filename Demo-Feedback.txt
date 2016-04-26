@@ -17,3 +17,10 @@ Comments/Questions from Participants:
 - What questions is such a visualization going to answer?
 - What will happen if conflicting selections are made?
 - Is there a way to unselect?
+- Should add a label to radial view to show that some specific GVT has been selected.
+- Change saturation of PE links (radial view) based on value of the metric
+- (only relevant to EventDrops-like LP view) Make sure that different message types are different colors.
+- legend for time selector or have some other way of selecting PEs without making the selection in another graph
+- legend for the LP selector so you know which color is router and which is terminal
+- legend for radial view to know which are sends/receives
+
