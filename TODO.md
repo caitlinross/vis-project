@@ -2,7 +2,9 @@
 
 ## Data Processing
 * Collect data for other metrics (event types).
-* Process metric event data into json for radial view.
+* Process metric event data into json for PE radial view.
+* Process metric event data into json for LP radial view.
+* Rearrange both LP and PE json data sets to print on a per event basis recording src, dest, gvt data to be parsed in the javascript file.
 
 ## Radial View
 * Change initial radial path coloring to temperature scale based on given metric value.
