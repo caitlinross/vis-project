@@ -4,17 +4,19 @@
 * Collect data for other metrics (event types).
 * Process metric event data into json for PE radial view.
 * Process metric event data into json for LP radial view.
-* Rearrange both LP and PE json data sets to print on a per event basis recording src, dest, gvt data to be parsed in the javascript file.
+* Rearrange PE json data set to print on a per event basis recording src, dest, gvt data to be parsed in the javascript file.
+* Fix LP selector View data and Time Selector View data (all zeros).
 
-## Radial View
+## Radial PE View
 * Change initial radial path coloring to temperature scale based on given metric value.
 * Create functionality to display all connections within a given gvt window for a given selection of PEs.
 * Return the PE ID upon mouse click to update data in other views.
 * Change hovering to increase intensity/opacity of selected node's connections and decrease intensity/opacity of all other connections.
 * Add a label showing the GVT being shown
 
-## LP View
-* Decide on EventDrops or Hierarchical Edge Bundeling.
+## Radial LP View
+* Use two colors: one color for LPs and another color for PEs. Either compute whether terminal or router in javascript or store as 0 or 1 in the JSON file under a "type" parameter.
+* Use color intensity/opacity to visualize number of messages transfered on a given link.
 
 ## Time Selector View
 * get the correct start GVT and end GVT for the selected bin
