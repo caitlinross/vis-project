@@ -23,7 +23,7 @@ var svg_radial = d3.select(".radialgraph").append("svg")
 		.attr("width", width)
         .attr("height", height)
 	  	.append("g")				//Appends an element g to svg_radial variable
-		.attr("transform", "translate(" + radius*1  + "," + radius*0.7 + ")");
+		.attr("transform", "translate(" + radius*1  + "," + radius*0.75 + ")");
 
 var link = svg_radial.append("g").selectAll(".link");
 var node = svg_radial.append("g").selectAll(".node");

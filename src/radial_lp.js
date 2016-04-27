@@ -16,7 +16,7 @@ var bundle_lp = d3.layout.bundle();
 
 var line_radial_lp = d3.svg.line.radial()			//Constructs new radial line generator with default radius and angle functions
 		.interpolate("bundle")
-		.tension(.55)
+		.tension(.25)
 		.radius(function(d) { return d.y; })
 		.angle(function(d) { return d.x / 180 * Math.PI; });
 
@@ -24,7 +24,7 @@ var svg_radial = d3.select(".radialgraphlp").append("svg")
 		.attr("width", width_lp)
         .attr("height", height_lp)
 	  	.append("g")				//Appends an element g to svg_radial variable
-		.attr("transform", "translate(" + radius_lp*1  + "," + radius_lp*0.7 + ")");
+		.attr("transform", "translate(" + radius_lp*1  + "," + radius_lp*0.75 + ")");
 
 var link_lp = svg_radial.append("g").selectAll(".link_lp");
 var node_lp = svg_radial.append("g").selectAll(".node_lp");
