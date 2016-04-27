@@ -16,7 +16,7 @@ var bundle_lp = d3.layout.bundle();
 
 var line_radial_lp = d3.svg.line.radial()			//Constructs new radial line generator with default radius and angle functions
 		.interpolate("bundle")
-		.tension(.35)
+		.tension(.55)
 		.radius(function(d) { return d.y; })
 		.angle(function(d) { return d.x / 180 * Math.PI; });
 
@@ -37,7 +37,7 @@ var colorgen_radial_lp = d3.scale.ordinal()
 var color_radial_lp = function(d) {  return colorgen_radial_lp(d.batch); };
 
 //d3.json("data/MMS7-3.json",
-d3.json("data/slimfly-processed/forward-send-event-log-connections.json",
+d3.json("data/slimfly-processed/forward-send-event-log-connections-lp.json",
 	function(error, classes) 
 	{
 //	console.log("classes:",classes);

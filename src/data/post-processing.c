@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 		gvt[i] = atof(pch);
 //		printf("gvt[%d]:%f\n",i,gvt[i]);
 	}
-    printf("gvt[%d]:%f\n",i,gvt[i]);
+    printf("gvt[%d]:%f\n",i,gvt[i-1]);
 	fclose(gvt_file);
 
     int num_events;
@@ -66,6 +66,9 @@ int main(int argc, char **argv)
     int data[num_lps][gvt_count][num_metrics];	//LP data
 	int data2[num_pes][gvt_count][num_metrics];	//PE data
 	int data3[num_pes][num_pes][gvt_count];		//PE connection data for one metric
+    int data4[num_lps][num_lps][gvt_count];		//PE connection data for one metric
+    printf("poop\n");
+    printf("num_lps:%d gvt_count:%d\n",num_lps,gvt_count);
     printf("here\n");
 //Loop over all data files
 for(f=0; f<num_pes; f++)
@@ -146,6 +149,7 @@ for(f=0; f<num_pes; f++)
 
         data[x][y][z]++;            //increment associated metric
 		data2[x2][y][z]++;
+        data4[x][dst][y]++;
 		
 		if(data[x][y][z] > 100)
 			printf("data[%d][%d][%d]:%d\n",x,y,z,data[x][y][z]);
@@ -224,7 +228,7 @@ for(f=0; f<num_pes; f++)
 //-------------------------------------
 //PE connection event data
 //-------------------------------------
-	printf("Opening lp output file\n");
+	printf("Opening connection output file\n");
 	sprintf( log, "slimfly-processed/forward-send-event-log-connections.txt");
 	output_file = fopen ( log, "w");
 	if (output_file==NULL)
@@ -243,6 +247,111 @@ for(f=0; f<num_pes; f++)
 				fprintf(output_file,"%d\n",data3[i][j][k]);
 		}
 	}
+    fclose(output_file);
+
+//-------------------------------------
+//PE JSON connection event data
+//-------------------------------------
+	printf("Opening JSON PE connection output file\n");
+	sprintf( log, "slimfly-processed/forward-send-event-log-connections.json");
+	output_file = fopen ( log, "w");
+	if (output_file==NULL)
+	{
+		printf("Failed to Open Slim_fly JSON PE connection output file %s \n",log);
+	}
+
+	int print_count = 0;
+//	for(k=0;k<gvt_count;k++)
+	{
+		fprintf(output_file,"[\n");
+		for(j=0;j<num_pes;j++)
+		{
+			print_count = 0;
+			sprintf(log,"{\"name\":\"PE %d\",\"connections\":[",j);
+			fprintf(output_file,"%s",log);
+			for(i=0;i<num_pes;i++)
+			{
+				if(data3[i][j][0]>0)
+				{
+					if(print_count > 0)
+					{
+						sprintf(log,",\"PE %d\"",i);
+						fprintf(output_file,"%s",log);
+					}
+					else
+					{
+						sprintf(log,"\"PE %d\"",i);
+						fprintf(output_file,"%s",log);
+					}
+					print_count++;
+				}
+			}
+			if(j==num_pes-1)
+			{
+				sprintf(log,"]}\n");
+				fprintf(output_file,"%s",log);
+			}
+			else
+			{
+				sprintf(log,"]},\n");
+				fprintf(output_file,"%s",log);
+			}
+		}
+		fprintf(output_file,"]\n");
+	}
+    fclose(output_file);
+
+    //-------------------------------------
+    //LP JSON connection event data
+    //-------------------------------------
+    printf("Opening JSON LP connection output file\n");
+    sprintf( log, "slimfly-processed/forward-send-event-log-connections-lp.json");
+    output_file = fopen ( log, "w");
+    if (output_file==NULL)
+    {
+        printf("Failed to Open Slim_fly JSON LP connection output file %s \n",log);
+    }
+    
+    print_count = 0;
+    //	for(k=0;k<gvt_count;k++)
+    {
+        fprintf(output_file,"[\n");
+        for(j=0;j<num_lps;j++)
+        {
+            print_count = 0;
+            sprintf(log,"{\"name\":\"LP %d\",\"connections\":[",j);
+            fprintf(output_file,"%s",log);
+            for(i=0;i<num_lps;i++)
+            {
+                if(data4[i][j][0]>0)
+                {
+                    if(print_count > 0)
+                    {
+                        sprintf(log,",\"LP %d\"",i);
+                        fprintf(output_file,"%s",log);
+                    }
+                    else
+                    {
+                        sprintf(log,"\"LP %d\"",i);
+                        fprintf(output_file,"%s",log);
+                    }
+                    print_count++;
+                }
+            }
+            if(j==num_lps-1)
+            {
+                sprintf(log,"]}\n");
+                fprintf(output_file,"%s",log);
+            }
+            else
+            {
+                sprintf(log,"]},\n");
+                fprintf(output_file,"%s",log);
+            }
+        }
+        fprintf(output_file,"]\n");
+    }
+    fclose(output_file);
 
    	return 0;
 }
