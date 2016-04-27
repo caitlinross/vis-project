@@ -277,8 +277,6 @@
 
         /* takes the selected_time and finds bin_start_time and bin_end_time */
         function get_gvt_times(selected_time){
-            console.log(selected_time);
-            console.log(binned_pes[0].values);
             for (var i = 0; i < binned_pes[0].values.length; i++){
                 if (selected_time <= binned_pes[0].values[i].gvt){
                     bin_end_time = binned_pes[0].values[i].gvt;
@@ -290,10 +288,8 @@
                     break;
                 }
             }
-            console.log(bin_start_time);
-            console.log(bin_end_time);
-            
         }
+
 
     </script>
     <script src="allpc.js"></script>

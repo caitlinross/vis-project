@@ -145,6 +145,15 @@ function createTimeGraph(data) {
         .attr("d", function(d) { return line(d.values); })
         .style("stroke", function(d) { return color(d.name); });
 
+    var pointer = svg.append("circle")
+        .attr("class", "timepointer")
+        .attr("fill", "red")
+        .attr("cy", "0")
+        .attr("cx", "0")
+        .attr("transform", "translate(0," + h1 + ")")
+        .attr("opacity", "0")
+        .attr("r", "4");
+
     /*var legend = svg.selectAll(".legend")
         .data(color.domain().slice().reverse())
         .enter().append("g")
@@ -183,5 +192,12 @@ function createTimeGraph(data) {
         function mousemove() {
             var selected_time = x.invert(d3.mouse(this)[0]);
             get_gvt_times(selected_time);
+            add_time_pointer();
+        }
+
+        /* use bin_end_time to determine where to place image on the time selector x-axis */
+        function add_time_pointer(){
+            pointer.attr("opacity", "1")
+                .attr("transform", "translate("+ x(bin_end_time) +"," + h1 + ")");
         }
 }

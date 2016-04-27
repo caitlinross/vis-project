@@ -19,7 +19,6 @@
 * Use color intensity/opacity to visualize number of messages transfered on a given link.
 
 ## Time Selector View
-* add a dot or some other shape to x-axis to show what GVT has been selected
 * change opacity of lines based on the chosen PEs
 
 ## LP Selector View
@@ -33,6 +32,7 @@
 
 ## Settings Panel
 * Add radial bundle tension selection.
+* split settings panel to show selection details such as current GVT, current PE and LP selections, etc
 
 ## Finishing Touches
 * Add a description to each plot to describe the available interactions (pop up bubbles) and how to use the figures.
