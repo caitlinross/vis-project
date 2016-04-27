@@ -17,7 +17,6 @@
 * Decide on EventDrops or Hierarchical Edge Bundeling.
 
 ## Time Selector View
-* get the correct start GVT and end GVT for the selected bin
 * add a dot or some other shape to x-axis to show what GVT has been selected
 * change opacity of lines based on the chosen PEs
 

@@ -51,7 +51,7 @@ function createTimeGraph(data) {
     var num_bins = 500;
     var max_gvt = d3.max(data, function(d) { return +d.gvt; });
     var bin_size = max_gvt / num_bins;
-    var binned_pes = [];
+    binned_pes = [];
 
     for (var i = 0; i < pe.length; i++){
         var current_bin = bin_size;
@@ -181,7 +181,7 @@ function createTimeGraph(data) {
         console.log(bin_end_time);*/
 
         function mousemove() {
-            bin_end_time = x.invert(d3.mouse(this)[0]);
-            console.log(bin_end_time);
+            var selected_time = x.invert(d3.mouse(this)[0]);
+            get_gvt_times(selected_time);
         }
 }
