@@ -260,6 +260,7 @@ for(f=0; f<num_pes; f++)
 		printf("Failed to Open Slim_fly JSON PE connection output file %s \n",log);
 	}
 
+	int gvt_indx = 3000;
 	int print_count = 0;
 //	for(k=0;k<gvt_count;k++)
 	{
@@ -271,7 +272,7 @@ for(f=0; f<num_pes; f++)
 			fprintf(output_file,"%s",log);
 			for(i=0;i<num_pes;i++)
 			{
-				if(data3[i][j][0]>0)
+				if(data3[i][j][gvt_indx]>0)
 				{
 					if(print_count > 0)
 					{
@@ -318,36 +319,34 @@ for(f=0; f<num_pes; f++)
         fprintf(output_file,"[\n");
         for(j=0;j<num_lps;j++)
         {
-            print_count = 0;
-            sprintf(log,"{\"name\":\"LP %d\",\"connections\":[",j);
-            fprintf(output_file,"%s",log);
+			print_count = 0;
             for(i=0;i<num_lps;i++)
             {
-                if(data4[i][j][0]>0)
+                if(data4[j][i][gvt_indx]>0)
                 {
-                    if(print_count > 0)
-                    {
-                        sprintf(log,",\"LP %d\"",i);
-                        fprintf(output_file,"%s",log);
-                    }
-                    else
-                    {
-                        sprintf(log,"\"LP %d\"",i);
-                        fprintf(output_file,"%s",log);
-                    }
-                    print_count++;
+					print_count++;
+/*				    if(j==num_lps-1)
+				    {
+						sprintf(log,"{\"name\":\"LP %d\",\"num_messages\":%d,\"connections\":[\"LP %d\"]}\n",j,data4[j][i][0],i);
+            			fprintf(output_file,"%s",log);
+					}
+				    else
+*/				    {
+						sprintf(log,"{\"name\":\"LP %d\",\"num_messages\":%d,\"connections\":[\"LP %d\"]},\n",j,data4[j][i][gvt_indx],i);
+            			fprintf(output_file,"%s",log);
+					}
                 }
             }
-            if(j==num_lps-1)
-            {
-                sprintf(log,"]}\n");
-                fprintf(output_file,"%s",log);
-            }
-            else
-            {
-                sprintf(log,"]},\n");
-                fprintf(output_file,"%s",log);
-            }
+			if(print_count == 0 )
+			{
+				sprintf(log,"{\"name\":\"LP %d\",\"num_messages\":%d,\"connections\":[]},\n",j,0);
+				fprintf(output_file,"%s",log);
+			}
+			if(j==num_lps-1)
+			{
+				sprintf(log,"{\"name\":\"LP %d\",\"num_messages\":%d,\"connections\":[]}\n",j,0);
+				fprintf(output_file,"%s",log);
+			}
         }
         fprintf(output_file,"]\n");
     }
