@@ -253,7 +253,7 @@ for(f=0; f<num_pes; f++)
 //PE JSON connection event data
 //-------------------------------------
 	printf("Opening JSON PE connection output file\n");
-	sprintf( log, "slimfly-processed/forward-send-event-log-connections.json");
+	sprintf( log, "slimfly-processed/forward-send-event-log-connections-pe.json");
 	output_file = fopen ( log, "w");
 	if (output_file==NULL)
 	{
@@ -268,33 +268,23 @@ for(f=0; f<num_pes; f++)
 		for(j=0;j<num_pes;j++)
 		{
 			print_count = 0;
-			sprintf(log,"{\"name\":\"PE %d\",\"connections\":[",j);
-			fprintf(output_file,"%s",log);
 			for(i=0;i<num_pes;i++)
 			{
-				if(data3[i][j][gvt_indx]>0)
+				if(data3[j][i][gvt_indx]>0)
 				{
-					if(print_count > 0)
-					{
-						sprintf(log,",\"PE %d\"",i);
-						fprintf(output_file,"%s",log);
-					}
-					else
-					{
-						sprintf(log,"\"PE %d\"",i);
-						fprintf(output_file,"%s",log);
-					}
 					print_count++;
+					sprintf(log,"{\"name\":\"PE %d\",\"num_messages\":%d,\"gvt\":%f,\"connections\":[\"PE %d\"]},\n",j,data3[j][i][gvt_indx],gvt[gvt_indx],i);
+            		fprintf(output_file,"%s",log);
 				}
+			}
+			if(print_count == 0 )
+			{
+				sprintf(log,"{\"name\":\"PE %d\",\"num_messages\":%d,\"connections\":[]},\n",j,0);
+				fprintf(output_file,"%s",log);
 			}
 			if(j==num_pes-1)
 			{
-				sprintf(log,"]}\n");
-				fprintf(output_file,"%s",log);
-			}
-			else
-			{
-				sprintf(log,"]},\n");
+				sprintf(log,"{\"name\":\"PE %d\",\"num_messages\":%d,\"connections\":[]}\n",j,0);
 				fprintf(output_file,"%s",log);
 			}
 		}
@@ -325,16 +315,8 @@ for(f=0; f<num_pes; f++)
                 if(data4[j][i][gvt_indx]>0)
                 {
 					print_count++;
-/*				    if(j==num_lps-1)
-				    {
-						sprintf(log,"{\"name\":\"LP %d\",\"num_messages\":%d,\"connections\":[\"LP %d\"]}\n",j,data4[j][i][0],i);
-            			fprintf(output_file,"%s",log);
-					}
-				    else
-*/				    {
-						sprintf(log,"{\"name\":\"LP %d\",\"num_messages\":%d,\"connections\":[\"LP %d\"]},\n",j,data4[j][i][gvt_indx],i);
-            			fprintf(output_file,"%s",log);
-					}
+					sprintf(log,"{\"name\":\"LP %d\",\"num_messages\":%d,\"gvt\":%f,\"connections\":[\"LP %d\"]},\n",j,data4[j][i][gvt_indx],gvt[gvt_indx],i);
+            		fprintf(output_file,"%s",log);
                 }
             }
 			if(print_count == 0 )
