@@ -1,39 +1,40 @@
 //TODO javascript for radial view of PEs goes here
+//line 18 .interpolate("bundle") -> .interpolate("bundle_lp")
 
-var diameter = 600;
-var width = 600;
-var height = 450;
-var radius = diameter / 2;
-var innerRadius = radius - 120;
+var diameter_lp = 600;
+var width_lp = 600;
+var height_lp = 450;
+var radius_lp = diameter_lp / 2;
+var innerradius_lp = radius_lp - 120;
 
-var cluster = d3.layout.cluster()
-		.size([360, innerRadius])
+var cluster_lp = d3.layout.cluster()
+		.size([360, innerradius_lp])
 		.sort(null)
 		.value(function(d) { return d.size; });
 
-var bundle = d3.layout.bundle();
+var bundle_lp = d3.layout.bundle();
 
-var line_radial = d3.svg.line.radial()			//Constructs new radial line generator with default radius and angle functions
+var line_radial_lp = d3.svg.line.radial()			//Constructs new radial line generator with default radius and angle functions
 		.interpolate("bundle")
 		.tension(.35)
 		.radius(function(d) { return d.y; })
 		.angle(function(d) { return d.x / 180 * Math.PI; });
 
-var svg_radial = d3.select(".radialgraph").append("svg")
-		.attr("width", width)
-        .attr("height", height)
+var svg_radial = d3.select(".radialgraphlp").append("svg")
+		.attr("width", width_lp)
+        .attr("height", height_lp)
 	  	.append("g")				//Appends an element g to svg_radial variable
-		.attr("transform", "translate(" + radius*1  + "," + radius*0.7 + ")");
+		.attr("transform", "translate(" + radius_lp*1  + "," + radius_lp*0.7 + ")");
 
-var link = svg_radial.append("g").selectAll(".link");
-var node = svg_radial.append("g").selectAll(".node");
+var link_lp = svg_radial.append("g").selectAll(".link_lp");
+var node_lp = svg_radial.append("g").selectAll(".node_lp");
 
-var colorgen_radial = d3.scale.ordinal()
+var colorgen_radial_lp = d3.scale.ordinal()
 .range(["#000000","#33a02c","#1f78b4","#a6cee3",
         "#fb9a99","#e31a1c","#fdbf6f","#ff7f00",
         "#cab2d6","#6a3d9a","#ffff99","#b15928"]);
         
-var color_radial = function(d) {  return colorgen_radial(d.batch); };
+var color_radial_lp = function(d) {  return colorgen_radial_lp(d.batch); };
 
 //d3.json("data/MMS7-3.json",
 d3.json("data/slimfly-processed/forward-send-event-log-connections.json",
@@ -42,67 +43,67 @@ d3.json("data/slimfly-processed/forward-send-event-log-connections.json",
 //	console.log("classes:",classes);
 		if (error) throw error;
 
-		var nodes = cluster.nodes(packageHierarchy(classes));
-		var links = packageConnections(nodes);		//links: array of all individual connections
+		var nodes_lp = cluster_lp.nodes(packageHierarchy(classes));
+		var links_lp = packageConnections(nodes_lp);		//links: array of all individual connections
         
 //		console.log("raw nodes:",nodes);
 //        console.log("raw links:",links);
         
-		link = link
-            .data(bundle(links))
-            .style("stroke",function(d) {  return colorgen_radial(d.batch); })
+		link_lp = link_lp
+            .data(bundle_lp(links_lp))
+            .style("stroke",function(d) {  return colorgen_radial_lp(d.batch); })
 			.enter().append("path")
 			.each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
-			.attr("class", "link")
-            .attr("d", line_radial)
+			.attr("class", "link_lp")
+            .attr("d", line_radial_lp)
 //        .style("stroke","#cab2d6");
 
 //        console.log("link:",link);
         
-		node = node
-			.data(nodes.filter(function(n) { return !n.children; }))
+		node_lp = node_lp
+			.data(nodes_lp.filter(function(n) { return !n.children; }))
 			.enter().append("text")
-			.attr("class", "node")
+			.attr("class", "node_lp")
 			.attr("dy", ".31em")
 			.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
 			.style("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
             .text(function(d) { return d.key; })
-            .style("stroke",function(d) {  return colorgen_radial(d.batch); })
-			.on("mouseover", mouseovered)
-			.on("mouseout", mouseouted);
+            .style("stroke",function(d) {  return colorgen_radial_lp(d.batch); })
+			.on("mouseover", mouseovered_lp)
+			.on("mouseout", mouseouted_lp);
 	}
 );
 
-function mouseovered(d) 
+function mouseovered_lp(d)
 {
-	node
+	node_lp
 		.each(function(n) { n.target = n.source = false; });
 
-        link
-		.classed("link--target", function(l) { if (l.target === d) return l.source.source = true; })
-		.classed("link--source", function(l) { if (l.source === d) return l.target.target = true; })
+        link_lp
+		.classed("link_lp--target", function(l) { if (l.target === d) return l.source.source = true; })
+		.classed("link_lp--source", function(l) { if (l.source === d) return l.target.target = true; })
 		.filter(function(l) { return l.target === d || l.source === d; })
         .each(function() { this.parentNode.appendChild(this); });
 
-	node
-		.classed("node--target", function(n) { return n.target; })
-        .classed("node--source", function(n) { return n.source; })
+	node_lp
+		.classed("node_lp--target", function(n) { return n.target; })
+        .classed("node_lp--source", function(n) { return n.source; })
         .style("stroke","none");
 }
 
-function mouseouted(d) 
+function mouseouted_lp(d)
 {
-    link
-		.classed("link--target", false)
-        .classed("link--source", false);
+    link_lp
+		.classed("link_lp--target", false)
+        .classed("link_lp--source", false);
 
-	node
-		.classed("node--target", false)
-        .classed("node--source", false)
-        .style("stroke",function(d) {  return colorgen_radial(d.batch); });
+	node_lp
+		.classed("node_lp--target", false)
+        .classed("node_lp--source", false)
+        .style("stroke",function(d) {  return colorgen_radial_lp(d.batch); });
 }
 
-//d3.select(self.frameElement).style("height", diameter + "px");
+//d3.select(self.frameElement).style("height_lp", diameter_lp + "px");
 
 // Lazily construct the package hierarchy from class names.
 function packageHierarchy(classes) 

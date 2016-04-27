@@ -140,7 +140,7 @@
         stroke: steelblue;
         stroke-width: 1.5px;
     }
-	/* For radial graph*/
+	/* For radial PE graph*/
 	.node {
 	  font: 300 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
 	  fill: #bbb;
@@ -153,6 +153,7 @@
 	  stroke-opacity: .4;
 	  fill: none;
 	  pointer-events: none;
+	  stroke-width: 1.5px
 	}
 	.node:hover,
 	.node--source,
@@ -176,10 +177,43 @@
 	.link--target {
 	  stroke: #2ca02c;
 	}
-/*	.div.radialgraph {
-		position: absolute;
-		top: 200;
-*/
+/* For radial LP graph*/
+.node_lp {
+    font: 300 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    fill: #bbb;
+}
+.node_lp:hover {
+    fill: #000;
+}
+.link_lp {
+    stroke: steelblue;
+    stroke-opacity: .4;
+    fill: none;
+    pointer-events: none;
+    stroke-width: 1.5px
+}
+.node_lp:hover,
+.node_lp--source,
+.node_lp--target {
+    font-weight: 700;
+}
+.node_lp--source {
+    fill: #2ca02c;
+}
+.node_lp--target {
+    fill: #d62728;
+}
+.link_lp--source,
+.link_lp--target {
+    stroke-opacity: 1;
+    stroke-width: 4px;
+}
+.link_lp--source {
+    stroke: #d62728;
+}
+.link_lp--target {
+    stroke: #2ca02c;
+}
 </style>
 
 <body>
@@ -193,6 +227,7 @@
     </div>
     <div class="grid">
         <h2>LP View (Terminals and Routers)</h2>
+        <div class="radialgraphlp" style="height:450px; width:600px;"></div>
     </div>
     <div class="timesel">
         <h2>Time Selector</h2>
@@ -243,7 +278,8 @@
     <script src="allpc.js"></script>
     <script src="timesel.js"></script>
     <script src="lpsel.js"></script>
-	<script src="radial.js"></script>
+    <script src="radial.js"></script>
+    <script src="radial_lp.js"></script>
     
     
     <script>
