@@ -36,7 +36,7 @@ var colorgen_radial = d3.scale.ordinal()
 var color_radial = function(d) {  return colorgen_radial(d.batch); };
 
 //d3.json("data/MMS7-3.json",
-d3.json("data/slimfly-processed/forward-send-event-log-connections.json",
+d3.json("data/slimfly-processed/forward-send-event-log-connections-pe.json",
 	function(error, classes) 
 	{
 //	console.log("classes:",classes);
@@ -45,9 +45,9 @@ d3.json("data/slimfly-processed/forward-send-event-log-connections.json",
 		var nodes = cluster.nodes(packageHierarchy(classes));
 		var links = packageConnections(nodes);		//links: array of all individual connections
         
-//		console.log("raw nodes:",nodes);
-//        console.log("raw links:",links);
-        
+		console.log("raw nodes:",nodes);
+        console.log("raw links:",links);
+//console.log("bundle(links):",bundle(links));        
 		link = link
             .data(bundle(links))
             .style("stroke",function(d) {  return colorgen_radial(d.batch); })
