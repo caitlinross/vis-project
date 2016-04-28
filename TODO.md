@@ -30,7 +30,6 @@
 
 ## All simulation View
 * maybe do some offsetting of lines, so it's obvious there are multiple lines
-* play around with coloring of lines
 
 ## Selection Info Panel
 * add current GVT selection
