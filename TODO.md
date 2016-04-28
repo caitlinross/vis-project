@@ -20,6 +20,7 @@
 
 ## Time Selector View
 * some way to undo selection of PEs?
+* better coloring of lines?
 
 ## LP Selector View
 * get list of PEs from selection for use by other components
