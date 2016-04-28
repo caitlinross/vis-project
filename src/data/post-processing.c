@@ -193,31 +193,31 @@ for(f=0; f<num_pes; f++)
 	}
 
 	printf("Printing output LP and PE data\n");
-	fprintf(output_file_lp,"GVT-Bin, ");
-	fprintf(output_file_pe,"GVT-Bin, ");
+	fprintf(output_file_lp,"GVT-Bin,");
+	fprintf(output_file_pe,"GVT-Bin,");
 	for(i=0;i<num_lps-1;i++)
 	{
-		fprintf(output_file_lp,"LP_%d, ",i); 
+		fprintf(output_file_lp,"LP_%d,",i); 
 	}
 	for(i=0;i<num_pes-1;i++)
 	{
-		fprintf(output_file_pe,"PE_%d, ",i);
+		fprintf(output_file_pe,"PE_%d,",i);
 	} 
 	fprintf(output_file_lp,"LP_%d\n",num_lps-1);
 	fprintf(output_file_pe,"PE_%d\n",num_pes-1);
 	for(i=0;i<gvt_count;i++)
 	{
 //		printf("gvt:%d\n",i);
-		fprintf(output_file_lp,"%6.6f, ",gvt[i]);
-		fprintf(output_file_pe,"%6.6f, ",gvt[i]);
+		fprintf(output_file_lp,"%6.6f,",gvt[i]);
+		fprintf(output_file_pe,"%6.6f,",gvt[i]);
 		for(j=0;j<num_lps-1;j++)
 		{
-			fprintf(output_file_lp,"%2d, ",data[j][i][0]);
+			fprintf(output_file_lp,"%2d,",data[j][i][0]);
 		}
 		fprintf(output_file_lp,"%2d\n",data[num_lps-1][i][0]);
 		for(j=0;j<num_pes-1;j++)
 		{
-			fprintf(output_file_pe,"%2d, ",data2[j][i][0]);
+			fprintf(output_file_pe,"%2d,",data2[j][i][0]);
 		}
 		fprintf(output_file_pe,"%2d\n",data2[num_pes-1][i][0]);
 	}
