@@ -19,7 +19,7 @@
 * Use color intensity/opacity to visualize number of messages transfered on a given link.
 
 ## Time Selector View
-* change opacity of lines based on the chosen PEs
+* some way to undo selection of PEs?
 
 ## LP Selector View
 * get list of PEs from selection for use by other components

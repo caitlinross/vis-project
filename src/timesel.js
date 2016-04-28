@@ -137,13 +137,15 @@ function createTimeGraph(data) {
         .style("stroke", function(d) { return color(d.name); });
         */
 
-    var city = svg.selectAll(".line")
+    city = svg.selectAll(".line")
         .data(binned_pes)
         .enter().append("path")
         .attr("class", "line")
+        .attr("id", function(d) {return d.name;})
         .attr("clip-path", "url(#clip)")
         .attr("d", function(d) { return line(d.values); })
         .style("stroke", function(d) { return color(d.name); });
+    console.log(city);
 
     var pointer = svg.append("circle")
         .attr("class", "timepointer")
@@ -198,6 +200,9 @@ function createTimeGraph(data) {
         /* use bin_end_time to determine where to place image on the time selector x-axis */
         function add_time_pointer(){
             pointer.attr("opacity", "1")
+                .transition()
                 .attr("transform", "translate("+ x(bin_end_time) +"," + h1 + ")");
         }
+
+
 }

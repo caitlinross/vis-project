@@ -258,7 +258,7 @@
 
         /**** timesel.js ****/
         var x;
-        var binned_pes;
+        var binned_pes, city;
 
         /**** lpsel.js ****/
         var lp_pc;
@@ -287,6 +287,16 @@
                     }
                     break;
                 }
+            }
+        }
+
+        /* expects an array of the PE names that should be shown in graph
+         * use the same names in the PE file header */
+        function time_line_selection(pes){
+            city.attr("opacity", ".1");
+            for (var i = 0; i < pes.length; i++){
+                d3.select("#"+pes[i])
+                    .style("opacity", "1");
             }
         }
 
