@@ -25,15 +25,20 @@
 ## LP Selector View
 * get list of PEs from selection for use by other components
 * also do the same for LPs (since we're now doing a radial view of LPs)?
+* need to update selection based on selections made in other components
 * need to change name of metric axis
 
 ## All simulation View
 * maybe do some offsetting of lines, so it's obvious there are multiple lines
 * play around with coloring of lines
 
+## Selection Info Panel
+* add current GVT selection
+* lists of selected PEs and LPs
+* any other info?
+
 ## Settings Panel
 * Add radial bundle tension selection.
-* split settings panel to show selection details such as current GVT, current PE and LP selections, etc
 
 ## Finishing Touches
 * Add a description to each plot to describe the available interactions (pop up bubbles) and how to use the figures.
