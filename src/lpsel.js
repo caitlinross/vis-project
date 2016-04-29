@@ -72,8 +72,14 @@ d3.csv('data/slimfly-processed/forward-send-event-log-lp.txt', function(data) {
             .key(function(d) { return "LP_" +d.LP; })
             .entries(selected_lines);
         time_line_selection(selected_pes);
-        change_pe_text();
+        change_pe_text(selected_pes);
     }
+
+    selected_pes = d3.nest()
+        .key(function(d) { return "PE_" +d.PE; })
+        .entries(lp_lines);
+    change_pe_text(selected_pes);
+    
 
 });
 

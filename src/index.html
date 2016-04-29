@@ -327,14 +327,16 @@
             .append("p")
             .text("Selected PEs:");
 
+
         /* display the selected PEs in Panel */
-        function change_pe_text(){
+        function change_pe_text(pes){
             var tmp = "Selected PEs: ";
-            for (var i = 0; i < selected_pes.length; i++){
-                tmp += selected_pes[i].key+", ";
+            for (var i = 0; i < pes.length; i++){
+                tmp += pes[i].key+", ";
             }
             pe_text.text(tmp);
         }
+
 
     </script>
     <script src="allpc.js"></script>
