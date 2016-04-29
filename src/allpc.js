@@ -1,7 +1,6 @@
 // Adapted from https://syntagmatic.github.io/parallel-coordinates/ by Kai Chang
 // this uses Chang's d3.parcoords javascript library that is built on top of d3 
 // load csv file and create the chart
-// TODO change to pull in ending simulation data for all runs
 // expects format
 // PE, GVT interval, batch, num KPs, runtime, % efficiency, net events, roll backs, ...
 d3.csv('data/sample_data.csv', function(data) {
@@ -24,5 +23,6 @@ d3.csv('data/sample_data.csv', function(data) {
 
     parcoords.svg.selectAll("text")
         .style("font", "10px sans-serif");
+
 });
 

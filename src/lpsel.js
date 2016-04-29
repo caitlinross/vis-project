@@ -31,7 +31,7 @@ d3.csv('data/slimfly-processed/forward-send-event-log-lp.txt', function(data) {
             type: type, 
             PE: pe_id,
             LP: +myid[1],
-            total_metric: d3.sum(d[0].values, function(g) { return g.metric;})
+            forward_events: d3.sum(d[0].values, function(g) { return g.metric;})
         };
     })
     .entries(lp);
@@ -54,9 +54,26 @@ d3.csv('data/slimfly-processed/forward-send-event-log-lp.txt', function(data) {
         .mode("queue")
         .render()
         .reorderable()
-        .brushMode("1D-axes");  // enable brushing
+        .brushMode("1D-axes")  // enable brushing
+        //.brushMode("2D-strums");  // enable brushing
+        .on("brushend", get_brushed);
 
     lp_pc.svg.selectAll("text")
         .style("font", "10px sans-serif");
+
+
+    function get_brushed(){
+        var selected_lines = lp_pc.brushed();
+        
+        selected_pes = d3.nest()
+            .key(function(d) { return "PE_" +d.PE; })
+            .entries(selected_lines);
+        selected_lps = d3.nest()
+            .key(function(d) { return "LP_" +d.LP; })
+            .entries(selected_lines);
+        time_line_selection(selected_pes);
+        change_pe_text();
+    }
+
 });
 

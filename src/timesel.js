@@ -123,7 +123,7 @@ function createTimeGraph(data) {
         .attr("width", w1)
         .attr("height", h1)
         .attr("opacity", 0)
-        .on("click", mousemove);
+        .on("click", mouseclick);
 
     /*var city = svg.selectAll(".city")
         .data(pe)
@@ -145,7 +145,6 @@ function createTimeGraph(data) {
         .attr("clip-path", "url(#clip)")
         .attr("d", function(d) { return line(d.values); })
         .style("stroke", function(d) { return color(d.name); });
-    console.log(city);
 
     var pointer = svg.append("circle")
         .attr("class", "timepointer")
@@ -191,10 +190,12 @@ function createTimeGraph(data) {
         });
         console.log(bin_end_time);*/
 
-        function mousemove() {
+        function mouseclick() {
             var selected_time = x.invert(d3.mouse(this)[0]);
             get_gvt_times(selected_time);
             add_time_pointer();
+
+            gvt_text.text("Selected GVT: "+ Number(bin_end_time).toFixed(3));
         }
 
         /* use bin_end_time to determine where to place image on the time selector x-axis */
@@ -203,6 +204,8 @@ function createTimeGraph(data) {
                 .transition()
                 .attr("transform", "translate("+ x(bin_end_time) +"," + h1 + ")");
         }
+
+
 
 
 }

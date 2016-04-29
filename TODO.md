@@ -12,28 +12,21 @@
 * Create functionality to display all connections within a given gvt window for a given selection of PEs.
 * Return the PE ID upon mouse click to update data in other views.
 * Change hovering to increase intensity/opacity of selected node's connections and decrease intensity/opacity of all other connections.
-* Add a label showing the GVT being shown
 
 ## Radial LP View
 * Use two colors: one color for LPs and another color for PEs. Either compute whether terminal or router in javascript or store as 0 or 1 in the JSON file under a "type" parameter.
 * Use color intensity/opacity to visualize number of messages transfered on a given link.
 
 ## Time Selector View
-* some way to undo selection of PEs?
 * better coloring of lines?
 
 ## LP Selector View
-* get list of PEs from selection for use by other components
-* also do the same for LPs (since we're now doing a radial view of LPs)?
-* need to update selection based on selections made in other components
-* need to change name of metric axis
 
 ## All simulation View
 * maybe do some offsetting of lines, so it's obvious there are multiple lines
+* change some of the axes to log scale
 
 ## Selection Info Panel
-* add current GVT selection
-* lists of selected PEs and LPs
 * any other info?
 
 ## Settings Panel
