@@ -110,7 +110,7 @@ function mouseouted_lp(d)
 	node_lp
 		.classed("node_lp--target", false)
         .classed("node_lp--source", false)
-        .style("stroke",function(d) {  return colorgen_radial_lp(d.batch); });
+        .style("stroke",function(d) {  return colorgen_radial_lp(d.num_messages); });
 }
 
 //d3.select(self.frameElement).style("height_lp", diameter_lp + "px");
