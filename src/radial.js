@@ -29,9 +29,8 @@ var link = svg_radial.append("g").selectAll(".link");
 var node = svg_radial.append("g").selectAll(".node");
 
 var colorgen_radial = d3.scale.ordinal()
-.range(["#000000","#33a02c","#1f78b4","#a6cee3",
-        "#fb9a99","#e31a1c","#fdbf6f","#ff7f00",
-        "#cab2d6","#6a3d9a","#ffff99","#b15928"]);
+.range(["#d0d1e6","#a6bddb",
+        "#74a9cf","#3690c0","#0570b0","#045a8d","#023858"]);
         
 var color_radial = function(d) {  return colorgen_radial(d.batch); };
 
@@ -67,7 +66,7 @@ d3.json("data/slimfly-processed/forward-send-event-log-connections-pe.json",
 			.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
 			.style("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
             .text(function(d) { return d.key; })
-            .style("stroke",function(d) {  return colorgen_radial(d.batch); })
+            .style("stroke",function(d) {  return colorgen_radial(d.num_messages); })
 			.on("mouseover", mouseovered)
 			.on("mouseout", mouseouted);
 	}
@@ -99,7 +98,7 @@ function mouseouted(d)
 	node
 		.classed("node--target", false)
         .classed("node--source", false)
-        .style("stroke",function(d) {  return colorgen_radial(d.batch); });
+        .style("stroke",function(d) {  return colorgen_radial(d.num_messages); });
 }
 
 //d3.select(self.frameElement).style("height", diameter + "px");
