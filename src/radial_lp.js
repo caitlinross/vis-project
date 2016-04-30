@@ -30,9 +30,12 @@ var link_lp = svg_radial.append("g").selectAll(".link_lp");
 var node_lp = svg_radial.append("g").selectAll(".node_lp");
 
 var colorgen_radial_lp = d3.scale.ordinal()
-.range(["#000000","#33a02c","#1f78b4","#a6cee3",
-        "#fb9a99","#e31a1c","#fdbf6f","#ff7f00",
-        "#cab2d6","#6a3d9a","#ffff99","#b15928"]);
+.range(["#fff7fb","#ece7f2","#d0d1e6","#a6bddb",
+        "#74a9cf","#3690c0","#0570b0","#045a8d","#023858"]);
+//.range(["#e6550d","#fd8d3c","#fdae6b","#fdd0a2"]);
+//.range(["#000000","#33a02c","#1f78b4","#a6cee3",
+//        "#fb9a99","#e31a1c","#fdbf6f","#ff7f00",
+//        "#cab2d6","#6a3d9a","#ffff99","#b15928"]);
         
 var color_radial_lp = function(d) {  return colorgen_radial_lp(d.batch); };
 
@@ -51,14 +54,17 @@ d3.json("data/slimfly-processed/forward-send-event-log-connections-lp.json",
         
 		link_lp = link_lp
             .data(bundle_lp(links_lp))
-            .style("stroke",function(d) {  return colorgen_radial_lp(d.batch); })
+            .style("stroke",function(d) {  console.log("d.batch:",d.num_messages);
+                   console.log("colorgen:",colorgen_radial_lp(d.batch));
+                   return colorgen_radial_lp(d.num_messages); })
 			.enter().append("path")
 			.each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
 			.attr("class", "link_lp")
             .attr("d", line_radial_lp)
 //        .style("stroke","#cab2d6");
 
-//        console.log("link:",link);
+        console.log("bundle_lp:",bundle_lp(links_lp));
+        console.log("link_lp:",link_lp);
         
 		node_lp = node_lp
 			.data(nodes_lp.filter(function(n) { return !n.children; }))
@@ -68,7 +74,11 @@ d3.json("data/slimfly-processed/forward-send-event-log-connections-lp.json",
 			.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
 			.style("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
             .text(function(d) { return d.key; })
-            .style("stroke",function(d) {  return colorgen_radial_lp(d.batch); })
+        .style("stroke",function(d) {console.log("d.name:",d.name);
+                   console.log("d.num_messages:",d.num_messages);
+                   console.log("colorgend.batch:",colorgen_radial_lp(d.batch));
+                   console.log("colorgend.num_messages:",colorgen_radial_lp(d.num_messages));
+               return colorgen_radial_lp(d.num_messages); })
 			.on("mouseover", mouseovered_lp)
 			.on("mouseout", mouseouted_lp);
 	}
