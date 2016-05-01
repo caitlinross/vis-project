@@ -22,8 +22,6 @@
 * Show data for selected GVT
 
 ## Time Selector View
-* better coloring of lines?
-* add an option to select full simulation
 
 ## LP Selector View
 
