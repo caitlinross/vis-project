@@ -28,6 +28,9 @@ var svg_radial = d3.select(".radialgraph").append("svg")
 var link = svg_radial.append("g").selectAll(".link");
 var node = svg_radial.append("g").selectAll(".node");
 
+var colorgen_radial_links = d3.scale.ordinal()
+.range(["#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"]);
+
 var colorgen_radial = d3.scale.ordinal()
 .range(["#d0d1e6","#a6bddb",
         "#74a9cf","#3690c0","#0570b0","#045a8d","#023858"]);
@@ -53,7 +56,7 @@ d3.json("data/slimfly-processed/forward-send-event-log-connections-pe.json",
 			.each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
 			.attr("class", "link")
             .attr("d", line_radial)
-            .style("stroke",function(d) { return colorgen_radial_lp(d.source.messages[d.source.connections.indexOf(d.target.name)]);})
+            .style("stroke",function(d) { return colorgen_radial_lp_links(d.source.messages[d.source.connections.indexOf(d.target.name)]);})
 
 //        console.log("link:",link);
         
