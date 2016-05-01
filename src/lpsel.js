@@ -36,7 +36,7 @@ d3.csv('data/slimfly-processed/forward-send-event-log-lp.txt', function(data) {
     })
     .entries(lp);
 
-    var lp_lines = [];
+    lp_lines = [];
     lp_temp.forEach(function(d) { lp_lines.push(d.values); });
 
     var colorgen = d3.scale.ordinal()
@@ -61,25 +61,8 @@ d3.csv('data/slimfly-processed/forward-send-event-log-lp.txt', function(data) {
     lp_pc.svg.selectAll("text")
         .style("font", "12px sans-serif");
 
-
-    function get_brushed(){
-        var selected_lines = lp_pc.brushed();
-        
-        selected_pes = d3.nest()
-            .key(function(d) { return "PE_" +d.PE; })
-            .entries(selected_lines);
-        selected_lps = d3.nest()
-            .key(function(d) { return "LP_" +d.LP; })
-            .entries(selected_lines);
-        time_line_selection(selected_pes);
-        change_pe_text(selected_pes);
-    }
-
-    selected_pes = d3.nest()
-        .key(function(d) { return "PE_" +d.PE; })
-        .entries(lp_lines);
+    get_selected_entities();
     change_pe_text(selected_pes);
-    
 
 });
 
