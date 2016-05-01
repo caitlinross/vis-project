@@ -46,7 +46,7 @@ d3.json("data/slimfly-processed/forward-send-event-log-connections-lp.json",
 //	console.log("classes:",classes);
 		if (error) throw error;
 
-		var nodes_lp = cluster_lp.nodes(packageHierarchy(classes));
+		var nodes_lp = cluster_lp.nodes(packageHierarchy_lp(classes));
 		var links_lp = packageConnections(nodes_lp);		//links: array of all individual connections
         
 //		console.log("raw nodes:",nodes);
@@ -113,7 +113,7 @@ function mouseouted_lp(d)
 
 // Lazily construct the package hierarchy from class names.
 // Somewhere in here we need to sum all num_messages counts for each LP so each node has a total_num_messages count transfered.
-function packageHierarchy(classes) 
+function packageHierarchy_lp(classes)
 {
 	var map = {};
 
@@ -127,7 +127,7 @@ function packageHierarchy(classes)
 		var i;
 		if (!node) //IF no node for given name currently exists in our map then create it
 		{
-            console.log("-----no node in map");
+//            console.log("-----no node in map");
 			node = map[name] = data || {name: name, children: []};
 //console.log("node2:",node);
 //console.log("map1:",map);

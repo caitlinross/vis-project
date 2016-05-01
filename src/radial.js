@@ -135,11 +135,12 @@ function packageHierarchy(classes)
 //console.log("name.length:",name.length);
 			if(name.length)
 			{
-				node.connections.push.apply(node.connections,data.connections);
+                node.connections.push.apply(node.connections,data.connections);
+                node.num_messages += data.num_messages;
 			}
 //console.log("-----------here");			
 		}
-//console.log("node3:",node);
+console.log("node3:",node);
 		return node;
 	}
 
