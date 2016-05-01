@@ -29,9 +29,12 @@ var svg_radial = d3.select(".radialgraphlp").append("svg")
 var link_lp = svg_radial.append("g").selectAll(".link_lp");
 var node_lp = svg_radial.append("g").selectAll(".node_lp");
 
+var colorgen_radial_lp_links = d3.scale.ordinal()
+.range(["#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"]);
+
 var colorgen_radial_lp = d3.scale.ordinal()
-.range(["#ece7f2","#d0d1e6","#a6bddb",
-        "#74a9cf","#3690c0","#0570b0","#045a8d","#023858"]);
+//.range(["#08306b","#2171b5","#6baed6","	#61f205","#f4ea07","#fb7607","#fb0505"]);
+.range(["#d0d1e6","#a6bddb","#74a9cf","#3690c0","#0570b0","#045a8d","#023858"]);
 //.range(["#e6550d","#fd8d3c","#fdae6b","#fdd0a2"]);
 //.range(["#000000","#33a02c","#1f78b4","#a6cee3",
 //        "#fb9a99","#e31a1c","#fdbf6f","#ff7f00",
@@ -68,7 +71,8 @@ d3.json("data/slimfly-processed/forward-send-event-log-connections-lp.json",
 //                console.log("d.source.connections.indexof(d.target.name)",d.source.connections.indexOf(d.target.name));
 //  console.log("d.source.messages( d.source.connections.indexOf(d.target.name)): ",d.source.messages[d.source.connections.indexOf(d.target.name)]);
 //               console.log("colorgen:",colorgen_radial_lp(d.source.messages[d.source.connections.indexOf(d.target.name)]));
-               return colorgen_radial_lp(d[d.length-1].num_messages);
+                   return colorgen_radial_lp_links(d.source.messages[d.source.connections.indexOf(d.target.name)]);
+//               return colorgen_radial_lp(d[d.length-1].num_messages);
                })
 //        .style("stroke","#cab2d6");
         

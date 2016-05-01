@@ -8,13 +8,17 @@
 * Fix LP selector View data and Time Selector View data (all zeros).
 
 ## Radial PE View
+* Add color intensity legend
 * Total all connections per PE
+* Consider coloring nodes by number of connections and links by number of events on the link.
 * Change initial radial path coloring to temperature scale based on given metric value.
 * Create functionality to display all connections within a given gvt window for a given selection of PEs.
 * Change hovering to increase intensity/opacity of selected node's connections and decrease intensity/opacity of all other connections.
 * Return the PE ID upon mouse click to update data in other views.
 
 ## Radial LP View
+* Add color intensity legend
+* Consider coloring nodes by number of connections and links by number of events on the link.
 * Total all connections per  LP
 * Use two colors: one color for terminals and another color for routers. Either compute whether terminal or router in javascript or store as 0 or 1 in the JSON file under a "type" parameter.
 * Use color intensity/opacity to visualize number of messages transfered on a given link.
@@ -34,6 +38,7 @@
 
 ## Settings Panel
 * Add radial bundle tension selection.
+* Add option to select different color schemes for both radial views
 
 ## Finishing Touches
 * Add a legend of some sort displaying data of some sort?
