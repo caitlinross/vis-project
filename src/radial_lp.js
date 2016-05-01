@@ -54,17 +54,17 @@ d3.json("data/slimfly-processed/forward-send-event-log-connections-lp.json",
         
 		link_lp = link_lp
             .data(bundle_lp(links_lp))
-            .style("stroke",function(d) {  console.log("d.batch:",d.num_messages);
-                   console.log("colorgen:",colorgen_radial_lp(d.batch));
-                   return colorgen_radial_lp(d.num_messages); })
 			.enter().append("path")
 			.each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
 			.attr("class", "link_lp")
-            .attr("d", line_radial_lp)
+        .attr("d", line_radial_lp)
+        .style("stroke",function(d) {
+//               console.log("d:",d);
+//               console.log("d.batch:",d.num_messages);
+//               console.log("colorgen:",colorgen_radial_lp(d.batch));
+//               return colorgen_radial_lp(d.num_messages);
+               })
 //        .style("stroke","#cab2d6");
-
-        console.log("bundle_lp:",bundle_lp(links_lp));
-        console.log("link_lp:",link_lp);
         
 		node_lp = node_lp
 			.data(nodes_lp.filter(function(n) { return !n.children; }))
@@ -74,11 +74,7 @@ d3.json("data/slimfly-processed/forward-send-event-log-connections-lp.json",
 			.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
 			.style("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
             .text(function(d) { return d.key; })
-        .style("stroke",function(d) {console.log("d.name:",d.name);
-                   console.log("d.num_messages:",d.num_messages);
-                   console.log("colorgend.batch:",colorgen_radial_lp(d.batch));
-                   console.log("colorgend.num_messages:",colorgen_radial_lp(d.num_messages));
-               return colorgen_radial_lp(d.num_messages); })
+        .style("stroke",function(d) { return colorgen_radial_lp(d.num_messages); })
 			.on("mouseover", mouseovered_lp)
 			.on("mouseout", mouseouted_lp);
 	}
@@ -116,6 +112,7 @@ function mouseouted_lp(d)
 //d3.select(self.frameElement).style("height_lp", diameter_lp + "px");
 
 // Lazily construct the package hierarchy from class names.
+// Somewhere in here we need to sum all num_messages counts for each LP so each node has a total_num_messages count transfered.
 function packageHierarchy(classes) 
 {
 	var map = {};
@@ -128,8 +125,9 @@ function packageHierarchy(classes)
 		var node = map[name];
 //console.log("node1:",node);
 		var i;
-		if (!node) 
+		if (!node) //IF no node for given name currently exists in our map then create it
 		{
+            console.log("-----no node in map");
 			node = map[name] = data || {name: name, children: []};
 //console.log("node2:",node);
 //console.log("map1:",map);
@@ -141,15 +139,16 @@ function packageHierarchy(classes)
 				node.key = name.substring(i + 1);
 			}
 		}
-		else
+		else //If a node for given name currently exists in our map
 		{
-//console.log("-----------first here");	
+//console.log("-----Node found in map");
 //console.log("name.length:",name.length);
 			if(name.length)
 			{
 				node.connections.push.apply(node.connections,data.connections);
+                node.num_messages += data.num_messages;
 			}
-//console.log("-----------here");			
+//console.log("-----------here");
 		}
 //console.log("node3:",node);
 		return node;
