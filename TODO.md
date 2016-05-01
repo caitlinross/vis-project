@@ -22,8 +22,6 @@
 * Show data for selected GVT
 
 ## Time Selector View
-* better coloring of lines?
-* add an option to select full simulation
 
 ## LP Selector View
 
@@ -39,7 +37,6 @@
 
 ## Finishing Touches
 * Add a description to each plot to describe the available interactions (pop up bubbles) and how to use the figures.
-* Is there a way to unselect?
 * Add a legend of some sort displaying data of some sort?
 
 ## Future/If Possible Work

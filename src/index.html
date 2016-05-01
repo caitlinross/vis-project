@@ -45,7 +45,7 @@
     top: 770px;
     left: 10px;
     width: 600px;
-    height: 300px;
+    height: 320px;
     }
 
     .lpsel { 
@@ -55,7 +55,7 @@
     top: 770px;
     left: 610px;
     width: 600px;
-    height: 300px;
+    height: 320px;
     }
 
     .info { 
@@ -75,7 +75,7 @@
     top: 545px;
     left: 1200px;
     width: 200px;
-    height: 525px;
+    height: 545px;
     }
 
     p {
@@ -242,12 +242,12 @@
     </div>
     <div class="timesel">
         <h2>Time Selector</h2>
-        <div class="timegraph" style="height:250px; width:600px;">
-            <input name="full_sim_button" type="button" value="Reset Time" onclick="reset_time()" />
-        </div>
+        <input name="full_sim_button" type="button" value="Reset Time" onclick="reset_time()" />
+        <div class="timegraph" style="height:250px; width:600px;"></div>
     </div>
     <div class="lpsel">
         <h2>LP Selector</h2>
+        <input name="unselect_lp_button" type="button" value="Reset Selections" onclick="reset_selector()" />
         <div id="lppc" class="parcoords" style="height:250px; width:600px;"></div>
     </div>
     <div class="info">
@@ -281,9 +281,11 @@
         var num_lp = 200;
         var num_kp = 16;
         var num_pe = 16;
+        var lp_lines;
 
         /* read in 2d GVT x LP metric data */
         var lp_data;
+        var pe_data;
         d3.csv("data/slimfly-processed/forward-send-event-log-pe.txt", function(data){
         //d3.csv("data/matrix.csv", function(data){
             // all calls to use this data should go in here
@@ -348,7 +350,37 @@
             bin_end_time = sim_end_time;
         }
 
+        function reset_selector(){
+            lp_pc.brushReset();
+            get_brushed();
+        }
 
+        function get_selected_entities(){
+            selected_pes = d3.nest()
+                .key(function(d) { return "PE_" +d.PE; })
+                .entries(lp_lines);
+            selected_lps = d3.nest()
+                .key(function(d) { return "LP_" +d.LP; })
+                .entries(lp_lines);
+        }
+
+        function get_brushed(){
+            var selected_lines = lp_pc.brushed();
+            
+            if (selected_lines) {
+                selected_pes = d3.nest()
+                    .key(function(d) { return "PE_" +d.PE; })
+                    .entries(selected_lines);
+                selected_lps = d3.nest()
+                    .key(function(d) { return "LP_" +d.LP; })
+                    .entries(selected_lines);
+            } 
+            else{
+                get_selected_entities();
+            }
+            time_line_selection(selected_pes);
+            change_pe_text(selected_pes);
+        }
        
 
     </script>
