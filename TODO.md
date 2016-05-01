@@ -36,7 +36,6 @@
 * Add radial bundle tension selection.
 
 ## Finishing Touches
-* Add a description to each plot to describe the available interactions (pop up bubbles) and how to use the figures.
 * Add a legend of some sort displaying data of some sort?
 
 ## Future/If Possible Work
