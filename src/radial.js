@@ -49,12 +49,11 @@ d3.json("data/slimfly-processed/forward-send-event-log-connections-pe.json",
 //console.log("bundle(links):",bundle(links));        
 		link = link
             .data(bundle(links))
-            .style("stroke",function(d) {  return colorgen_radial(d.batch); })
 			.enter().append("path")
 			.each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
 			.attr("class", "link")
             .attr("d", line_radial)
-//        .style("stroke","#cab2d6");
+            .style("stroke",function(d) { return colorgen_radial_lp(d.source.messages[d.source.connections.indexOf(d.target.name)]);})
 
 //        console.log("link:",link);
         
@@ -126,7 +125,9 @@ function packageHierarchy(classes)
 			{
 				node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
 				node.parent.children.push(node);
-				node.key = name.substring(i + 1);
+                node.key = name.substring(i + 1);
+                node.messages = [];
+                node.messages[0] = data.num_messages;
 			}
 		}
 		else
@@ -136,11 +137,12 @@ function packageHierarchy(classes)
 			if(name.length)
 			{
                 node.connections.push.apply(node.connections,data.connections);
+                node.messages.push(data.num_messages);
                 node.num_messages += data.num_messages;
 			}
 //console.log("-----------here");			
 		}
-console.log("node3:",node);
+//console.log("node3:",node);
 		return node;
 	}
 
