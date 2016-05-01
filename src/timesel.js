@@ -71,6 +71,10 @@ function createTimeGraph(data) {
         binned_pes.push({name: pe[i].name,
             values: tmp_vals});
     }
+
+    // get value for sim_end_time
+    sim_end_time = pe[0].values[pe[0].values.length - 1].gvt;
+
     x.domain([
         d3.min(binned_pes, function(c) { return d3.min(c.values, function(v) { return v.gvt; }); }),
         d3.max(binned_pes, function(c) { return d3.max(c.values, function(v) { return v.gvt; }); })
@@ -93,6 +97,14 @@ function createTimeGraph(data) {
         .attr("height", h1 + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    //d3.select(".timesel")
+    //    .append("rect")
+    //    .attr("class", "reset_time_button")
+    //    .attr("width", "25")
+    //    .attr("height", "10")
+    //    .attr("fill", "blue")
+    //    .on("click", reset_time);
 
     svg.append("g")
         .attr("class", "x axis")
@@ -149,7 +161,7 @@ function createTimeGraph(data) {
         .attr("d", function(d) { return line(d.values); })
         .style("stroke", function(d) { return color(d.name); });
 
-    var pointer = svg.append("circle")
+    pointer = svg.append("circle")
         .attr("class", "timepointer")
         .attr("fill", "red")
         .attr("cy", "0")
@@ -207,8 +219,6 @@ function createTimeGraph(data) {
                 .transition()
                 .attr("transform", "translate("+ x(bin_end_time) +"," + h1 + ")");
         }
-
-
 
 
 }

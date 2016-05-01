@@ -242,7 +242,9 @@
     </div>
     <div class="timesel">
         <h2>Time Selector</h2>
-        <div class="timegraph" style="height:250px; width:600px;"></div>
+        <div class="timegraph" style="height:250px; width:600px;">
+            <input name="full_sim_button" type="button" value="Reset Time" onclick="reset_time()" />
+        </div>
     </div>
     <div class="lpsel">
         <h2>LP Selector</h2>
@@ -262,8 +264,7 @@
     <script>
         // global vars to be used in external js files
         var selected_pes = [], selected_lps = [];
-        var bin_start_time;
-        var bin_end_time;
+        var bin_start_time, bin_end_time, sim_end_time;
 
         /**** allpc.js ****/
 
@@ -273,7 +274,7 @@
 
         /**** timesel.js ****/
         var x;
-        var binned_pes, city;
+        var binned_pes, city, pointer;
 
         /**** lpsel.js ****/
         var lp_pc;
@@ -338,6 +339,17 @@
             pe_text.text(tmp);
         }
 
+        function reset_time() {
+            pointer.attr("opacity", "0")
+                .transition()
+                .attr("transform", "translate(0," + h1 + ")");
+
+            bin_start_time = 0;
+            bin_end_time = sim_end_time;
+        }
+
+
+       
 
     </script>
     <script src="allpc.js"></script>
