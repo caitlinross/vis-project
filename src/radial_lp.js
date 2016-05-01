@@ -30,7 +30,7 @@ var link_lp = svg_radial.append("g").selectAll(".link_lp");
 var node_lp = svg_radial.append("g").selectAll(".node_lp");
 
 var colorgen_radial_lp = d3.scale.ordinal()
-.range(["#fff7fb","#ece7f2","#d0d1e6","#a6bddb",
+.range(["#ece7f2","#d0d1e6","#a6bddb",
         "#74a9cf","#3690c0","#0570b0","#045a8d","#023858"]);
 //.range(["#e6550d","#fd8d3c","#fdae6b","#fdd0a2"]);
 //.range(["#000000","#33a02c","#1f78b4","#a6cee3",
@@ -51,18 +51,24 @@ d3.json("data/slimfly-processed/forward-send-event-log-connections-lp.json",
         
 //		console.log("raw nodes:",nodes);
 //        console.log("raw links:",links);
-        
+        console.log("bundle_lp(links_lp):",bundle_lp(links_lp));
 		link_lp = link_lp
             .data(bundle_lp(links_lp))
 			.enter().append("path")
-			.each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
+        .each(function(d) { console.log("d.length:",d.length);d.source = d[0], d.target = d[d.length - 1]; })
 			.attr("class", "link_lp")
-        .attr("d", line_radial_lp)
-        .style("stroke",function(d) {
-//               console.log("d:",d);
-//               console.log("d.batch:",d.num_messages);
-//               console.log("colorgen:",colorgen_radial_lp(d.batch));
-//               return colorgen_radial_lp(d.num_messages);
+            .attr("d", line_radial_lp)
+            .style("stroke",function(d) {
+//                console.log("##################");
+//                console.log("d:",d);
+//                console.log("d.source:",d.source);
+//                console.log("d.source.name:",d.source.name);
+//                console.log("d.target:",d.target);
+//                console.log("d.target.name:",d.target.name);
+//                console.log("d.source.connections.indexof(d.target.name)",d.source.connections.indexOf(d.target.name));
+//  console.log("d.source.messages( d.source.connections.indexOf(d.target.name)): ",d.source.messages[d.source.connections.indexOf(d.target.name)]);
+//               console.log("colorgen:",colorgen_radial_lp(d.source.messages[d.source.connections.indexOf(d.target.name)]));
+               return colorgen_radial_lp(d[d.length-1].num_messages);
                })
 //        .style("stroke","#cab2d6");
         
@@ -125,7 +131,7 @@ function packageHierarchy_lp(classes)
 		var node = map[name];
 //console.log("node1:",node);
 		var i;
-		if (!node) //IF no node for given name currently exists in our map then create it
+		if (!node) //IF node for given name currently does not exist in our map then create it
 		{
 //            console.log("-----no node in map");
 			node = map[name] = data || {name: name, children: []};
@@ -137,6 +143,8 @@ function packageHierarchy_lp(classes)
 				node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
 				node.parent.children.push(node);
 				node.key = name.substring(i + 1);
+                node.messages = [];
+                node.messages[0] = data.num_messages;
 			}
 		}
 		else //If a node for given name currently exists in our map
@@ -146,6 +154,7 @@ function packageHierarchy_lp(classes)
 			if(name.length)
 			{
 				node.connections.push.apply(node.connections,data.connections);
+                node.messages.push(data.num_messages);
                 node.num_messages += data.num_messages;
 			}
 //console.log("-----------here");
@@ -175,7 +184,8 @@ function packageConnections(nodes)
 	(
 		function(d) 
 		{
-			map[d.name] = d;
+     map[d.name] = d;
+//     console.log("d:",d,"map[d.name]",map[d.name]);
 		}
 	);
 
@@ -189,7 +199,9 @@ function packageConnections(nodes)
 				(
 					function(i) 
 					{
-                 connections.push({source: map[d.name], target: map[i]});
+//                 console.log("node name:",d.name,"node connections:",connections,"d connections:",d.connections);
+                        connections.push({source: map[d.name], target: map[i]});
+                 
 					}
 				);
 		}
