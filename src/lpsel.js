@@ -59,7 +59,7 @@ d3.csv('data/slimfly-processed/forward-send-event-log-lp.txt', function(data) {
         .on("brushend", get_brushed);
 
     lp_pc.svg.selectAll("text")
-        .style("font", "10px sans-serif");
+        .style("font", "12px sans-serif");
 
 
     function get_brushed(){

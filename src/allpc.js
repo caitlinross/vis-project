@@ -22,7 +22,7 @@ d3.csv('data/sample_data.csv', function(data) {
         .brushMode("1D-axes");  // enable brushing
 
     parcoords.svg.selectAll("text")
-        .style("font", "10px sans-serif");
+        .style("font", "12px sans-serif");
 
 });
 

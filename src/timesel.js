@@ -112,6 +112,9 @@ function createTimeGraph(data) {
         .attr("x", -h1/2)
         .text("Forward Events");
 
+    svg.selectAll("text")
+        .style("font", "12px sans-serif");
+
     svg.append("clipPath")
         .attr("id", "clip")
         .append("rect")

@@ -23,6 +23,7 @@
 
 ## Time Selector View
 * better coloring of lines?
+* add an option to select full simulation
 
 ## LP Selector View
 
@@ -38,10 +39,7 @@
 
 ## Finishing Touches
 * Add a description to each plot to describe the available interactions (pop up bubbles) and how to use the figures.
-* Increase font size for axis labels.
 * Is there a way to unselect?
-* Make the lines thicker in the top parallel coordinates graph.
-* Center visualization titles.
 * Add a legend of some sort displaying data of some sort?
 
 ## Future/If Possible Work
