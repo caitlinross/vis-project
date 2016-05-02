@@ -213,14 +213,14 @@ for(f=0; f<num_pes; f++)
 		fprintf(output_file_pe,"%6.6f,",gvt[i]);
 		for(j=0;j<num_lps-1;j++)
 		{
-			fprintf(output_file_lp,"%2d,",data[j][i][0]);
+			fprintf(output_file_lp,"%2d,",data[j][i][selected_metric]);
 		}
-		fprintf(output_file_lp,"%2d\n",data[num_lps-1][i][0]);
+		fprintf(output_file_lp,"%2d\n",data[num_lps-1][i][selected_metric]);
 		for(j=0;j<num_pes-1;j++)
 		{
-			fprintf(output_file_pe,"%2d,",data2[j][i][0]);
+			fprintf(output_file_pe,"%2d,",data2[j][i][selected_metric]);
 		}
-		fprintf(output_file_pe,"%2d\n",data2[num_pes-1][i][0]);
+		fprintf(output_file_pe,"%2d\n",data2[num_pes-1][i][selected_metric]);
 	}
 
 	fclose(output_file_lp);
