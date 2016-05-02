@@ -241,8 +241,8 @@ for(f=0; f<num_pes; f++)
 	}
 
 	printf("Printing output LP and PE data\n");
-	fprintf(output_file_lp,"GVT-Bin,");
-	fprintf(output_file_pe,"GVT-Bin,");
+	fprintf(output_file_lp,"gvt,");
+	fprintf(output_file_pe,"gvt,");
 	for(i=0;i<num_lps-1;i++)
 	{
 		fprintf(output_file_lp,"LP_%d,",i); 
