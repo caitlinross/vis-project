@@ -224,7 +224,7 @@
 	.link--source,
 	.link--target {
 	  stroke-opacity: 1;
-	  stroke-width: 4px;
+	  stroke-width: 6px;
 	}
 	.link--source {
 	  stroke: #d62728;
@@ -261,7 +261,7 @@
 .link_lp--source,
 .link_lp--target {
     stroke-opacity: 1;
-    stroke-width: 4px;
+    stroke-width: 6px;
 }
 .link_lp--source {
     stroke: #d62728;
@@ -314,11 +314,25 @@
         // global vars to be used in external js files
         var selected_pes = [], selected_lps = [];
         var bin_start_time, bin_end_time, sim_end_time;
+        var num_pe = 16;
 
         /**** allpc.js ****/
 
         /**** radial.js ****/
-
+		var selected_pes_array = [];
+		for (var i = 0; i < num_pe; i++){
+			selected_pes_array[i] = 1;
+		}
+		var radial_pe_data;
+		d3.json("data/slimfly-processed/forward-send-event-log-connections-pe.json",
+			function(error, classes) 
+			{
+		//	console.log("classes:",classes);
+				if (error) throw error;
+				radial_pe_data = classes;
+				createRadialPE(radial_pe_data);
+			}
+		);
         /**** grid.js ****/
 
         /**** timesel.js ****/
@@ -329,7 +343,6 @@
         var lp_pc;
         var num_lp = 200;
         var num_kp = 16;
-        var num_pe = 16;
         var lp_lines;
 
         /* read in 2d GVT x LP metric data */
@@ -362,13 +375,16 @@
         function time_line_selection(pes){
             //city.attr("opacity", ".1");
             for (var i = 0; i < num_pe; i++){
-                d3.select("#PE_"+i)
-                    .style("opacity", ".1");
+//                console.log("stuff:",d3.select("#PE_"+i).style("opacity", ".1"));
+                d3.select("#PE_"+i).style("opacity", ".1");
+//                console.log("d3.selectAll(node)",d3.selectAll(node));
             }
             for (var i = 0; i < pes.length; i++){
                 d3.select("#"+pes[i].key)
                     .style("opacity", "1");
             }
+//            d3.selectAll(".node").style("opacity",0.0);
+//            d3.selectAll(".link").style("opacity",0.0);
         }
 
         /* setup the selection info panel */
@@ -428,7 +444,21 @@
                 get_selected_entities();
             }
             time_line_selection(selected_pes);
-            change_pe_text(selected_pes);
+            change_pe_text(selected_pes); 
+//			console.log("selected_pes:",selected_pes);
+			var thenum;
+			for (var i = 0; i < num_pe; i++){
+				selected_pes_array[i] = -1;
+			}
+//			console.log("selected_pes_array one:",selected_pes_array);
+            for (var i = 0; i < selected_pes.length; i++){
+//				console.log("selected_pes[i].key",selected_pes[i].key);
+				thenum = selected_pes[i].key.replace( /^\D+/g, ''); // replace all leading non-digits with nothing
+//        		console.log("number only:",thenum);
+				selected_pes_array[thenum] = 1;
+            }
+//			console.log("selected_pes_array two:",selected_pes_array);			
+			recreateRadialPE(radial_pe_data);
         }
 
         //var allpc_svg = d3.select(".allpc")

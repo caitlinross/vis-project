@@ -50,15 +50,15 @@ d3.json("data/slimfly-processed/forward-send-event-log-connections-lp.json",
 		if (error) throw error;
 
 		var nodes_lp = cluster_lp.nodes(packageHierarchy_lp(classes));
-		var links_lp = packageConnections(nodes_lp);		//links: array of all individual connections
+		var links_lp = packageConnections_lp(nodes_lp);		//links: array of all individual connections
         
 //		console.log("raw nodes:",nodes);
 //        console.log("raw links:",links);
-        console.log("bundle_lp(links_lp):",bundle_lp(links_lp));
+//        console.log("bundle_lp(links_lp):",bundle_lp(links_lp));
 		link_lp = link_lp
             .data(bundle_lp(links_lp))
 			.enter().append("path")
-        .each(function(d) { console.log("d.length:",d.length);d.source = d[0], d.target = d[d.length - 1]; })
+        .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
 			.attr("class", "link_lp")
             .attr("d", line_radial_lp)
             .style("stroke",function(d) {
@@ -178,7 +178,7 @@ function packageHierarchy_lp(classes)
 }
 
 // Return a list of connections for the given array of nodes.
-function packageConnections(nodes) 
+function packageConnections_lp(nodes) 
 {
 	var map = {};
 	var connections = [];
