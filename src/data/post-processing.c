@@ -148,22 +148,25 @@ for(f=0; f<num_pes; f++)
 		x2 = (int)floor(x/(int)ceil(num_lps/num_pes));		//Get PE ID for given x LP ID
 		dst2 = (int)floor(dst/(int)ceil(num_lps/num_pes));	//Get PE ID for given dst LP ID
 
-        data[x][y][z]++;            //increment associated metric
-		data2[x2][y][z]++;
-        data4[x][dst][y]++;
-		
-		if(data[x][y][z] > 100)
-			printf("data[%d][%d][%d]:%d\n",x,y,z,data[x][y][z]);
-		if(z==selected_metric)
+		if(z!=9)
 		{
-/*			if(x == 199)
-			{	
-				if(y >3374)
-				{
-					printf("data[%d][%d][%d]:%d\n",x,y,z,data[x][y][z]);
+		    data[x][y][z]++;            //increment associated metric
+			data2[x2][y][z]++;
+		    data4[x][dst][y]++;
+		
+			if(data[x][y][z] > 100)
+				printf("data[%d][%d][%d]:%d\n",x,y,z,data[x][y][z]);
+			if(z==selected_metric)
+			{
+	/*			if(x == 199)
+				{	
+					if(y >3374)
+					{
+						printf("data[%d][%d][%d]:%d\n",x,y,z,data[x][y][z]);
+					}
 				}
+	*/			data3[x2][dst2][y]++;			//increment number of messages transfered on the connection for given gvt bin
 			}
-*/			data3[x2][dst2][y]++;			//increment number of messages transfered on the connection for given gvt bin
 		}
 //        printf("file:%d i:%d j:%d oldx:%d x2:%d x:%d y:%d z:%d data:%d\n",f,i,j,tempx,(int)floor(x/(int)ceil(num_lps/num_pes)),x,y,z,data[x][y][z]);
     }
