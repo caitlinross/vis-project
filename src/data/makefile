@@ -1,5 +1,5 @@
 build:
-	gcc post-processing.c -lm -o runme
+	gcc -g post-processing.c -lm -o runme
 
 run:
-	./runme
+	./runme 0
