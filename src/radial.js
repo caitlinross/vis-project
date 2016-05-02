@@ -52,9 +52,6 @@ node = svg_radial.append("g").selectAll(".node");
 
 	var nodes = cluster.nodes(packageHierarchy(classes,1));
 	var links = packageConnections(nodes);		//links: array of all individual connections
-    
-console.log("nodes:",nodes);
-console.log("links:",links);
 
 	link = link
 		.data(bundle(links))
@@ -177,34 +174,21 @@ function packageHierarchy(classes,initial)
         var thenum = name.replace( /^\D+/g, ''); // replace all leading non-digits with nothing
 		if(selected_pes_array[thenum] != -1)
         {
-if(!initial){
-console.log("--------------PE",thenum," selected----------------");
-}
 			var node = map[name];	//Check if name is in our map and assign it to variable "node"
 
 			var i;
 			if (!node) //IF node for given name currently does not exist in our map then create it
 			{
-console.log("node did not exist in map")
 				node = map[name] = data || {name: name, children: []};
-				console.log("Node created",node);
-console.log("name.length",name.length);
 				if (name.length) //If the node has a name
 				{
-console.log("name.length was true");
-console.log("name.substring",name.substring(0, i = name.lastIndexOf(".")));
 
 					if(!initial)
 					{
-console.log("map going in:", map[name]);
-console.log("node going in:",node);
 						delete map[name].connections;
 						delete node.connections;
 						map[name].connections = [];
 						node.connections = [];
-
-console.log("map stage 2:", map[name]);
-console.log("node stage 2:",node);
 
 						for (var ii = 0; ii < selected_pes.length; ii++){
 							if(data.connections[0])
@@ -213,16 +197,12 @@ console.log("node stage 2:",node);
 								var tempnum2 = selected_pes[ii].key.replace( /^\D+/g, ''); // replace all leading non-digits with nothing
 								if(tempnum1 == tempnum2)
 								{
-console.log("node.connections:",node.connections);
-console.log("data.connections:".data);
 					        		node.connections.push.apply(node.connections,data.connections);
 						    		node.messages.push(data.num_messages);
 						    		node.num_messages += data.num_messages;
 								}
 							}
 						}
-console.log("map coming out:", map[name]);
-console.log("node coming out:",node);
 					}
 
 
@@ -232,11 +212,9 @@ console.log("node coming out:",node);
 		            node.messages = [];
 		            node.messages[0] = data.num_messages;
 				}
-console.log("exiting node creation for node",node);
 			}
 			else
 			{
-console.log("node existed in map");
 				if(name.length)
 				{
 					if(initial)
@@ -247,7 +225,6 @@ console.log("node existed in map");
 					}
 					else
 					{
-//	delete node.connections;
 						for (var ii = 0; ii < selected_pes.length; ii++){
 							if(data.connections[0])
 							{
@@ -255,8 +232,6 @@ console.log("node existed in map");
 								var tempnum2 = selected_pes[ii].key.replace( /^\D+/g, ''); // replace all leading non-digits with nothing
 								if(tempnum1 == tempnum2)
 								{
-console.log("node.connections:",node.connections);
-console.log("data.connections:".data);
 					        		node.connections.push.apply(node.connections,data.connections);
 						    		node.messages.push(data.num_messages);
 						    		node.num_messages += data.num_messages;
@@ -268,24 +243,15 @@ console.log("data.connections:".data);
 			}
 			return node;
         }
-		else
-		{
-console.log("PE",thenum," was not selected");
-		}	
 	}
 
 	classes.forEach(
 		function(d) 
 		{
-if(!initial){
-console.log("###################################");
-console.log("d",d);
-}
 			find(d.name, d);
 		}
     
 	);
-console.log("map[ ]",map[""]);
 	return map[""];
 }
 
