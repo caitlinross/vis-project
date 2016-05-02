@@ -63,6 +63,7 @@ int main(int argc, char **argv)
     int num_pes = 16;
     int num_lps = 200;
     int num_metrics = 10;
+	int selected_metric = 0;			//0:RSF,1:RSR,2:RRF,3:RRR,6:TGF,7:TGR,8:TSF,9:TSR,10:TRF,11:TRR
     int data[num_lps][gvt_count][num_metrics];	//LP data
 	int data2[num_pes][gvt_count][num_metrics];	//PE data
 	int data3[num_pes][num_pes][gvt_count];		//PE connection data for one metric
@@ -153,7 +154,7 @@ for(f=0; f<num_pes; f++)
 		
 		if(data[x][y][z] > 100)
 			printf("data[%d][%d][%d]:%d\n",x,y,z,data[x][y][z]);
-		if(z==0)
+		if(z==selected_metric)
 		{
 /*			if(x == 199)
 			{	
