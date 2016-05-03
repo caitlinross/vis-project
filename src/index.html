@@ -334,6 +334,15 @@
 			}
 		);
         /**** grid.js ****/
+		var radial_lp_data;
+		d3.json("data/slimfly-processed/forward-send-event-log-connections-lp.json",
+			function(error, classes) 
+			{
+				if (error) throw error;
+				radial_lp_data = classes;
+				createRadialLP(radial_lp_data);
+			}
+		);
 
         /**** timesel.js ****/
         var x;
@@ -375,16 +384,12 @@
         function time_line_selection(pes){
             //city.attr("opacity", ".1");
             for (var i = 0; i < num_pe; i++){
-//                console.log("stuff:",d3.select("#PE_"+i).style("opacity", ".1"));
                 d3.select("#PE_"+i).style("opacity", ".1");
-//                console.log("d3.selectAll(node)",d3.selectAll(node));
             }
             for (var i = 0; i < pes.length; i++){
                 d3.select("#"+pes[i].key)
                     .style("opacity", "1");
             }
-//            d3.selectAll(".node").style("opacity",0.0);
-//            d3.selectAll(".link").style("opacity",0.0);
         }
 
         /* setup the selection info panel */
@@ -459,6 +464,7 @@
             }
 //			console.log("selected_pes_array two:",selected_pes_array);			
 			recreateRadialPE(radial_pe_data);
+			recreateRadialLP(radial_lp_data);
         }
 
         //var allpc_svg = d3.select(".allpc")
