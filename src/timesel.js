@@ -114,6 +114,15 @@ function createTimeGraph(data, selected_metric) {
         .call(xAxis);
 
     svg.append("g")
+        .attr("class", "x axis")
+        .append("text")
+        .attr("class", "axis-label")
+        .attr("transform", "translate(225," + (h1+30) + ")")
+        .attr("y", 0)
+        .attr("x", 0)
+        .text("GVT");
+
+    svg.append("g")
         .attr("class", "y axis")
         .call(yAxis);
 
