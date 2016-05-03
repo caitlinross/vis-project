@@ -31,6 +31,18 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
+    char filenames[12][4];
+    sprintf(filenames[0], "%s", "RSF");
+    sprintf(filenames[1], "%s", "RSR");
+    sprintf(filenames[2], "%s", "RRF");
+    sprintf(filenames[3], "%s", "RRR");
+    sprintf(filenames[6], "%s", "TGF");
+    sprintf(filenames[7], "%s", "TGR");
+    sprintf(filenames[8], "%s", "TSF");
+    sprintf(filenames[9], "%s", "TSR");
+    sprintf(filenames[10], "%s", "TRF");
+    sprintf(filenames[11], "%s", "TRR");
+
 	char mystring[100000];
 	char ch;
 	int gvt_count = 0;					//Total number of GVT calculations in simulation
@@ -196,7 +208,7 @@ for(f=0; f<num_pes; f++)
 //for(f=0; f<num_metrics; f++)
 //{
 	printf("Opening lp output file\n");
-	sprintf( log, "slimfly-processed/forward-send-event-log-lp.txt");
+	sprintf( log, "slimfly-processed/%s-log-lp.txt", filenames[selected_metric]);
 	output_file_lp = fopen ( log, "w");
 	if (output_file_lp==NULL)
 	{
@@ -204,7 +216,7 @@ for(f=0; f<num_pes; f++)
 	}
 
 	printf("Opening pe output file\n");
-	sprintf( log, "slimfly-processed/forward-send-event-log-pe.txt");
+	sprintf( log, "slimfly-processed/%s-log-pe.txt", filenames[selected_metric]);
 	output_file_pe = fopen ( log, "w");
 	if (output_file_pe==NULL)
 	{
@@ -248,7 +260,7 @@ for(f=0; f<num_pes; f++)
 //PE connection event data
 //-------------------------------------
 	printf("Opening connection output file\n");
-	sprintf( log, "slimfly-processed/forward-send-event-log-connections.txt");
+	sprintf( log, "slimfly-processed/%s-log-connections.txt", filenames[selected_metric]);
 	output_file = fopen ( log, "w");
 	if (output_file==NULL)
 	{
@@ -272,7 +284,7 @@ for(f=0; f<num_pes; f++)
 //PE JSON connection event data
 //-------------------------------------
 	printf("Opening JSON PE connection output file\n");
-	sprintf( log, "slimfly-processed/forward-send-event-log-connections-pe.json");
+	sprintf( log, "slimfly-processed/%s-log-connections-pe.json", filenames[selected_metric]);
 	output_file = fopen ( log, "w");
 	if (output_file==NULL)
 	{
@@ -315,7 +327,7 @@ for(f=0; f<num_pes; f++)
     //LP JSON connection event data
     //-------------------------------------
     printf("Opening JSON LP connection output file\n");
-    sprintf( log, "slimfly-processed/forward-send-event-log-connections-lp.json");
+    sprintf( log, "slimfly-processed/%s-log-connections-lp.json", filenames[selected_metric]);
     output_file = fopen ( log, "w");
     if (output_file==NULL)
     {

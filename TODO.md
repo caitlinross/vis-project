@@ -5,7 +5,6 @@
 * Process metric event data into json for PE radial view.
 * Process metric event data into json for LP radial view.
 * Rearrange PE json data set to print on a per event basis recording src, dest, gvt data to be parsed in the javascript file.
-* Fix LP selector View data and Time Selector View data (all zeros).
 
 ## Radial PE View
 * Add color intensity legend
