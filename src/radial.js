@@ -5,7 +5,6 @@ var width = 600;
 var height = 450;
 var radius = diameter / 2;
 var innerRadius = radius - 120;
-var call_count = 0;
 
 var cluster;
 var bundle;
@@ -24,31 +23,30 @@ var colorgen_radial = d3.scale.ordinal()
         
 var color_radial = function(d) {  return colorgen_radial(d.batch); };
 
+
 function createRadialPE(classes)
 {
-call_count++;
+	cluster = d3.layout.cluster()
+			.size([360, innerRadius])
+			.sort(null)
+			.value(function(d) { return d.size; });
 
-cluster = d3.layout.cluster()
-		.size([360, innerRadius])
-		.sort(null)
-		.value(function(d) { return d.size; });
+	bundle = d3.layout.bundle();
 
-bundle = d3.layout.bundle();
+	line_radial = d3.svg.line.radial()			//Constructs new radial line generator with default radius and angle functions
+			.interpolate("bundle")
+			.tension(.35)
+			.radius(function(d) { return d.y; })
+			.angle(function(d) { return d.x / 180 * Math.PI; });
 
-line_radial = d3.svg.line.radial()			//Constructs new radial line generator with default radius and angle functions
-		.interpolate("bundle")
-		.tension(.35)
-		.radius(function(d) { return d.y; })
-		.angle(function(d) { return d.x / 180 * Math.PI; });
+	svg_radial = d3.select(".radialgraph").append("svg")
+			.attr("width", width)
+		    .attr("height", height)
+		  	.append("g")				//Appends an element g to svg_radial variable
+			.attr("transform", "translate(" + radius*1  + "," + radius*0.75 + ")");
 
-svg_radial = d3.select(".radialgraph").append("svg")
-		.attr("width", width)
-        .attr("height", height)
-	  	.append("g")				//Appends an element g to svg_radial variable
-		.attr("transform", "translate(" + radius*1  + "," + radius*0.75 + ")");
-
-link = svg_radial.append("g").selectAll(".link");
-node = svg_radial.append("g").selectAll(".node");
+	link = svg_radial.append("g").selectAll(".link");
+	node = svg_radial.append("g").selectAll(".node");
 
 	var nodes = cluster.nodes(packageHierarchy(classes,1));
 	var links = packageConnections(nodes);		//links: array of all individual connections
@@ -72,8 +70,6 @@ node = svg_radial.append("g").selectAll(".node");
 		.style("stroke",function(d) {  return colorgen_radial(d.num_messages); })
 		.on("mouseover", mouseovered)
 		.on("mouseout", mouseouted);
-
-
 };
 
 function recreateRadialPE(classes)
@@ -172,17 +168,16 @@ function packageHierarchy(classes,initial)
 	function find(name, data) 
 	{
         var thenum = name.replace( /^\D+/g, ''); // replace all leading non-digits with nothing
+        
 		if(selected_pes_array[thenum] != -1)
         {
 			var node = map[name];	//Check if name is in our map and assign it to variable "node"
-
 			var i;
 			if (!node) //IF node for given name currently does not exist in our map then create it
 			{
 				node = map[name] = data || {name: name, children: []};
 				if (name.length) //If the node has a name
 				{
-
 					if(!initial)
 					{
 						delete map[name].connections;

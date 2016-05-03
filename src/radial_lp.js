@@ -7,27 +7,13 @@ var height_lp = 450;
 var radius_lp = diameter_lp / 2;
 var innerradius_lp = radius_lp - 120;
 
-var cluster_lp = d3.layout.cluster()
-		.size([360, innerradius_lp])
-		.sort(null)
-		.value(function(d) { return d.size; });
+var cluser_lp;
+var bundle_lp;
+var line_radial_lp;
+var svg_radial_lp;
+var link_lp;
+var node_lp;
 
-var bundle_lp = d3.layout.bundle();
-
-var line_radial_lp = d3.svg.line.radial()			//Constructs new radial line generator with default radius and angle functions
-		.interpolate("bundle")
-		.tension(.25)
-		.radius(function(d) { return d.y; })
-		.angle(function(d) { return d.x / 180 * Math.PI; });
-
-var svg_radial = d3.select(".radialgraphlp").append("svg")
-		.attr("width", width_lp)
-        .attr("height", height_lp)
-	  	.append("g")				//Appends an element g to svg_radial variable
-		.attr("transform", "translate(" + radius_lp*1  + "," + radius_lp*0.75 + ")");
-
-var link_lp = svg_radial.append("g").selectAll(".link_lp");
-var node_lp = svg_radial.append("g").selectAll(".node_lp");
 
 var colorgen_radial_lp_links = d3.scale.ordinal()
 .range(["#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"]);
@@ -42,53 +28,125 @@ var colorgen_radial_lp = d3.scale.ordinal()
         
 var color_radial_lp = function(d) {  return colorgen_radial_lp(d.batch); };
 
-//d3.json("data/MMS7-3.json",
-d3.json("data/slimfly-processed/RSF-log-connections-lp.json",
-	function(error, classes) 
-	{
-//	console.log("classes:",classes);
-		if (error) throw error;
 
-		var nodes_lp = cluster_lp.nodes(packageHierarchy_lp(classes));
-		var links_lp = packageConnections_lp(nodes_lp);		//links: array of all individual connections
-        
-//		console.log("raw nodes:",nodes);
-//        console.log("raw links:",links);
-//        console.log("bundle_lp(links_lp):",bundle_lp(links_lp));
-		link_lp = link_lp
-            .data(bundle_lp(links_lp))
-			.enter().append("path")
-        .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
-			.attr("class", "link_lp")
-            .attr("d", line_radial_lp)
-            .style("stroke",function(d) {
-//                console.log("##################");
-//                console.log("d:",d);
-//                console.log("d.source:",d.source);
-//                console.log("d.source.name:",d.source.name);
-//                console.log("d.target:",d.target);
-//                console.log("d.target.name:",d.target.name);
-//                console.log("d.source.connections.indexof(d.target.name)",d.source.connections.indexOf(d.target.name));
-//  console.log("d.source.messages( d.source.connections.indexOf(d.target.name)): ",d.source.messages[d.source.connections.indexOf(d.target.name)]);
-//               console.log("colorgen:",colorgen_radial_lp(d.source.messages[d.source.connections.indexOf(d.target.name)]));
-                   return colorgen_radial_lp_links(d.source.messages[d.source.connections.indexOf(d.target.name)]);
-//               return colorgen_radial_lp(d[d.length-1].num_messages);
-               })
-//        .style("stroke","#cab2d6");
-        
-		node_lp = node_lp
-			.data(nodes_lp.filter(function(n) { return !n.children; }))
-			.enter().append("text")
-			.attr("class", "node_lp")
-			.attr("dy", ".31em")
-			.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
-			.style("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-            .text(function(d) { return d.key; })
-        .style("stroke",function(d) { return colorgen_radial_lp(d.num_messages); })
-			.on("mouseover", mouseovered_lp)
-			.on("mouseout", mouseouted_lp);
-	}
-);
+function createRadialLP(classes)
+{
+	cluster_lp = d3.layout.cluster()
+		.size([360, innerradius_lp])
+		.sort(null)
+		.value(function(d) { return d.size; });
+
+	bundle_lp = d3.layout.bundle();
+
+	line_radial_lp = d3.svg.line.radial()			//Constructs new radial line generator with default radius and angle functions
+		.interpolate("bundle")
+		.tension(.25)
+		.radius(function(d) { return d.y; })
+		.angle(function(d) { return d.x / 180 * Math.PI; });
+
+	svg_radial = d3.select(".radialgraphlp").append("svg")
+		.attr("width", width_lp)
+        .attr("height", height_lp)
+	  	.append("g")				//Appends an element g to svg_radial variable
+		.attr("transform", "translate(" + radius_lp*1  + "," + radius_lp*0.75 + ")");
+
+	link_lp = svg_radial.append("g").selectAll(".link_lp");
+	node_lp = svg_radial.append("g").selectAll(".node_lp");
+
+
+
+	var nodes_lp = cluster_lp.nodes(packageHierarchy_lp(classes,1));
+	var links_lp = packageConnections_lp(nodes_lp);		//links: array of all individual connections
+
+	//		console.log("raw nodes:",nodes);
+	//        console.log("raw links:",links);
+	//        console.log("bundle_lp(links_lp):",bundle_lp(links_lp));
+	link_lp = link_lp
+		.data(bundle_lp(links_lp))
+		.enter().append("path")
+		.each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
+		.attr("class", "link_lp")
+		.attr("d", line_radial_lp)
+		.style("stroke",function(d) {
+				return colorgen_radial_lp_links(d.source.messages[d.source.connections.indexOf(d.target.name)]);
+			})
+
+	node_lp = node_lp
+		.data(nodes_lp.filter(function(n) { return !n.children; }))
+		.enter().append("text")
+		.attr("class", "node_lp")
+		.attr("dy", ".31em")
+		.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
+		.style("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+		.text(function(d) { return d.key; })
+		.style("stroke",function(d) { return colorgen_radial_lp(d.num_messages); })
+		.on("mouseover", mouseovered_lp)
+		.on("mouseout", mouseouted_lp);
+}
+
+
+function recreateRadialLP(classes)
+{
+	delete link_lp;
+	delete node_lp;
+	delete cluster_lp;
+	delete bundle_lp;
+	delete line_radial_lp;
+	delete svg_radial_lp;
+    d3.select(".radialgraphlp").selectAll("svg").remove();
+
+	cluster_lp = d3.layout.cluster()
+		.size([360, innerradius_lp])
+		.sort(null)
+		.value(function(d) { return d.size; });
+
+	bundle_lp = d3.layout.bundle();
+
+	line_radial_lp = d3.svg.line.radial()			//Constructs new radial line generator with default radius and angle functions
+		.interpolate("bundle")
+		.tension(.25)
+		.radius(function(d) { return d.y; })
+		.angle(function(d) { return d.x / 180 * Math.PI; });
+
+	svg_radial = d3.select(".radialgraphlp").append("svg")
+		.attr("width", width_lp)
+        .attr("height", height_lp)
+	  	.append("g")				//Appends an element g to svg_radial variable
+		.attr("transform", "translate(" + radius_lp*1  + "," + radius_lp*0.75 + ")");
+
+	link_lp = svg_radial.append("g").selectAll(".link_lp");
+	node_lp = svg_radial.append("g").selectAll(".node_lp");
+
+
+
+	var nodes_lp = cluster_lp.nodes(packageHierarchy_lp(classes,0));
+	var links_lp = packageConnections_lp(nodes_lp);		//links: array of all individual connections
+
+	//		console.log("raw nodes:",nodes);
+	//        console.log("raw links:",links);
+	//        console.log("bundle_lp(links_lp):",bundle_lp(links_lp));
+	link_lp = link_lp
+		.data(bundle_lp(links_lp))
+		.enter().append("path")
+		.each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
+		.attr("class", "link_lp")
+		.attr("d", line_radial_lp)
+		.style("stroke",function(d) {
+				return colorgen_radial_lp_links(d.source.messages[d.source.connections.indexOf(d.target.name)]);
+			})
+
+	node_lp = node_lp
+		.data(nodes_lp.filter(function(n) { return !n.children; }))
+		.enter().append("text")
+		.attr("class", "node_lp")
+		.attr("dy", ".31em")
+		.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
+		.style("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+		.text(function(d) { return d.key; })
+		.style("stroke",function(d) { return colorgen_radial_lp(d.num_messages); })
+		.on("mouseover", mouseovered_lp)
+		.on("mouseout", mouseouted_lp);
+}
 
 function mouseovered_lp(d)
 {
@@ -123,48 +181,87 @@ function mouseouted_lp(d)
 
 // Lazily construct the package hierarchy from class names.
 // Somewhere in here we need to sum all num_messages counts for each LP so each node has a total_num_messages count transfered.
-function packageHierarchy_lp(classes)
+function packageHierarchy_lp(classes,initial)
 {
-	var map = {};
-
+	var map = {};		//Create blank object
 	function find(name, data) 
 	{
-//console.log("###################################");
-//console.log("name:",name);
-//console.log("data:",data);
-		var node = map[name];
-//console.log("node1:",node);
-		var i;
-		if (!node) //IF node for given name currently does not exist in our map then create it
-		{
-//            console.log("-----no node in map");
-			node = map[name] = data || {name: name, children: []};
-//console.log("node2:",node);
-//console.log("map1:",map);
-//console.log("name.length:",name.length);
-			if (name.length) 
+		var lp_id = name.replace( /^\D+/g, ''); // replace all leading non-digits with nothing
+		var pe_id = Math.floor(lp_id/Math.ceil(num_lp/num_pe));
+		if(selected_pes_array[pe_id] != -1)
+        {
+			var node = map[name];	//Check if name is in our map and assign it to variable "node"
+			var i;
+			if (!node) //IF node for given name currently does not exist in our map then create it
 			{
-				node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
-				node.parent.children.push(node);
-				node.key = name.substring(i + 1);
-                node.messages = [];
-                node.messages[0] = data.num_messages;
+				node = map[name] = data || {name: name, children: []};
+				if (name.length) 
+				{
+					if(!initial)
+					{
+						delete map[name].connections;
+						delete node.connections;
+						map[name].connections = [];
+						node.connections = [];
+                        
+						for (var ii = 0; ii < selected_pes.length; ii++){
+							if(data.connections[0])
+							{
+                                var tempnum = data.connections[0].replace( /^\D+/g, ''); // replace all leading non-digits with nothing
+                                var tempnum1 = Math.floor(tempnum/Math.ceil(num_lp/num_pe)); //convert to PE ID
+								var tempnum2 = selected_pes[ii].key.replace( /^\D+/g, ''); // replace all leading non-digits with nothing
+                                console.log("tempnum1",tempnum1,"tempnum2",tempnum2);
+								if(tempnum1 == tempnum2)
+								{
+					        		node.connections.push.apply(node.connections,data.connections);
+						    		node.messages.push(data.num_messages);
+						    		node.num_messages += data.num_messages;
+								}
+							}
+						}
+					}
+
+
+					node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
+					node.parent.children.push(node);
+					node.key = name.substring(i + 1);
+		            node.messages = [];
+		            node.messages[0] = data.num_messages;
+				}
 			}
-		}
-		else //If a node for given name currently exists in our map
-		{
-//console.log("-----Node found in map");
-//console.log("name.length:",name.length);
-			if(name.length)
+			else //If a node for given name currently exists in our map
 			{
-				node.connections.push.apply(node.connections,data.connections);
-                node.messages.push(data.num_messages);
-                node.num_messages += data.num_messages;
+				if(name.length)
+                {
+                    if(initial)
+                    {
+                        node.connections.push.apply(node.connections,data.connections);
+                        node.messages.push(data.num_messages);
+                        node.num_messages += data.num_messages;
+                    }
+                    else
+                    {
+                        for (var ii = 0; ii < selected_pes.length; ii++){
+                            if(data.connections[0])
+                            {
+                                var tempnum = data.connections[0].replace( /^\D+/g, ''); // replace all leading non-digits with nothing
+                                var tempnum1 = Math.floor(tempnum/Math.ceil(num_lp/num_pe)); //convert to PE ID
+                                var tempnum2 = selected_pes[ii].key.replace( /^\D+/g, ''); // replace all leading non-digits with nothing
+                                console.log("tempnum1",tempnum1,"tempnum2",tempnum2);
+                                if(tempnum1 == tempnum2)
+                                {
+                                    node.connections.push.apply(node.connections,data.connections);
+                                    node.messages.push(data.num_messages);
+                                    node.num_messages += data.num_messages;
+                                }
+                            }
+                        }
+                    }
+
+				}
 			}
-//console.log("-----------here");
+			return node;
 		}
-//console.log("node3:",node);
-		return node;
 	}
 
 	classes.forEach(
