@@ -509,7 +509,8 @@
             .attr("id", "radialpe_tool")
             .style("display", "none");
 
-        radialpe_div.html("TODO add in the help text" +
+        radialpe_div.html("This shows the event transfers between all PEs in the simulation for a given event metric. Color intensity for labels and links indicates activity. Darker PE labels indicate more events processed on the given PE. Darker links indicate more events transfered between the two PEs. Selections made in the LP Selector View are updated in this view to show the selected PEs." +
+            "<br/><br/>Hovering over labels highlights the given PE's links" +
         "<br/><br/>Click the Help button again to make this disappear.");
         var radialpe_click = 0;
 
@@ -529,7 +530,8 @@
             .attr("id", "radiallp_tool")
             .style("display", "none");
 
-        radiallp_div.html("TODO add in the help text" +
+        radiallp_div.html("This shows the event transfers between all LPs in the simulation for a given event metric. Color intensity for labels and links indicates activity. Darker LP labels indicate more events processed on the given LP. Darker links indicate more events transfered between the two LPs. Selections made in the LP Selector View are updated in this view to show the selected LPs." +
+            "<br/><br/>Hovering over labels highlights the given LP's links" +
         "<br/><br/>Click the Help button again to make this disappear.");
         var radiallp_click = 0;
 
