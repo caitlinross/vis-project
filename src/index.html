@@ -305,12 +305,15 @@
     </div>
     <div class="settings">
         <h2>Settings</h2>
-        <p>LP Bundle Tension:
+        <p> LP Bundle Tension:
         <input type="range" min="0" max="100" value="25" step="1" onchange="showValue(this.value)" />
         <span id="range">35</span>
-        <p>PE Bundle Tension:
+        <p> PE Bundle Tension:
         <input type="range" min="0" max="100" value="25" step="1" onchange="showValuePE(this.value)" />
         <span id="rangePE">35</span>
+        <p> Event Type</p>
+        <input name="router_forward_event_select" type="button" value="Router Send Forward" onclick="metric_select(this.value)" />
+        <input name="router_reverse_event_select" type="button" value="Router Send Reverse" onclick="metric_select(this.value)" />
     </div>
 
     <script src="http://d3js.org/d3.v3.js"></script>
@@ -323,6 +326,10 @@
         var num_pe = 16;
         var tension_lp = .35;
         var tension_pe = .35;
+        var filename_pe = "data/slimfly-processed/RSF-log-connections-pe.json";
+        var filename_lp = "data/slimfly-processed/RSF-log-connections-lp.json";
+        var filename_time = "data/slimfly-processed/RSF-log-pe.txt";
+        var filename_lpsel = "data/slimfly-processed/RSF-log-lp.txt";
 
         /**** allpc.js ****/
 
@@ -332,7 +339,7 @@
 			selected_pes_array[i] = 1;
 		}
 		var radial_pe_data;
-		d3.json("data/slimfly-processed/RSF-log-connections-pe.json",
+		d3.json(filename_pe,
 			function(error, classes) 
 			{
 		//	console.log("classes:",classes);
@@ -343,7 +350,7 @@
 		);
         /**** grid.js ****/
 		var radial_lp_data;
-		d3.json("data/slimfly-processed/RSF-log-connections-lp.json",
+		d3.json(filename_lp,
 			function(error, classes) 
 			{
 				if (error) throw error;
@@ -365,7 +372,7 @@
         /* read in 2d GVT x LP metric data */
         var lp_data;
         var pe_data;
-        d3.csv("data/slimfly-processed/RSF-log-pe.txt", function(data){
+        d3.csv(filename_time, function(data){
         //d3.csv("data/matrix.csv", function(data){
             // all calls to use this data should go in here
             pe_data = data;
@@ -486,6 +493,39 @@
             document.getElementById("rangePE").innerHTML=newValue;
             tension_pe = newValue/100;
             recreateRadialPE(radial_pe_data);
+        }
+        function metric_select(event_type)
+        {
+            if(event_type == "Router Send Forward")
+            {
+                var filename_pe = "data/slimfly-processed/RSF-log-connections-pe.json";
+                var filename_lp = "data/slimfly-processed/RSF-log-connections-lp.json";
+                var filename_time = "data/slimfly-processed/RSF-log-pe.txt";
+                var filename_lpsel = "data/slimfly-processed/RSF-log-lp.txt";
+            }
+            if(event_type == "Router Send Reverse")
+            {
+                var filename_pe = "data/slimfly-processed/RSR-log-connections-pe.json";
+                var filename_lp = "data/slimfly-processed/RSR-log-connections-lp.json";
+                var filename_time = "data/slimfly-processed/RSR-log-pe.txt";
+                var filename_lpsel = "data/slimfly-processed/RSR-log-lp.txt";
+            }
+            d3.json(filename_pe,
+                function(error, classes)
+                {
+                    if (error) throw error;
+                    radial_pe_data = classes;
+                    recreateRadialPE(radial_pe_data);
+                    }
+            );
+            d3.json(filename_lp,
+                function(error, classes)
+                {
+                    if (error) throw error;
+                    radial_lp_data = classes;
+                    recreateRadialLP(radial_lp_data);
+                }
+            );
         }
     
 

@@ -37,7 +37,6 @@ function createRadialLP(classes)
 		.value(function(d) { return d.size; });
 
 	bundle_lp = d3.layout.bundle();
-    console.log("tension_lp",tension_lp);
 	line_radial_lp = d3.svg.line.radial()			//Constructs new radial line generator with default radius and angle functions
 		.interpolate("bundle")
 		.tension(tension_lp)
