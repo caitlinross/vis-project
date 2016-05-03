@@ -70,7 +70,7 @@ int main(int argc, char **argv)
     int num_pes = 16;
     int num_lps = 200;
     int num_metrics = 10;
-	int selected_metric = 0;			//0:RSF,1:RSR,2:RRF,3:RRR,6:TGF,7:TGR,8:TSF,9:TSR,10:TRF,11:TRR
+	int selected_metric = atoi(argv[1]);			//0:RSF,1:RSR,2:RRF,3:RRR,6:TGF,7:TGR,8:TSF,9:TSR,10:TRF,11:TRR
     int ***data = calloc(num_lps, sizeof(int**));
     int ***data2 = calloc(num_pes, sizeof(int**));
     int ***data3 = calloc(num_pes, sizeof(int**));
@@ -108,11 +108,7 @@ int main(int argc, char **argv)
             data4[i][j] = calloc(gvt_count, sizeof(int));
         }
     }
-    //int data[num_lps][gvt_count][num_metrics];	//LP data
-	//int data2[num_pes][gvt_count][num_metrics];	//PE data
-	//int data3[num_pes][num_pes][gvt_count];		//PE connection data for one metric
-    //int data4[num_lps][num_lps][gvt_count];		//PE connection data for one metric
-    //printf("poop\n");
+    printf("poop\n");
     printf("num_lps:%d gvt_count:%d\n",num_lps,gvt_count);
     printf("here\n");
 //Loop over all data files
@@ -140,41 +136,16 @@ for(f=0; f<num_pes; f++)
     float temp;
 	int tempx;
 
-	for(i=0;i<num_lps;i++)
-	{
-		for(j=0;j<gvt_count;j++)
-		{
-			for(k=0;k<num_metrics;k++)
-			{
-				data[i][j][k] = 0;
-			}
-		}
-	}
-
     printf("parsing raw event data\n");
 	for(i=0;i<num_events;i++)
 	{
 		read = getline(&line, &len, input_file);
 		pch = strtok (line,",");
 		tempx = atoi(pch);				//src LP ID
-		if(tempx<num_stride_old)
-		{
-			x = (int)ceil(tempx/num_stride_old)*num_stride_new + tempx%num_stride_old - num_stride_new+1;
-		}
-		else
-		{
-			x = (int)floor(tempx/num_stride_old)*num_stride_new + tempx%num_stride_old - num_stride_new+1;
-		}
+        x = tempx - ((tempx/num_stride_old)+1)*3;
 		pch = strtok (NULL,",");
 		temp_dst = atoi(pch);			//destination LP ID
-		if(temp_dst<num_stride_old)
-		{
-			dst = (int)ceil(temp_dst/num_stride_old)*num_stride_new + temp_dst%num_stride_old - num_stride_new+1;
-		}
-		else
-		{
-			dst = (int)floor(temp_dst/num_stride_old)*num_stride_new + temp_dst%num_stride_old - num_stride_new+1;
-		}
+        dst = temp_dst - ((temp_dst/num_stride_old)+1)*3;
 		pch = strtok (NULL,",");
 		z = atoi(pch);				//event type
 		pch = strtok (NULL,",");
@@ -194,9 +165,8 @@ for(f=0; f<num_pes; f++)
 
 		if(z!=9 && dst >= 0)
 		{
-		    data[x][y][z]+=1;            //increment associated metric
-			data2[x2][y][z]+=1;
-		    data4[x][dst][y]+=1;
+		    data[x][y][z]++;            //increment associated metric
+			data2[x2][y][z]++;
 		
 			if(data[x][y][z] > 100)
 				printf("data[%d][%d][%d]:%d\n",x,y,z,data[x][y][z]);
@@ -209,7 +179,8 @@ for(f=0; f<num_pes; f++)
 						printf("data[%d][%d][%d]:%d\n",x,y,z,data[x][y][z]);
 					}
 				}
-	*/			data3[x2][dst2][y]+=1;			//increment number of messages transfered on the connection for given gvt bin
+	*/			data3[x2][dst2][y]++;			//increment number of messages transfered on the connection for given gvt bin
+                data4[x][dst][y]++;  //pretty sure this belongs here too
 			}
 		}
 //        printf("file:%d i:%d j:%d oldx:%d x2:%d x:%d y:%d z:%d data:%d\n",f,i,j,tempx,(int)floor(x/(int)ceil(num_lps/num_pes)),x,y,z,data[x][y][z]);
@@ -260,14 +231,14 @@ for(f=0; f<num_pes; f++)
 		fprintf(output_file_pe,"%6.6f,",gvt[i]);
 		for(j=0;j<num_lps-1;j++)
 		{
-			fprintf(output_file_lp,"%2d,",data[j][i][selected_metric]);
+			fprintf(output_file_lp,"%d,",data[j][i][selected_metric]);
 		}
-		fprintf(output_file_lp,"%2d\n",data[num_lps-1][i][selected_metric]);
+		fprintf(output_file_lp,"%d\n",data[num_lps-1][i][selected_metric]);
 		for(j=0;j<num_pes-1;j++)
 		{
-			fprintf(output_file_pe,"%2d,",data2[j][i][selected_metric]);
+			fprintf(output_file_pe,"%d,",data2[j][i][selected_metric]);
 		}
-		fprintf(output_file_pe,"%2d\n",data2[num_pes-1][i][selected_metric]);
+		fprintf(output_file_pe,"%d\n",data2[num_pes-1][i][selected_metric]);
 	}
 
 	fclose(output_file_lp);
