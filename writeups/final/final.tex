@@ -1,0 +1,323 @@
+% This is "sig-alternate.tex" V2.1 April 2013
+% This file should be compiled with V2.5 of "sig-alternate.cls" May 2012
+%
+% This example file demonstrates the use of the 'sig-alternate.cls'
+% V2.5 LaTeX2e document class file. It is for those submitting
+% articles to ACM Conference Proceedings WHO DO NOT WISH TO
+% STRICTLY ADHERE TO THE SIGS (PUBS-BOARD-ENDORSED) STYLE.
+% The 'sig-alternate.cls' file will produce a similar-looking,
+% albeit, 'tighter' paper resulting in, invariably, fewer pages.
+%
+% ----------------------------------------------------------------------------------------------------------------
+% This .tex file (and associated .cls V2.5) produces:
+%       1) The Permission Statement
+%       2) The Conference (location) Info information
+%       3) The Copyright Line with ACM data
+%       4) NO page numbers
+%
+% as against the acm_proc_article-sp.cls file which
+% DOES NOT produce 1) thru' 3) above.
+%
+% Using 'sig-alternate.cls' you have control, however, from within
+% the source .tex file, over both the CopyrightYear
+% (defaulted to 200X) and the ACM Copyright Data
+% (defaulted to X-XXXXX-XX-X/XX/XX).
+% e.g.
+% \CopyrightYear{2007} will cause 2007 to appear in the copyright line.
+% \crdata{0-12345-67-8/90/12} will cause 0-12345-67-8/90/12 to appear in the copyright line.
+%
+% ---------------------------------------------------------------------------------------------------------------
+% This .tex source is an example which *does* use
+% the .bib file (from which the .bbl file % is produced).
+% REMEMBER HOWEVER: After having produced the .bbl file,
+% and prior to final submission, you *NEED* to 'insert'
+% your .bbl file into your source .tex file so as to provide
+% ONE 'self-contained' source file.
+%
+% ================= IF YOU HAVE QUESTIONS =======================
+% Questions regarding the SIGS styles, SIGS policies and
+% procedures, Conferences etc. should be sent to
+% Adrienne Griscti (griscti@acm.org)
+%
+% Technical questions _only_ to
+% Gerald Murray (murray@hq.acm.org)
+% ===============================================================
+%
+% For tracking purposes - this is V2.0 - May 2012
+
+\documentclass{acm_proc_article-sp}
+\usepackage{color}
+
+\begin{document}
+
+% Copyright
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\setcopyright{usgov}
+%\setcopyright{usgovmixed}
+%\setcopyright{cagov}
+%\setcopyright{cagovmixed}
+
+
+% --- End of Author Metadata ---
+
+\title{Final Project: Visualizing Simulation-level Metrics of Parallel Discrete-Event Simulations}
+%\subtitle{[Extended Abstract]
+%
+% You need the command \numberofauthors to handle the 'placement
+% and alignment' of the authors beneath the title.
+%
+% For aesthetic reasons, we recommend 'three authors at a time'
+% i.e. three 'name/affiliation blocks' be placed beneath the title.
+%
+% NOTE: You are NOT restricted in how many 'rows' of
+% "name/affiliations" may appear. We just ask that you restrict
+% the number of 'columns' to three.
+%
+% Because of the available 'opening page real-estate'
+% we ask you to refrain from putting more than six authors
+% (two rows with three columns) beneath the article title.
+% More than six makes the first-page appear very cluttered indeed.
+%
+% Use the \alignauthor commands to handle the names
+% and affiliations for an 'aesthetic maximum' of six authors.
+% Add names, affiliations, addresses for
+% the seventh etc. author(s) as the argument for the
+% \additionalauthors command.
+% These 'additional authors' will be output/set for you
+% without further effort on your part as the last section in
+% the body of your article BEFORE References or any Appendices.
+
+\numberofauthors{1} %  in this sample file, there are a *total*
+% of EIGHT authors. SIX appear on the 'first-page' (for formatting
+% reasons) and the remaining two appear in the \additionalauthors section.
+%
+\author{
+% You can go ahead and credit any number of authors here,
+% e.g. one 'row of three' or two rows (consisting of one row of three
+% and a second row of one, two or three).
+%
+% The command \alignauthor (no curly braces needed) should
+% precede each author name, affiliation/snail-mail address and
+% e-mail address. Additionally, tag each line of
+% affiliation/address with \affaddr, and tag the
+% e-mail address with \email.
+%
+% 1st. author
+\alignauthor
+Caitlin Ross, Noah Wolfe\\
+       \affaddr{Computer Science Department \\ Rensselaer Polytechnic Institute}\\
+       \email{(rossc3, wolfen) @rpi.edu}
+% 2nd. author
+}
+% There's nothing stopping you putting the seventh, eighth, etc.
+% author on the opening page (as the 'third row') but we ask,
+% for aesthetic reasons that you place these 'additional authors'
+% in the \additional authors block, viz.
+%\additionalauthors{Additional authors: John Smith (The Th{\o}rv{\"a}ld Group,
+%email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
+%(The Kumquat Consortium, email: {\texttt{jpkumquat@consortium.net}}).}
+\date{30 July 1999}
+% Just remember to make sure that the TOTAL number of authors
+% is the number that will appear on the first page PLUS the
+% number that will appear in the \additionalauthors section.
+
+\maketitle
+%\begin{abstract}
+%
+%\end{abstract}
+%
+
+%
+% The code below should be generated by the tool at
+% http://dl.acm.org/ccs.cfm
+% Please copy and paste the code instead of the example below. 
+%
+
+
+%
+% End generated code
+%
+
+%
+%  Use this command to print the description
+%
+%\printccsdesc
+
+% We no longer use \terms command
+%\terms{Theory}
+
+%\keywords{ACM proceedings; \LaTeX; text tagging}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% From the proposal
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+In our research, we develop simulations that use the Rensselaer Optimistic Simulation System (ROSS).  ROSS is a massively parallel discrete-event simulator (PDES) that can process billions of events per second \cite{Holder}, \cite{Bauer}.  With event-driven simulation, there are logical processes (LPs) that represents entities being simulated (e.g., a router in a network). LPs communicate with each other through the exchange of timestamped events/messages.  For parallel execution, the LPs are mapped to the different processing elements (PEs). We use an optimistic parallel protocol for our ROSS simulations.  In optimistic execution, PEs process their assigned events without global synchronization with other PEs.  When a LP determines that it has processed an event out of timestamp order, it rolls back events in order to re-execute the events in the correct order.
+\color{red} TODO make sure everything is explained: GVT, KP, etc \color{black}
+
+There have been many different models developed using ROSS, but here we focus on the Dragonfly and Slim Fly network models. These models simulate large-scale supercomputing interconnection networks using synthetic workloads and following model specific routing algorithms. Both of these models have been shown to scale up to simulate million node supercomputing networks, and as a result, generate a large collection of simulation data that is too big to currently analyze and make sense of using simple traditional visualization approaches like Matlab. The Slim Fly and Dragonfly networks are similar in router connections and layout but yet achieve different levels of performance as discrete-event simulations. With the help of a new interactive visualization interface, users will be able dive into the large amount of generated discrete-event data to understand the underlying model execution and give insight into the bottlenecks to allow for performance improvements. 
+\color{red} TODO cite dragonfly and slim fly papers \color{black}
+
+Our target audience for these visualizations is PDES developers, especially anyone doing their development with ROSS.  The research questions we want to be answered by our visualization are:
+\begin{itemize}
+\item \textbf{How can we boost the performance of the simulation?} The visualization should help to highlight areas where improvement is needed to boost performance. The visualization should provide insight into the execution of the simulation and allow the user to pinpoint performance bottlenecks that have previously been hidden in the large amount of event data created during discrete event simulations. \textbf{Hypothesis:} One of the major negative factors that can cause a decrease in optimistic discrete-event execution is rollbacks. We suspect the biggest improvements to performance will be from optimizing the batch and gvt-interval parameters to minimize the rollbacks at all cost.
+\item  \textbf{How does the performance of the dragonfly and slim fly models differ?}  For this question, the visualization should show which simulation-level statistics are associated with these performance differences. From a high-level model implementation perspective, we know that the different models differ in router layout and mapping of LPs to PEs, but in the lower level discrete-event simulation perspective very little is known. The visualization should provide insight into the differences relating to event computation and transmission. \textbf{Hypothesis:} We believe that the major difference between the models is the number of remote events sent and received per PE and we expect the non-uniform mapping of the Dragonfly to force it's LPs to send and receive more remote events.
+\end{itemize}
+
+This project is the first steps of a larger visualization project our research group is working on.  Eventually we want to enable in situ visualization for large-scale optimistic PDES.  The complexity and scale of the simulations makes this difficult, so we are focusing first on post-hoc analysis.  Our project for this class focuses on post-hoc analysis of smaller scale Slim Fly models in order to determine effective ways to visualize the results.   Then we can build on this project to scale up.
+
+
+\section{Data Collection}
+We originally planned to use some new data collection added to ROSS to collect data for our visualizations, but we realized we needed more detailed event data. We are still collecting simulation level data, however, now we're collecting the data directly from the Slim Fly model, instead of ROSS itself.  Because of this, we've decided to limit to just the number of forward and reverse events, since we can collect this easily from the model.  In the future, we can provide hooks into ROSS to collect this data as well as other metrics directly from ROSS.  So now we are collecting data on the specific events that are sent between LPs (logical processes, or in other words the simulation entities) in the simulation, recording the source and destination LPs, the timestamp, and the type of event.   The data is collected on a LP basis and all of the data for LPs on a given PE can be combined to visualize the data on a PE basis.  
+
+\color{red} TODO need to update (this is from prog report 2) \color{black}
+We also wrote scripts to do some post-processing on this data that will be uploaded into our visualization interface.  We have two files.  One that stores the values for a given metric (e.g., number of forward events) for each LP.  These are aggregated into bins based on the GVT (Global Virtual Time) computations done during the simulation.  This file will be used for two of the visualization components. The other file stores the number of events per each PE pair for each GVT.  This file will be used for creating the radial diagram.
+
+%%% following paragraph pulled from prog report 1; Do we want to keep any of this?
+\color{red}
+So far, we have spent the majority of our time generating and formatting our ever-increasing database consisting of Slim Fly and Dragonfly network simulation performance results. We have decided to make use of multiple hardware systems we have available, including RPI's IBM Blue Gene/Q supercomputer and a smaller 64-core AMD workstation. Each simulation collects the discrete event simulation performance metrics on a per-process basis throughout the simulated time. The collected metrics include rollbacks, remote events, etc. In addition to the temporal information collected throughout the simulation, we are also collecting total runtime results such as execution time and event efficiency. Right now we are waiting on 720 simulation executions to complete and are expecting the simulations to take over 30 hours to execute and to generate multiple GBs of data. The simulations span varying Slim Fly and Dragonfly model sizes (i.e. small, medium and large networks of routers and compute nodes) as well as varying Global Virtual Time (GVT), batch size, and nKP simulation input parameters in order to arrive at a thorough understanding of the underlying computational structure of the network simulations. 
+\color{black}
+
+
+\section{User Interface}
+We have developed an interface available on the web using the D3.js library.  It's hosted at https://caitlinross.github.io/vis-project/src.  In this section, we first describe our original interface plan.  Then we discuss the actual interface and changes we had to make from the original plan.  
+\begin{figure*}[t]
+\centering
+   \includegraphics[width=6.5in, clip=true, trim=0 1in 0 0]{../../figures/gui-diagram/Slide1.png}
+\caption{Model View}
+\label{model-view}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+   \includegraphics[width=6.5in, clip=true, trim=0 1in 0 0]{../../figures/gui-diagram/Slide2.png}
+\caption{ROSS View}
+\label{ross-view}
+\end{figure*}
+\subsection{Original Plan}
+We planned for our interface to have two main views: a Model View and a ROSS View.  For both views, there is a settings area on the right side of the screen.  Here a file can be selected to load in the data.  You can also choose from a drop down box which statistic to view data for.  Then the user can select either of the two views.  Below that is an export settings area.  We haven't decided on the final settings to be allowed, but we plan to allow the user to export the entire workspace (i.e., all four graphs) as an image as well as the ability to save each graph as its own image file.  
+
+The workspace of the GUI contains four different interactive visualizations that change depending on whether the Model View or the ROSS View is chosen.  This part of the interface was inspired by Cheng et al.~\cite{cheng}.  In their paper, they describe an interactive interface that visualizes only the network traffic over a 5D torus network and not the traffic/interaction of the underlying simulation system.  They have a radial diagram that shows network traffic, a parallel coordinates graph to allow for node selection, and a stream graph which shows some property of the network over time as a streamgraph.  The streamgraph also allows the user to select a point in time which updates the view in the radial diagram.  Similarly nodes can be selected in the parallel coordinates to update the radial diagram.
+
+For the Model View, which is shown in Figure~\ref{model-view}, we have a radial diagram in the upper left corner of the workspace.  This will have routers placed on the circle, with edges representing the links between routers.  Currently the red edges show global connections among the routers, while the blue edges show local connections.  For the actual interface, we have two ideas we are considering for the edge colors.  One way is to keep the different colors for the two different connections and vary the saturation of the color based on the values of the statistic being measured.  The other way is to use the same sequential color scheme for both types of links.  In the ROSS view, shown in Figure~\ref{ross-view}, the PEs will be placed on the circle, with connections between PEs representing the communication between PEs during simulation.  Based on the mappings of LPs to PEs in both network models, it is possible for any PE to communicate with all other PEs, but we will use a similar color scheme as what is used in the Model View.  Particularly for large-scale runs (for either the ROSS or Model views), we will probably need to use hierarchical edge bundling~\cite{jia} in order to make the diagram easier to read and understand.  
+
+The LP selector is shown in the bottom right of the workspace area.  This is a parallel coordinates graph.  For the Model View, the axes are for groups, routers, terminals, and the chosen statistic.  For the ROSS view, the axes are PEs, KPs, LPs, and the chosen statistic.  We are also considering having additional axes shown for all statistics that are being measured, in order to provide additional context.  Brushing~\cite{hauser} can be used on the axes to select a subset of the data, which will also update the routers/PEs being shown in the radial view.  
+
+We will also have a time selector, shown in the bottom left corner of the workspace, although we are currently planning to use line graphs instead of streamgraphs used in~\cite{cheng}.  The statistic being viewed can be selected in settings and will contain data for all of the LPs.  This graph should look similar for both the Model and ROSS views.  The data shown on this graph can also be updated based on the choices made in the LP Selector graph. Also, this time selector graph will allow the user to select specific time periods of the simulation to focus in on any anomalies or interesting time periods. After selecting a time period, the information in all three other graphs will adjust according to the data within the new time period. 
+
+Finally, we have a fourth visualization, which is placed in the upper right corner of the workspace.  This allows for viewing some aspects of the data in more detail.  In the Model View, this is a grid of terminals that are connected to the routers.  The terminals will be colored as a heat map based on the values of the statistic being viewed. For example, if the statistic selected is remote events, then each block representing a terminal will be rendered with a cool color if that termal has little remote events and a hot color if it has many remote events. Also, when one or more routers are selected in either the radial or parallel coordinates views, the corresponding terminals connected to those routers will be highlighted in this grid view using a thicker boarder. For the ROSS View, squares in the grid can represent either terminals or routers, which will be separated by a thicker border (as seen in Figure~\ref{ross-view}).  The terminals and/or routers shown here can be updated by all of the previously described visualizations in order to be able to view only certain entities.  
+
+\subsection{Intermediate Progress}
+\color{red}TODO add in image from slides and some description\color{black}
+% from progress report 2
+The other change we plan to make is based on an example we found on the D3 examples pages.  Figure \ref{ross-view} shows the original interface.  The change we are making is to the LP View in the top right.  As seen in the figure, we planned to create a grid showing the LPs that would be a heat map based on the values of whatever metric we're viewing.  Now we plan to do something like this: https://github.com/marmelab/EventDrops.  We would modify this so that each row is an LP belonging to the selected PE (processing element).  Simulated time would replace the actual time in the example.  Then you could zoom in and out on the simulated time and see where events fall over time.
+
+
+\begin{figure*}[t]
+\centering
+   \includegraphics[width=6.5in]{actual-vis.png}
+\caption{Full Visualization Interface}
+\label{actual-vis}
+\end{figure*}
+
+\subsection{Actual Visualization}
+\color{red} TODO images of individual components to better see each piece? \color{black}
+Our final visualization interface is shown in Figure \ref{actual-vis}.  This section describes the layout and functionality, as well as changes made from our original plan.  We realized that our original plans were very ambitious for a short-term project, so we have decided to focus on only the ROSS view described previously (instead of the Model View).  In the future, we can extend this to integrate model-level statistics.  
+
+The first problem we noticed with our visualization is that it would be really tedious to have to manually select and load data for each simulation run.  Because of the the different number of simulation parameters that can be changed, this can result in many different runs being made.  This large number of runs presents us with another higher-level data selection layer that we hadn't initially taken into account.  In response to this, we have decided to generate another parallel coordinates graph at the top of the visualization layout. This parallel coordinates graph will present the high-level results such as runtime and efficiency for all simulation runs and allow the user to select one run. Currently, this is showing randomly generated data, since we decided to focus on only one slim fly run.  In the future, we will update this with actual simulation data and allow the user to make a selection of one run. After selection, the  detailed results for that run will be displayed in the other four panels.
+
+Radial View
+
+LP View
+
+The time selector was developed as originally planned, except we decided to group the LPs by their PEs.  Since there are 200 LPs, it was difficult to read.  Even with 16 PEs in the data set we used, it is still difficult to see all of the lines at once.  However, you can see peaks in the graphs and use that to determine what GVT you want to look at.  You can click on the x-axis to make your GVT selection.  A red dot will be placed on that point and the selected GVT will be shown in the Selection Information Panel on the right.  We wanted to make the time selection update both radial views, but we ran out of time to fully implement that feature.  The time selector also allows the user to zoom in and out as well as pan across the graph.  To allow this feature to work smoothly, we had to bin the data for the individual GVTs into 500 bins.  At the top of the graph there is a reset button that allows the user to view the full simulation again.
+
+The LP selector is also similar to the original plan, except that we do not show the kernel processes (KP) that each LP is assigned to.  The component allows the user to make selections on any subset of the axes to choose which specific LPs and PEs they want to view data for.  This updates the Time Selector Panel by lowering the opacity of the lines for any PE that is not selected.  This also updates which PEs and LPs are shown in each of the radial views.  It works well for the PE view, however there is some issue with the LP view and it only works if LP\_0 and PE\_0 are chosen.  This component also contains a reset button that allows all of the LP/PE selections to be easily undone.  
+
+The Selection Information Panel currently shows the selected GVT (or specifies the Full Simulation if no time has been chosen).  It also shows the list of PEs that have been selected.  We considered adding the list of LPs, but this probably would not be useful, especially as simulations scale up in the number of LPs.  An idea for some other potentially useful information we  display here could be the top 5 busiest links.
+
+The Settings panel currently has slider bars that allows the user to change the bundle tension for each radial view.  There are also buttons that allow you to toggle which metric you want to view.  Currently we have only the forward and reverse events for router LP sends enabled.  Next we plan to enable viewing of the other event types collected.  We may also convert this to using check boxes, so that the user can combine results for different event types.  For example, if the user wants to see how the status of the full simulation for all forward events regardless of type, the user could select all of the forward event types (i.e., router sends, terminal sends).  
+
+
+
+\section{Timeline}
+Our original timeline for this project is as follows:
+\begin{itemize}
+\item Finish development of the ROSS statistics collection
+\item Perform runs of network models with statistics collection enabled
+\item Create the GUI, focusing first on the radial view and the LP selector
+\item Add the time selector and Terminal/Router grid
+\item Integrate all views to perform automatic updates upon selection changes in any one view
+\item Solicit feedback from advisor on the level of interaction and insight available in the visualization
+\item Implement/adjust/revise implementation based on the analysis in the previous step
+\item Finalize report and presentation
+\end{itemize}
+
+As previously described our data collection method changed several times over the course of the project.  After the first time, we decided to only do one specific simulation run and focus on that until we could be sure that our data collection wouldn't change.  We were able to create all of the visualization views we wanted, as well as incorporate most of the interaction between components.    Our next step is to finish fixing these final pieces (e.g., GVT selection updating the radial views) and then we will look for feedback from our advisor and research group.  
+
+\section{Risks and Limitations}
+There are several risks involved in being able to fully complete the interface we have discussed here.  One is that the collection of stats on the LP basis (as opposed to PEs) may not be finished in time, so that will have a large effect on the final product.  Ideally we'd like to do massively parallel runs on the Blue Gene/Q for data collection for our visualization, so we could run into some issues in dealing with large-scale data collection.  Even if we are unable to get all of the data we are currently anticipating, we believe that we can have enough development done on the visualization interface done in order to produce some helpful visualizations in the time frame of the class project.
+
+One final risk is that neither one of us is particularly experienced with Javascript and we've had some difficulty with certain features of D3 on previous assignments.   This could potentially eat up a lot of time and we may not be able to complete the fully interactive interface.  For this, we plan to get all four visualizations done and try to finish as much of the interactive features between the visualizations as possible.  
+    
+
+\section{Feedback from other students}
+\color{red} TODO add in feedback from one on one demos \color{black}
+
+\section{Prior Work}
+This work is an extension to projects both authors are currently involved with. Caitlin is actively involved with the ROSS discrete-event simulation framework but her work involves development of a model separate from the Slim Fly and Dragonfly network connections. Noah is also involved with ROSS and is the developer behind the Slim Fly network model. Everything done in this course project will be a large extension of prior work. Such complex data collection hasn't been performed in ROSS before and neither has any sort of visualization of that data been done. 
+
+\section{Debugging Visualization}
+\color{red} Could checkout previous commit to show issue in LP radial view where some terminals were connected to multiple LPs instead of just its router and talk about how we realized there was a mistake in our post processing.  Could also talk about how the final vis helps to provide validation for the slim fly model \color{black}
+Feedback from Barb: Description of an intermediate artifact or a component of the final visualization and how it was used to discover/solve a bug/problem or confirm that the project was on track.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% From progress report 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Potential User Study}
+Since the content of our visualization is geared towards a very specific field of research, the user study for our visualization would need to separately test the effectiveness of the interactions and the effectiveness of understanding the data. In order to understand the data, the user will need to either have a background in discrete-event simulations or be willing to sit down for a 15 minute tutorial/lesson on the subject. Those that do not have the necessary background and don't do the tutorial/lesson will only be able to test out the effectiveness of the interactions and data selections. Those with the necessary background can also be tested on how well the visualization conveys the data and how much new insight the visualization provides.
+
+The "un-knowledgeable" group of users would be asked to complete a number of tasks requiring the user to interact with the visualizations to select data. Our visualization has multiple windows presenting different sets of interconnected data and it's important for users to understand the connections between the different windows. A picture has been attached to the post to show the current status of the visualization and the different windows of data. The specific tasks would be along the following:
+
+Select the simulation with the longest runtime. Select PEs (processing elements) 2-27,  LPs (logical processes) 40-45, time slice 67 and tell me which LP has the largest number of message sends.
+For the second group of "knowledgeable" users, we would prefer if they could bring their own data set to see how much new insight can be uncovered but we can also provide our own. These users would be subjected to the same interactive tasks as the "un-knowledgeable" users and in addition, they would be asked a set of qualitative questions that determine if the user is able to easily answer questions that would require copious amounts of time digging through data to answer with out a visualization.
+
+Why is the slowest running simulation running so slow?
+In the run with 256 nodes, why is one node sending so many more messages than it's neighbors?
+
+\section{Division of Work}
+We each worked at least a little bit on all aspects of the project.  Caitlin planned out some working designs and then discussed it with Noah to make edits until we settled on our proposal design.  Since the Slim Fly model was developed by Noah, he set up the data collection (both adding code and performing the runs).  While Noah set up the data collection, Caitlin worked on setting up the layout of the components for the interface.  Caitlin created the All Simulation Data, Time Selector, and LP selector views, while Noah worked on the both of the radial views.  We both did debugging of the post-processing program once we discovered issues with our data.  We also both worked on the various interactive features linking the individual components.  We both worked on the initial proposal writeup as well as this final report and we took turns working on the progress reports.  We both worked on the presentation slides.  
+
+
+%\section{Conclusions}
+
+%\end{document}  % This is where a 'short' article might terminate
+
+%ACKNOWLEDGMENTS are optional
+%\section{Acknowledgments}
+
+%
+% The following two commands are all you need in the
+% initial runs of your .tex file to
+% produce the bibliography for the citations in your paper.
+\bibliographystyle{abbrv}
+\bibliography{final}  % sigproc.bib is the name of the Bibliography in this case
+% You must have a proper ".bib" file
+%  and remember to run:
+% latex bibtex latex latex
+% to resolve all references
+%
+% ACM needs 'a single self-contained file'!
+%
+%APPENDICES are optional
+%\balancecolumns
+
+
+%\balancecolumns % GM June 2007
+% That's all folks!
+\end{document}
