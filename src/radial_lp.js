@@ -180,10 +180,10 @@ function mouseouted_lp(d)
 //d3.select(self.frameElement).style("height_lp", diameter_lp + "px");
 
 // Lazily construct the package hierarchy from class names.
-// Somewhere in here we need to sum all num_messages counts for each LP so each node has a total_num_messages count transfered.
 function packageHierarchy_lp(classes,initial)
 {
 	var map = {};		//Create blank object
+    
 	function find(name, data) 
 	{
 		var lp_id = name.replace( /^\D+/g, ''); // replace all leading non-digits with nothing
@@ -210,7 +210,6 @@ function packageHierarchy_lp(classes,initial)
                                 var tempnum = data.connections[0].replace( /^\D+/g, ''); // replace all leading non-digits with nothing
                                 var tempnum1 = Math.floor(tempnum/Math.ceil(num_lp/num_pe)); //convert to PE ID
 								var tempnum2 = selected_pes[ii].key.replace( /^\D+/g, ''); // replace all leading non-digits with nothing
-                                console.log("tempnum1",tempnum1,"tempnum2",tempnum2);
 								if(tempnum1 == tempnum2)
 								{
 					        		node.connections.push.apply(node.connections,data.connections);
@@ -247,7 +246,6 @@ function packageHierarchy_lp(classes,initial)
                                 var tempnum = data.connections[0].replace( /^\D+/g, ''); // replace all leading non-digits with nothing
                                 var tempnum1 = Math.floor(tempnum/Math.ceil(num_lp/num_pe)); //convert to PE ID
                                 var tempnum2 = selected_pes[ii].key.replace( /^\D+/g, ''); // replace all leading non-digits with nothing
-                                console.log("tempnum1",tempnum1,"tempnum2",tempnum2);
                                 if(tempnum1 == tempnum2)
                                 {
                                     node.connections.push.apply(node.connections,data.connections);
@@ -300,9 +298,7 @@ function packageConnections_lp(nodes)
 				(
 					function(i) 
 					{
-//                 console.log("node name:",d.name,"node connections:",connections,"d connections:",d.connections);
                         connections.push({source: map[d.name], target: map[i]});
-                 
 					}
 				);
 		}
