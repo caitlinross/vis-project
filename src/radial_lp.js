@@ -43,14 +43,14 @@ function createRadialLP(classes)
 		.radius(function(d) { return d.y; })
 		.angle(function(d) { return d.x / 180 * Math.PI; });
 
-	svg_radial = d3.select(".radialgraphlp").append("svg")
+	svg_radial_lp = d3.select(".radialgraphlp").append("svg")
 		.attr("width", width_lp)
         .attr("height", height_lp)
 	  	.append("g")				//Appends an element g to svg_radial variable
 		.attr("transform", "translate(" + radius_lp*1  + "," + radius_lp*0.75 + ")");
 
-	link_lp = svg_radial.append("g").selectAll(".link_lp");
-	node_lp = svg_radial.append("g").selectAll(".node_lp");
+	link_lp = svg_radial_lp.append("g").selectAll(".link_lp");
+	node_lp = svg_radial_lp.append("g").selectAll(".node_lp");
 
 
 
@@ -107,14 +107,14 @@ function recreateRadialLP(classes)
 		.radius(function(d) { return d.y; })
 		.angle(function(d) { return d.x / 180 * Math.PI; });
 
-	svg_radial = d3.select(".radialgraphlp").append("svg")
+	svg_radial_lp = d3.select(".radialgraphlp").append("svg")
 		.attr("width", width_lp)
         .attr("height", height_lp)
 	  	.append("g")				//Appends an element g to svg_radial variable
 		.attr("transform", "translate(" + radius_lp*1  + "," + radius_lp*0.75 + ")");
 
-	link_lp = svg_radial.append("g").selectAll(".link_lp");
-	node_lp = svg_radial.append("g").selectAll(".node_lp");
+	link_lp = svg_radial_lp.append("g").selectAll(".link_lp");
+	node_lp = svg_radial_lp.append("g").selectAll(".node_lp");
 
 
 
