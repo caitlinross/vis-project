@@ -324,7 +324,7 @@
 			selected_pes_array[i] = 1;
 		}
 		var radial_pe_data;
-		d3.json("data/slimfly-processed/forward-send-event-log-connections-pe.json",
+		d3.json("data/slimfly-processed/RSF-log-connections-pe.json",
 			function(error, classes) 
 			{
 		//	console.log("classes:",classes);
@@ -348,7 +348,7 @@
         /* read in 2d GVT x LP metric data */
         var lp_data;
         var pe_data;
-        d3.csv("data/slimfly-processed/forward-send-event-log-pe.txt", function(data){
+        d3.csv("data/slimfly-processed/RSF-log-pe.txt", function(data){
         //d3.csv("data/matrix.csv", function(data){
             // all calls to use this data should go in here
             pe_data = data;
