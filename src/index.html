@@ -376,7 +376,7 @@
         //d3.csv("data/matrix.csv", function(data){
             // all calls to use this data should go in here
             pe_data = data;
-            createTimeGraph(pe_data); 
+            createTimeGraph(pe_data, "Router Send Forward"); 
         });
 
         d3.csv(filename_lpsel, function(data) {
@@ -536,7 +536,7 @@
 		    //d3.csv("data/matrix.csv", function(data){
 		        // all calls to use this data should go in here
 		        pe_data = data;
-		        createTimeGraph(pe_data); 
+		        createTimeGraph(pe_data, event_type); 
 		    });
             
 			d3.select("#lppc").selectAll("svg").remove();

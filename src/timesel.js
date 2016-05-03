@@ -39,7 +39,7 @@ function zoomed() {
 
 var svg;
 
-function createTimeGraph(data) {
+function createTimeGraph(data, selected_metric) {
     color.domain(d3.keys(data[0]).filter(function(key) { return key !== "gvt"; }));
 
     var pe = color.domain().map(function(name) {
@@ -124,7 +124,7 @@ function createTimeGraph(data) {
         .attr("transform", "rotate(-90)")
         .attr("y", (-margin.left) + 10)
         .attr("x", -h1/2)
-        .text("Forward Events");
+        .text(selected_metric);
 
     svg.selectAll("text")
         .style("font", "12px sans-serif");
