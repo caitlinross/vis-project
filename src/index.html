@@ -305,6 +305,12 @@
     </div>
     <div class="settings">
         <h2>Settings</h2>
+        <p>LP Bundle Tension:
+        <input type="range" min="0" max="100" value="25" step="1" onchange="showValue(this.value)" />
+        <span id="range">35</span>
+        <p>PE Bundle Tension:
+        <input type="range" min="0" max="100" value="25" step="1" onchange="showValuePE(this.value)" />
+        <span id="rangePE">35</span>
     </div>
 
     <script src="http://d3js.org/d3.v3.js"></script>
@@ -315,6 +321,8 @@
         var selected_pes = [], selected_lps = [];
         var bin_start_time, bin_end_time, sim_end_time;
         var num_pe = 16;
+        var tension_lp = .35;
+        var tension_pe = .35;
 
         /**** allpc.js ****/
 
@@ -466,6 +474,20 @@
 			recreateRadialPE(radial_pe_data);
 			recreateRadialLP(radial_lp_data);
         }
+        /* setup the Settings info panel */
+        function showValue(newValue)
+        {
+            document.getElementById("range").innerHTML=newValue;
+            tension_lp = newValue/100;
+            recreateRadialLP(radial_lp_data);
+        }
+        function showValuePE(newValue)
+        {
+            document.getElementById("rangePE").innerHTML=newValue;
+            tension_pe = newValue/100;
+            recreateRadialPE(radial_pe_data);
+        }
+    
 
         //var allpc_svg = d3.select(".allpc")
         //    .append("svg")

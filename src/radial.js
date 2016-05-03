@@ -35,7 +35,7 @@ function createRadialPE(classes)
 
 	line_radial = d3.svg.line.radial()			//Constructs new radial line generator with default radius and angle functions
 			.interpolate("bundle")
-			.tension(.35)
+			.tension(tension_pe)
 			.radius(function(d) { return d.y; })
 			.angle(function(d) { return d.x / 180 * Math.PI; });
 
@@ -91,7 +91,7 @@ function recreateRadialPE(classes)
 
 	line_radial = d3.svg.line.radial()			//Constructs new radial line generator with default radius and angle functions
 			.interpolate("bundle")
-			.tension(.35)
+			.tension(tension_pe)
 			.radius(function(d) { return d.y; })
 			.angle(function(d) { return d.x / 180 * Math.PI; });
 
