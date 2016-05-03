@@ -2,7 +2,8 @@
 // this uses Chang's d3.parcoords javascript library that is built on top of d3 
 // load csv file and create the chart
 // expects 2D GVT x LP matrix for each metric
-d3.csv(filename_lpsel, function(data) {
+//d3.csv(filename_lpsel, function(data) {
+function create_lp_selector(data, selected_metric){
     var lp_names = d3.scale.category10();
     lp_names.domain(d3.keys(data[0]).filter(function(key) { return key !== "gvt"; }));
 
@@ -27,12 +28,12 @@ d3.csv(filename_lpsel, function(data) {
         }else{
             type = "terminal";
         }
-        return {
+        var tmp = {
             type: type, 
             PE: pe_id,
-            LP: +myid[1],
-            forward_events: d3.sum(d[0].values, function(g) { return g.metric;})
-        };
+            LP: +myid[1]}
+        tmp[selected_metric] = d3.sum(d[0].values, function(g) { return g.metric;});
+        return tmp;
     })
     .entries(lp);
 
@@ -64,5 +65,5 @@ d3.csv(filename_lpsel, function(data) {
     get_selected_entities();
     change_pe_text(selected_pes);
 
-});
+}
 

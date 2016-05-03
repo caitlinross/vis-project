@@ -379,6 +379,10 @@
             createTimeGraph(pe_data); 
         });
 
+        d3.csv(filename_lpsel, function(data) {
+            create_lp_selector(data, "Router Send Forward");
+        });
+
         /* takes the selected_time and finds bin_start_time and bin_end_time */
         function get_gvt_times(selected_time){
             for (var i = 0; i < binned_pes[0].values.length; i++){
@@ -534,6 +538,11 @@
 		        pe_data = data;
 		        createTimeGraph(pe_data); 
 		    });
+            
+			d3.select("#lppc").selectAll("svg").remove();
+            d3.csv(filename_lpsel, function(data) {
+                create_lp_selector(data, event_type);
+            });
         }
     
 
