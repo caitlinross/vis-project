@@ -526,6 +526,14 @@
                     recreateRadialLP(radial_lp_data);
                 }
             );
+
+			d3.select(".timegraph").selectAll("svg").remove();
+			d3.csv(filename_time, function(data){
+		    //d3.csv("data/matrix.csv", function(data){
+		        // all calls to use this data should go in here
+		        pe_data = data;
+		        createTimeGraph(pe_data); 
+		    });
         }
     
 
