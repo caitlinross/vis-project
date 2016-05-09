@@ -47,6 +47,7 @@
 
 \documentclass{acm_proc_article-sp}
 \usepackage{color}
+\usepackage{subfig}
 
 \begin{document}
 
@@ -313,7 +314,18 @@ Similar to our work, Bhatele et al. \cite{DragonVis} has used radial graphs to v
 \section{Debugging Visualization}
 \color{red} Could checkout previous commit to show issue in LP radial view where some terminals were connected to multiple LPs instead of just its router and talk about how we realized there was a mistake in our post processing.  Could also talk about how the final vis helps to provide validation for the slim fly model \color{black}
 
-
+\begin{figure*}[!ht]
+     \centering
+%     \subfloat[][dot plain]{\epsfig{file=class-net/class-net-Datastructures-dot.png, height=1.5in, width=1.80in}\label{vis-50-0}}
+%     \subfloat[][circo plain]{\epsfig{file=class-net/class-net-Datastructures-circo.png, height=1.5in, width=1.80in}\label{vis-90-0}}
+%     \subfloat[][neato plain]{\epsfig{file=class-net/class-net-Datastructures-neato.png, height=1.5in, width=1.80in}\label{vis-95-0}}
+%     \subfloat[][osage plain]{\epsfig{file=class-net/class-net-Datastructures-osage.png, height=1.5in, width=1.80in}\label{vis-100-0}}\\
+     \subfloat[][dot]{\epsfig{file=debug1.png, height=3.0in, width=3.0in}\label{vis-50-1}}
+     \subfloat[][circo]{\epsfig{file=debug2.png, height=3.0in, width=3.0in}\label{vis-90-1}}\\
+%     \subfloat[][osage]{\epsfig{file=class-net/class-net-Datastructures-weight-osage.png, height=1.8in, width=2.80in}\label{vis-100-1}}\\
+          \caption{Visualizations of the class social network data using a collection of Graphviz graph drawing programs. Red lines represent "before RPI" connections, blue represent "lived with" connections and black represent "Data Structures" connections. }
+     \label{class-net}
+\end{figure*}
 
 Feedback from Barb: Description of an intermediate artifact or a component of the final visualization and how it was used to discover/solve a bug/problem or confirm that the project was on track.
 
