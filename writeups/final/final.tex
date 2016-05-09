@@ -236,16 +236,24 @@ Our final visualization interface is shown in Figure \ref{actual-vis}.  This sec
 \centering
    \includegraphics[width=6.5in]{Interactive.png}
 \caption{Full Visualization Interface Depicting Interactions}
-\label{actual-vis}
+\label{interact-vis}
 \end{figure*}
 
 The first problem we noticed with our visualization is that it would be really tedious to have to manually select and load data for each simulation run.  Because of the different number of simulation parameters that can be changed, this can result in many different runs being made.  This large number of runs presents us with another higher-level data selection layer that we hadn't initially taken into account.  In response to this, we have decided to generate another parallel coordinates graph at the top of the visualization layout. This parallel coordinates graph will present the high-level results such as runtime and efficiency for all simulation runs and allow the user to select one run. Currently, this is showing randomly generated data, since we decided to focus on only one slim fly run.  In the future, we will update this with actual simulation data and allow the user to select one or more runs to look at the simulation specific event data. After selection, the  detailed event-based results for that run will be displayed in the other four panels.
 
-\subsubsection{Radial View}
-\color{red} TODO  \color{black}
+\subsubsection{PE View}
+In this view, the main goal is to give visual insight into the distribution of messages being generated and transferred between processing elements (PEs) in the simulation. At large scale, this distribution plays a very large part in how well the simulation will perform and is very hard to understand with a simple efficiency number. 
+
+Very similar to how it was originally designed, each PE is represented by a corresponding text label and is colored based on the intesity of the selected metric for that PE. For example, if we are looking at forward message sends, then a given PE will have a dark color if it has a large number in respect to the other PEs. In the case of very few forward message sends, the PE will have a very light color. The color palette for the PE radial view is a sequential single tone blue for simplicity and is selected using colorbrewer2 \cite{brewer}. The links between PEs are also colored in a similar approach. Links with many events of the selected type have a darker color than links with less events. This time the color palette is a sequential multi hue red that has been chosen because it gives the best distinction between the thin lines. Again, the color palette was selected using colorbrewer2.
+
+Various levels of interaction are also available in the PE radial view. As shown in the LP view in Figure \ref{interact-vis}, when hovering the mouse over any label in the graph, the connections corresponding to that PE are highlighted as are the labels at the end of the connections. When making selections of PEs in the LP selector view, the radial PE view is updated accordingly to show only the connections and activity for the selected PEs. This functionality is shown in the PE view in Figure \ref{interact-vis}. Finally there are also tool tips (which are located in each view) that describe the functionality and interaction of the view.
 
 \subsubsection{LP View}
-\color{red} TODO \color{black}
+The LP view first came about when thinking of an approach to visualize the many complex interconnections of LPs in the simulation. Similar to the interaction of PEs, visualizing the interaction of LPs provides insight into how well a given routing algorithm is performing under a certain workload. Hot spots are very hard to detect via text output but very easy with visualization. 
+
+As previously mentioned, major changes have been made throughout the implementation of the LP view. We started off wanting to use a grid structure to layout all LPs in the simulation and use a heat map coloring scheme to indicate the intensity of the selected simulation metric per LP. We quickly found that this approach wasn't the most effective as it left out the connection and link information between LPs. Finally, we ended up going with another radial diagram with the same coloring scheme as is done in the PE view. Each LP is represented by a corresponding text label and has lines connecting the LP to all connected LPs in the simulation. The same heat map coloring is applied as is done in the PE view. 
+
+The interaction is also very similar to the PE radial view. Hovering on a label in the graph highlights it's corresponding connections. Also, making LP selections in the LP selector view adjusts the LPs shown in the LP radial view. This allows focussing attention on subsets of LPs to further investigate hot spots, verify connections and analyse event distribution.
 
 \subsubsection{Time Selector}
 The time selector was developed as originally planned, except we decided to group the LPs by their PEs.  Since there are 200 LPs, it was difficult to read.  Even with 16 PEs in the data set we used, it is still difficult to see all of the lines at once.  However, you can see peaks in the graphs and use that to determine what GVT you want to look at.  You can click on the x-axis to make your GVT selection.  A red dot will be placed on that point and the selected GVT will be shown in the Selection Information Panel on the right.  We wanted to make the time selection update both radial views, but we ran out of time to fully implement that feature.  The time selector also allows the user to zoom in and out as well as pan across the graph.  To allow this feature to work smoothly, we had to bin the data for the individual GVTs into 500 bins.  At the top of the graph there is a reset button that allows the user to view the full simulation again.
@@ -312,7 +320,6 @@ A previously mentioned, a large part of our visualization interface was inspired
 Similar to our work, Bhatele et al. \cite{DragonVis} has used radial graphs to visualize simulated large scale HPC dragonfly network activity. They use the radial graphs to show how multiple applications running on a supercomputing system can be affected by the interconnection network. Our work however is focusing on one application running at scale. Also, unlike our work which simply uses a label with dynamic color intensity based on the selected metric, the Bhatele et al. approach adds a group of dynamic color intensity dots to show each individual processor in the system. 
 
 \section{Debugging Visualization}
-\color{red} Could checkout previous commit to show issue in LP radial view where some terminals were connected to multiple LPs instead of just its router and talk about how we realized there was a mistake in our post processing.  Could also talk about how the final vis helps to provide validation for the slim fly model \color{black}
 
 \begin{figure*}[!ht]
      \centering
@@ -320,14 +327,14 @@ Similar to our work, Bhatele et al. \cite{DragonVis} has used radial graphs to v
 %     \subfloat[][circo plain]{\epsfig{file=class-net/class-net-Datastructures-circo.png, height=1.5in, width=1.80in}\label{vis-90-0}}
 %     \subfloat[][neato plain]{\epsfig{file=class-net/class-net-Datastructures-neato.png, height=1.5in, width=1.80in}\label{vis-95-0}}
 %     \subfloat[][osage plain]{\epsfig{file=class-net/class-net-Datastructures-osage.png, height=1.5in, width=1.80in}\label{vis-100-0}}\\
-     \subfloat[][dot]{\epsfig{file=debug1.png, height=3.0in, width=3.0in}\label{vis-50-1}}
-     \subfloat[][circo]{\epsfig{file=debug2.png, height=3.0in, width=3.0in}\label{vis-90-1}}\\
+     \subfloat[][Terminal LP 20 Connections]{\epsfig{file=debug1.png, height=3.0in, width=3.0in}\label{debug1}}
+     \subfloat[][Router LP 23 Connections]{\epsfig{file=debug2.png, height=3.0in, width=3.0in}\label{debug2}}\\
 %     \subfloat[][osage]{\epsfig{file=class-net/class-net-Datastructures-weight-osage.png, height=1.8in, width=2.80in}\label{vis-100-1}}\\
-          \caption{Visualizations of the class social network data using a collection of Graphviz graph drawing programs. Red lines represent "before RPI" connections, blue represent "lived with" connections and black represent "Data Structures" connections. }
-     \label{class-net}
+          \caption{Visualizations showing the debugging capabilities. Figure \ref{debug1} shows terminal LP 20 has more than one connection, which isn't possible. It's only connection should be to router LP 23 shown in Figure \ref{debug2}. }
+     \label{debug}
 \end{figure*}
 
-Feedback from Barb: Description of an intermediate artifact or a component of the final visualization and how it was used to discover/solve a bug/problem or confirm that the project was on track.
+After having collected and visualized data in the radial LP view, we noticed a major issue. As seen in Figure \ref{debug}, the radial view showed us that some of the terminals had more than one connection in the network of LPs. Of course, this shouldn't be happening as all terminals are only connected to exactly one router which relays messages throughout the network to their destination terminal. At first glance, it appeared to be a bug in the simulation (the simulation which had recently generated results that were published), which caused some anxiety. After further investigation, the visualization showed the extra connection was a consistent offset which led us to the data processing where we found and fixed the bug. Not only does the radial view prove that our data processing and visualization algorithms are correct but also that the original simulator is indeed correct. This tool makes it very easy to verify connections as it is much easier to do so visually than scanning line by line through text files.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% From progress report 3
