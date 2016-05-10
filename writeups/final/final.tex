@@ -175,28 +175,37 @@ Our target audience for these visualizations is PDES developers, especially anyo
 This project is the first steps of a larger visualization project our research group is working on.  Eventually we want to enable in situ visualization for large-scale optimistic PDES.  The complexity and scale of the simulations makes this difficult, so we are focusing first on post-hoc analysis.  Our project for this class focuses on post-hoc analysis of smaller scale Slim Fly models in order to determine effective ways to visualize the results.   Then we can build on this project to scale up to larger models as well as other ROSS models.
 
 \vspace{1cm}
+
+\section{Data Collection}
+\subsection{Original Data Collection}
+We originally planned to use some new data collection added to ROSS to collect data for our visualizations, but we realized we needed more detailed event data. We are still collecting simulation level data, however, now we're collecting the data directly from the Slim Fly model, instead of ROSS itself.  Because of this, we've decided to limit to just the number of forward and reverse events, since we can collect this easily from the model.  In the future, we can provide hooks into ROSS to collect this data as well as other metrics directly from ROSS.  So now we are collecting data on the specific events that are sent between LPs (logical processes, or in other words the simulation entities) in the simulation, recording the source and destination LPs, the timestamp, and the type of event.  The data is collected on a LP basis and since we know the mapping of LPs to PEs, all of the data for LPs on a given PE can be combined to visualize the data on a PE basis.  
+
+We also wrote scripts to do some post-processing on this data to generate specific data structures that is uploaded into our visualization interface.  We have two files. The first file is a 2 dimensional structure containing the values for a given metric (e.g., number of forward events) for each LP. These are aggregated into bins based on the GVT (Global Virtual Time) computations done during the simulation.  This file is used to create the time selector and LP selector visualization components. The other file is a 3 dimensional structure storing the number of events per each PE pair for each GVT. This file is used to create both radial diagrams.
+
+%%% following paragraph pulled from prog report 1; Do we want to keep any of this?
+We spent a good portion of our early time generating and formatting a database consisting of Slim Fly and Dragonfly network simulation performance end results (not including event data generated during the simulations). This information is used in the "All simulation data" view. We made use of multiple hardware systems available, including RPI's IBM Blue Gene/Q supercomputer and a smaller 64-core AMD workstation. While we wanted to collect end runtime analysis results such as efficiency, speed, etc., unfortunately our data requirements for each visualization changed as we started implementing the different visualizations. We noticed as we kept making changes, our initial data set didn't include all the simulation information we needed. Instead of regenerating the large 720 simulation execution dataset, we chose to generate some random synthetic data for proof of concept and save the computational resources for later when we know exactly which parameters we want to collect. 
+
+\subsection{Final Data Collection Format}
+There are two types of raw data files from the simulations that we use.  One type is for data collected after every GVT computation.  This collects various data such as the number of rollbacks and events that happen between each GVT, along with the timestamps for the GVT computations.  The only data we use from this file is the timestamps for GVT computations.  The other raw data file is data on each event processed during the simulation.  It outputs the source and destination LP IDs, the type of event it is (e.g., router send forward event), and the timestamp of the event.  
+
+We then have a post-processing.c program which does some post-processing on these files to create the 4 different files we use in the interface.  One file gives a count of the events for a specific event type for each PE at each GVT in the simulation. There is also a similar file that does this for each LP as well.  There are two JSON files (example shown in Figure \ref{json-file}) for LPs and PEs that give data for pairwise connections between LPs/PEs in the simulation.
+\begin{figure*}[t]
+\centering
+   \includegraphics[width=5.0in]{json.png}
+\caption{Example of LP connections JSON file created from the raw data.}
+\label{json-file}
+\end{figure*}
+
+
+\section{User Interface}
+We have developed an interface available on the web using the D3.js~\cite{d3} library as well as the parallel coordinates library built on top of D3 by Kai Chang~\cite{chang}.  It's hosted at https://caitlinross.github.io/ vis-project/src.  In this section, we first describe our original interface plan.  Then we discuss the actual interface and changes we had to make from the original plan.  
+
 \begin{figure*}[!ht]
 \centering
    \includegraphics[width=5.0in, clip=true, trim=0 1in 0 0]{../../figures/gui-diagram/Slide1.png}
 \caption{Model View}
 \label{model-view}
 \end{figure*}
-\section{Data Collection}
-
-We originally planned to use some new data collection added to ROSS to collect data for our visualizations, but we realized we needed more detailed event data. We are still collecting simulation level data, however, now we're collecting the data directly from the Slim Fly model, instead of ROSS itself.  Because of this, we've decided to limit to just the number of forward and reverse events, since we can collect this easily from the model.  In the future, we can provide hooks into ROSS to collect this data as well as other metrics directly from ROSS.  So now we are collecting data on the specific events that are sent between LPs (logical processes, or in other words the simulation entities) in the simulation, recording the source and destination LPs, the timestamp, and the type of event.  The data is collected on a LP basis and since we know the mapping of LPs to PEs, all of the data for LPs on a given PE can be combined to visualize the data on a PE basis.  
-
-We also wrote scripts to do some post-processing on this data to generate specific data structures that is uploaded into our visualization interface.  We have two files. The first file is a 2 dimensional structure containing the values for a given metric (e.g., number of forward events) for each LP. These are aggregated into bins based on the GVT (Global Virtual Time) computations done during the simulation.  This file is used to create the time selector and LP selector visualization components. The other file is a 3 dimensional structure storing the number of events per each PE pair for each GVT. This file is used to create both radial diagrams.
-
-
-
-%%% following paragraph pulled from prog report 1; Do we want to keep any of this?
-We spent a good portion of our early time generating and formatting a database consisting of Slim Fly and Dragonfly network simulation performance end results (not including event data generated during the simulations). This information is used in the "All simulation data" view. We made use of multiple hardware systems available, including RPI's IBM Blue Gene/Q supercomputer and a smaller 64-core AMD workstation. While we wanted to collect end runtime analysis results such as efficiency, speed, etc., unfortunately our data requirements for each visualization changed as we started implementing the different visualizations. We noticed as we kept making changes, our initial data set didn't include all the simulation information we needed. Instead of regenerating the large 720 simulation execution dataset, we chose to generate some random synthetic data for proof of concept and save the computational resources for later when we know exactly which parameters we want to collect. 
-
-
-\section{User Interface}
-We have developed an interface available on the web using the D3.js~\cite{d3} library as well as the parallel coordinates library built on top of D3 by Kai Chang~\cite{chang}.  It's hosted at https://caitlinross.github.io/ vis-project/src.  In this section, we first describe our original interface plan.  Then we discuss the actual interface and changes we had to make from the original plan.  
-
-
 \begin{figure*}[t]
 \centering
    \includegraphics[width=5.0in, clip=true, trim=0 1in 0 0]{../../figures/gui-diagram/Slide2.png}
